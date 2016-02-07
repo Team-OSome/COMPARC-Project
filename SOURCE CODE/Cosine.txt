@@ -16,7 +16,7 @@ CONSTANT3:	.DOUBLE 2.00000		;Constant dummy variable
 		L.D F5, CONSTANT3			;Constant
 		L.D F6, CONSTANT2			;Constant for negating
 		L.D F7,	CONSTANT1			;For arithmetic	
-		DADDIU	R1, R0, #0014		;Iterate R1 times (Must not be 0), AKA Epsilon
+		DADDIU	R1, R0, #0014			;Iterate R1 times (Must not be 0), AKA Epsilon
 
 
 ;Loop
@@ -32,7 +32,7 @@ L1:		ADD.D	F4, F4, F5			;F4 += 2
 		MUL.D	F3, F3, F11			;Term *= X^2/n(n-1)
 		ADD.D	F2, F2, F3			;Sum += Term
 		
-		DADDIU	R1, R1, #FFFF		;Epsilon - 1
+		DADDIU	R1, R1, #FFFF			;Epsilon - 1
 
 		BGTZ L1
 		NOP
