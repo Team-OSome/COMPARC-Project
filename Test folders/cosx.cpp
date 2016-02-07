@@ -5,7 +5,8 @@
 
 int main(void)
 {    
-    int   k;         // dummy variable k
+    int   k,         // dummy variable k
+    						n = 0;									// number of iterations
 
     float x,         // parameter of cos(x), in radians
           epsilon,   // precision of cos(x) (cos = sum ± epsilon)
@@ -25,9 +26,12 @@ int main(void)
         k += 2;
         term *= -(x*x)/(k*(k-1));
         sum += term;
+        printf("K = %d \nx = %d\nsum = %f\nterm = %f\n", k*(k-1), n, sum, term);
+        n++;
     }
 
     printf("cos(%f) = %f\n", x, sum);
+    printf("Number of iterations: %d", n);
 
     return 0;
 }
