@@ -1,5 +1,8 @@
 	.data
-Pi:	//something to initialize 3.14159
+Pi:				;Something to initialize 3.14159
+
 
 	.code
+	DADDIU R1, R0, #000A 	;Value of epsilon
 	
+
