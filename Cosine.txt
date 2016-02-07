@@ -1,0 +1,5 @@
+	.data
+Pi:	//something to initialize 3.14159
+
+	.code
+	

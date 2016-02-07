@@ -6,28 +6,32 @@
 int main(void)
 {    
     int   k,         // dummy variable k
-    						n = 0;									// number of iterations
+    						epsilon,			// number of iterations
+    						n = 0;					// count of iterations for testing purposes
 
     float x,         // parameter of cos(x), in radians
-          epsilon,   // precision of cos(x) (cos = sum ± epsilon)
+          //epsilon,   // precision of cos(x) (cos = sum ± epsilon)
           sum,       // sum of the terms of the polynomial series
           term;      // variable that stores each term of the summation
 
     printf("Enter x: ");
 				scanf("%f", &x);
-				printf("Enter epsilon: ");
-				scanf("%f", &epsilon);
+				printf("Enter epsilon (number of iterations): ");
+				//scanf("%f", &epsilon);
+				scanf("%d", &epsilon);
 
     sum = term = 1, k = 0;
 
-    while (fabs(term) >= epsilon)
-    // while abs(term) is smaller than epsilon
+    //while (fabs(term) >= epsilon)
+    while (epsilon > 0)
+    // while absolute of term is smaller than epsilon
     {
         k += 2;
         term *= -(x*x)/(k*(k-1));
         sum += term;
         printf("K = %d \nx = %d\nsum = %f\nterm = %f\n", k*(k-1), n, sum, term);
         n++;
+        epsilon--;
     }
 
     printf("cos(%f) = %f\n", x, sum);
