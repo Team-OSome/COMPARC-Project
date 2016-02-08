@@ -1,40 +1,41 @@
 .DATA
 
-INPUTRAD:	.DOUBLE	3.14159		;X in radians
-VAR1:		.DOUBLE 0.00000		;Dummy variable
-CONSTANT1:	.DOUBLE	1.00000		;Starting values for sum and term
-CONSTANT2:	.DOUBLE	-1.00000	;Constant for negating
-CONSTANT3:	.DOUBLE 2.00000		;Constant dummy variable
+INPUTRAD:	.DOUBLE	3.14159		; X in radians
+VAR1:		.DOUBLE 0.00000		; Dummy variable
+CONSTANT1:	.DOUBLE	1.00000		; Starting values for sum and term
+CONSTANT2:	.DOUBLE	-1.00000	; Constant for negating
+CONSTANT3:	.DOUBLE 2.00000		; Constant dummy variable
 
 .CODE
 
-;Initialization
-		L.D	F1, INPUTRAD			;X in radians
-		L.D	F2, CONSTANT1			;Sum variable
-		L.D	F3, CONSTANT1			;Term variable
-		L.D F4, VAR1				;Dummy variable n
-		L.D F5, CONSTANT3			;Constant
-		L.D F6, CONSTANT2			;Constant for negating
-		L.D F7,	CONSTANT1			;For arithmetic	
-		DADDIU	R1, R0, #0014			;Iterate R1 times (Must not be 0), AKA Epsilon
+; Initialization
+		L.D	F1, INPUTRAD(R0)		; X in radians
+		L.D	F2, CONSTANT1(R0)		; Sum variable
+		L.D	F3, CONSTANT1(R0)		; Term variable
+		L.D 	F4, VAR1(R0)			; Dummy variable n
+		L.D 	F5, CONSTANT3(R0)		; Constant
+		L.D 	F6, CONSTANT2(R0)		; Constant for negating
+		L.D 	F7, CONSTANT1(R0)		; For arithmetic	
+		DADDIU	R1, R0, #0009			; Iterate R1 times (Must not be 0), AKA Epsilon
+		DADDIU  R10, R0, #0001			; For arithmetic purposes
 
 
-;Loop
-L1:		ADD.D	F4, F4, F5			;F4 += 2
+; Loop
+L1:		ADD.D	F4, F4, F5			; F4 += 2
 
-		MUL.D	F8, F1, F1			;X^2
-		MUL.D	F8, F8, F6			;Negate the squared value
+		MUL.D	F8, F1, F1			; X^2
+		MUL.D	F8, F8, F6			; Negate the squared value
 		
-		SUB.D	F9,	F4,	F7			
-		MUL.D	F10, F9, F4			;F10 = n*(n-1)
+		SUB.D	F9,F4, F7			
+		MUL.D	F10, F9, F4			; F10 = n*(n-1)
 		
 		DIV.D	F11, F8, F10
-		MUL.D	F3, F3, F11			;Term *= X^2/n(n-1)
-		ADD.D	F2, F2, F3			;Sum += Term
+		MUL.D	F3, F3, F11			; Term *= X^2/n(n-1)
+		ADD.D	F2, F2, F3			; Sum += Term
 		
-		DADDIU	R1, R1, #FFFF			;Epsilon - 1
+		DSUBU	R1, R1, R10			; Epsilon - 1
 
-		BGTZ L1
+		BGEZ R1, L1
 		NOP
 
 		SYSCALL 0
