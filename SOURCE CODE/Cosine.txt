@@ -1,6 +1,6 @@
 .DATA
 
-INPUTRAD:	.DOUBLE	3.14159		; X in radians
+INPUTRAD:	.DOUBLE	100.00000	; X in radians
 VAR1:		.DOUBLE 0.00000		; Dummy variable
 CONSTANT1:	.DOUBLE	1.00000		; Starting values for sum and term
 CONSTANT2:	.DOUBLE	-1.00000	; Constant for negating
