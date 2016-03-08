@@ -16,5 +16,11 @@ namespace COMPARC_Project_2
         {
             InitializeComponent();
         }
+
+        private void simulateBtn_Click(object sender, EventArgs e)
+        {
+            if (programTB.Lines.Length > 0)
+                label1.Text = "line 1 : " + programTB.Lines[0]; 
+        }
     }
 }
