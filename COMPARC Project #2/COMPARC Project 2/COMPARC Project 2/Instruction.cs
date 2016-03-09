@@ -8,12 +8,12 @@ namespace COMPARC_Project_2
 {
     public class Instruction                
     {
-        private String instructionLine;
+        private String instructionLine;     //  complete instruction line
         private Boolean valid;              //  check if the instruction entered is valid
         private int instructionType;        //  branch instruction, load/store instruction, Arithmetic Instruction, etc.
         private Opcode opcode;
 
-        private String instruction;        
+        private String instruction;        //   instruction mnemonic only
 
         private String rs;                  //  parameters
         private String rd;
@@ -52,7 +52,7 @@ namespace COMPARC_Project_2
         private void setParameters()    
         {
             String[]    separators = { ",", " ", "(", ")" };
-            String[]    words = this.instruction.Split(separators, StringSplitOptions.RemoveEmptyEntries);  // splits the instruction per word to an array
+            String[]    words = this.instructionLine.Split(separators, StringSplitOptions.RemoveEmptyEntries);  // splits the instruction per word to an array
             
             switch (this.instruction)
             {
