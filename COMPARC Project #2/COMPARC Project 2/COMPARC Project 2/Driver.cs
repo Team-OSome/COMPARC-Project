@@ -16,7 +16,9 @@ namespace COMPARC_Project_2
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new InputForm());
+
+            var inputForm = new InputForm();
+            Application.Run(inputForm);
         }
     }
 }
