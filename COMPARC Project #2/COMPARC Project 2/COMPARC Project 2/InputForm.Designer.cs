@@ -77,6 +77,7 @@
             this.Controls.Add(this.programTB);
             this.Name = "InputForm";
             this.Text = "MIPS 64 - Flush - Set B";
+            this.Load += new System.EventHandler(this.InputForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

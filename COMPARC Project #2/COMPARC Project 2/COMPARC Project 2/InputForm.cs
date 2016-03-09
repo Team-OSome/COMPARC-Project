@@ -12,21 +12,36 @@ namespace COMPARC_Project_2
 {
     public partial class InputForm : Form
     {
-        private String[] program;
+        private List<Instruction> instruction;
 
         public InputForm()
         {
             InitializeComponent();
         }
 
-        private void simulateBtn_Click(object sender, EventArgs e)
+        private void InputForm_Load(object sender, EventArgs e)
         {
-            this.program = programTB.Lines;
+            this.instruction = new List<Instruction>();
         }
 
-        public String[] getProgram()
+        private void simulateBtn_Click(object sender, EventArgs e)
         {
-            return this.program;
+            this.initializeInstructionArray(programTB.Lines);
+            this.printConsoleProgram();
+        }
+
+        private void initializeInstructionArray(String[] instructions)
+        {
+            for (int i = 0; i < instructions.Length; i++)
+            {
+                this.instruction.Add(new Instruction(instructions[i]));
+            }
+        }
+
+        private void printConsoleProgram()
+        {
+            for (int i = 0; i < instruction.Count; i++)
+                Console.WriteLine(this.instruction[i].getInstruction());
         }
     }
 }
