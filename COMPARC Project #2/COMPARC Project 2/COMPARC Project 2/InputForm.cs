@@ -28,6 +28,7 @@ namespace COMPARC_Project_2
         {
             this.initializeInstructionArray(programTB.Lines);
             this.printConsoleProgram();
+            if (this.isValid());
         }
 
         private void initializeInstructionArray(String[] instructions)
@@ -42,6 +43,17 @@ namespace COMPARC_Project_2
         {
             for (int i = 0; i < instruction.Count; i++)
                 Console.WriteLine(this.instruction[i].getInstruction());
+        }
+
+        private Boolean isValid()
+        {
+            for (int i = 0; i < instruction.Count; i++)
+                if (this.instruction[i].getValid() == false)
+                {
+                    MessageBox.Show ("Error at line #" + (i + 1));
+                    return false;
+                }    
+            return true;
         }
     }
 }

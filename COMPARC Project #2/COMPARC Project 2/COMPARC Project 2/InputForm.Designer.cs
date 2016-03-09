@@ -59,7 +59,7 @@
             // 
             // simulateBtn
             // 
-            this.simulateBtn.Location = new System.Drawing.Point(1002, 506);
+            this.simulateBtn.Location = new System.Drawing.Point(398, 506);
             this.simulateBtn.Name = "simulateBtn";
             this.simulateBtn.Size = new System.Drawing.Size(75, 23);
             this.simulateBtn.TabIndex = 3;
