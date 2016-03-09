@@ -27,6 +27,9 @@ namespace COMPARC_Project_2
         private String rsO;
         private String rdO;
         private String rtO;
+        private int rsDec;
+        private int rdDec;
+        private int rtDec;
         private String offsetO;
         private int offsetDecO;
         private String immediateO;
@@ -55,14 +58,33 @@ namespace COMPARC_Project_2
             {
                 if (this.instruction == "BNEC" || this.instruction == "DADDIU") 
                 {
+                    this.rsO = this.rs.TrimStart('R');
+                    this.rtO = this.rt.TrimStart('R');
+
+                    this.rsDec = Int32.Parse(rsO);
+                    this.rtDec = Int32.Parse(rtO);
+
+                    this.rsO = Convert.ToString(rsDec, 2);
+                    this.rtO = Convert.ToString(rtDec, 2);
+
+                    if(this.instruction == "BNEC")
+                    {
+
+                    }
+
+                    else if (this.instruction == "DADDIU") 
+                    { 
+                    
+                    } 
 
                 }
             }
-            if(opcodeType.Equals('J'))
+            if(opcodeType.Equals('J')) //wait mali to... we have to solve for offset pa...
             {
                 this.offsetDec = Int32.Parse(offset, System.Globalization.NumberStyles.HexNumber);
                 this.offsetO = Convert.ToString(offsetDec, 2);                
-                this.opcodeString += offsetO.PadLeft(26, '0');
+                this.offsetO = offsetO.PadLeft(26, '0');
+                this.opcodeString+=offsetO;
             }
         }
 
