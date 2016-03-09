@@ -8,25 +8,35 @@ namespace COMPARC_Project_2
 {
     public class Instruction                
     {
-        private String instruction;
+        private String instructionLine;
         private Boolean valid;              // check if the instruction entered is valid
         private int instructionType;        //  branch instruction, load/store instruction, Arithmetic Instruction, etc.
         private Opcode opcode;
-        private String mnemonic;
+
+        private String instruction;
+        private String rs;
+        private String rd;
+        private String rt;
+        private String offset;
+        private String immediate;
         
-        public Instruction(string instruction)
+        public Instruction(string instructionLine)
         {
             //opcode = new Opcode();
-            this.instruction = instruction;
-            this.setMnemonic();
-            //this.checkValid();
+            this.instructionLine = instructionLine;
+            this.setInstruction();
+            this.setInstructionIndex();
         }
 
-        private void checkValid()
+        
+        public void setInstruction()
         {
-            if(this.existingInstructions(this.instruction))
+            String[] splitIns = this.instructionLine.Split();
+
+            //  first word should contain the instruction
+            if (checkExistingInstructions(splitIns[0].ToUpper()))
             {
-                this.valid = true;
+                this.instruction = splitIns[0].ToUpper();
             }
             else
             {
@@ -34,33 +44,24 @@ namespace COMPARC_Project_2
             }
         }
 
-        public Boolean getValid()
+        public void setInstructionIndex()
         {
-            return this.valid;
-        }
+            String[] splitIns = this.instructionLine.Split();
+            String insIndex = "";
 
-        public String getInstruction()
-        {
-            return this.instruction;
-        }
-
-        public void setMnemonic()
-        {
-            String[] mnemonic = instruction.Split();
-            Console.WriteLine(mnemonic[0]);
-            if (this.existingInstructions(mnemonic[0]))
+            //second word/s should contain the registers
+            //first all the words after the intruction should be concatenated before splitting
+            for (int i = 0; i < splitIns.Length; i++)
             {
-                Console.WriteLine("correct instruction");
-                this.mnemonic = mnemonic[0];
-            }
-            else
-            {
-                this.valid = false;
+                insIndex += insIndex + splitIns[i];
             }
 
+            Console.WriteLine(insIndex);
+
+            //depending on the instruction split the instruction index to the indexes that are used
         }
 
-        public Boolean existingInstructions(string instruction)
+        public Boolean checkExistingInstructions(string instruction)
         {
             switch (instruction)
             {
@@ -76,6 +77,11 @@ namespace COMPARC_Project_2
                 case "BC": return true;
                 default: return false;
             }
+        }
+
+        public Boolean getValid()
+        {
+            return this.valid;
         }
     
     }
