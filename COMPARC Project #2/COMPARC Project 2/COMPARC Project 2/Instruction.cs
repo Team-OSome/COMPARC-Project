@@ -8,12 +8,15 @@ namespace COMPARC_Project_2
 {
     public class Instruction                
     {
+
+        #region variables
+
         private String instructionLine;     //  complete instruction line
         private Boolean valid;              //  check if the instruction entered is valid
         private int instructionType;        //  branch instruction, load/store instruction, Arithmetic Instruction, etc.
         private Opcode opcode;
 
-        private String instruction;        //   instruction mnemonic only
+        private String instruction;         //  instruction mnemonic only
 
         private String rs;                  //  parameters
         private String rd;
@@ -21,7 +24,9 @@ namespace COMPARC_Project_2
         private String offset;
         private String bse;
         private String immediate;
-        
+
+        #endregion
+
         public Instruction(string instructionLine)
         {
             this.instructionLine = instructionLine;
@@ -52,12 +57,12 @@ namespace COMPARC_Project_2
         private void setParameters()    
         {
             String[]    separators = { ",", " ", "(", ")" };
-            String[]    words = this.instructionLine.Split(separators, StringSplitOptions.RemoveEmptyEntries);  // splits the instruction per word to an array
+            String[]    words = this.instructionLine.Split(separators, StringSplitOptions.RemoveEmptyEntries);  // splits the instruction line per word to an array
             
             switch (this.instruction)
             {
                 case "DSUBU" : 
-                case "DDIV" :
+                case "DDIVU" :
                 case "DMODU" :
                 case "SLT" :
                 case "SELENEZ": this.rd = words[1]; this.rs = words[2]; this.rt = words[3]; this.offset = null;     this.immediate = null;     this.bse = null;     break;
@@ -72,7 +77,6 @@ namespace COMPARC_Project_2
         }
 
         #endregion
-
 
         #region getters
         
