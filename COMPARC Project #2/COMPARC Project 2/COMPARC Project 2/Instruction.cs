@@ -34,7 +34,7 @@ namespace COMPARC_Project_2
             String[] splitIns = this.instructionLine.Split();
 
             //  first word should contain the instruction
-            if (checkExistingInstructions(splitIns[0].ToUpper()))
+            if (checkExistingInstructions(splitIns[0].ToUpper()))   //if the 1st word in the line is an instruction, this.instruction gets the instruction
             {
                 this.instruction = splitIns[0].ToUpper();
             }
@@ -44,7 +44,7 @@ namespace COMPARC_Project_2
             }
         }
 
-        public void setInstructionIndex()
+        public void setInstructionIndex() // i don't understand what this function does... -mark
         {
             String[] splitIns = this.instructionLine.Split();
             String insIndex = "";
@@ -53,10 +53,10 @@ namespace COMPARC_Project_2
             //first all the words after the intruction should be concatenated before splitting
             for (int i = 0; i < splitIns.Length; i++)
             {
-                insIndex += insIndex + splitIns[i];
+                insIndex += splitIns[i];
             }
-
-            Console.WriteLine(insIndex);
+            Console.WriteLine("setInstructionIndex output: " + insIndex);
+           // Console.WriteLine(insIndex);
 
             //depending on the instruction split the instruction index to the indexes that are used
         }
@@ -82,6 +82,11 @@ namespace COMPARC_Project_2
         public Boolean getValid()
         {
             return this.valid;
+        }
+
+        public String getInstruction() 
+        {
+            return "";
         }
     
     }

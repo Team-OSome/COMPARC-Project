@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 
 namespace COMPARC_Project_2
-{   
+{   /*
     String DSUBU= "DSUBU";
     String DDIVU= "DDIVU";
     String DMODU= "DMODU";
     String SLT= "SLT";
     String SELEQZ = "SELEQZ";
-    /*
+    
     String BNEC
     String LD
     String SD
@@ -34,14 +34,13 @@ namespace COMPARC_Project_2
 
         public String getOpcode()
         {
-
+            return "";
         }
 
         public char getRS()
         {
-
+            return '\n';
         }
 
-        public 
     }
 }
