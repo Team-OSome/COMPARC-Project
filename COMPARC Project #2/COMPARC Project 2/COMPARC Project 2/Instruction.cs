@@ -31,7 +31,8 @@ namespace COMPARC_Project_2
             this.setParameters();
             this.opcode = new Opcode(this.instruction, this.rd, this.rs, this.rt, this.immediate, this.offset, this.bse);
         }
-  
+
+        #region setters
         private void setInstruction()
         {
             String[] splitIns = this.instructionLine.Split();
@@ -85,8 +86,56 @@ namespace COMPARC_Project_2
                 case "BC":      this.rd = null;     this.rs = null;     this.rt = null;     this.offset = words[1]; this.immediate = null;     this.bse = null;     break;
             }
 
-            // check if valid somewhere here
+            // check if parameters are valid here
         }
+        #endregion
+
+
+        #region getters
+
+
+        public Boolean getValid()
+        {
+            return this.valid;
+        }
+
+        public String getInstruction() 
+        {
+            return this.instruction;
+        }
+
+        public String getRS()
+        {
+            return this.rs;
+        }
+
+        public String getRD()
+        {
+            return this.rd;
+        }
+
+        public String getRT()
+        {
+            return this.rt;
+        }
+
+        public String getOffset()
+        {
+            return this.offset;
+        }
+
+        public String getImmediate()
+        {
+            return this.immediate;
+        }
+
+        public String getBse()
+        {
+            return this.bse;
+        }
+
+
+        #endregion 
 
         public Boolean checkExistingInstructions(string instruction)
         {
@@ -104,16 +153,6 @@ namespace COMPARC_Project_2
                 case "BC": return true;
                 default: return false;
             }
-        }
-
-        public Boolean getValid()
-        {
-            return this.valid;
-        }
-
-        public String getInstruction() 
-        {
-            return "";
         }
     
     }
