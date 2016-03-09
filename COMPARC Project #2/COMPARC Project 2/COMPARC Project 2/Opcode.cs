@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 
 namespace COMPARC_Project_2
-{   String DSUBU= "DSUBU";
+{   
+    String DSUBU= "DSUBU";
     String DDIVU= "DDIVU";
     String DMODU= "DMODU";
     String SLT= "SLT";

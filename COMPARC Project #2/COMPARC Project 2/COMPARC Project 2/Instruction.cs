@@ -16,7 +16,7 @@ namespace COMPARC_Project_2
         
         public Instruction(string instruction)
         {
-            opcode = new Opcode();
+            //opcode = new Opcode();
             this.instruction = instruction;
             this.setMnemonic();
             //this.checkValid();
