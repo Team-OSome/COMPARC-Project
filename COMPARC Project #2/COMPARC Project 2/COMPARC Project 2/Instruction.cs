@@ -13,9 +13,9 @@ namespace COMPARC_Project_2
         private int instructionType;        //  branch instruction, load/store instruction, Arithmetic Instruction, etc.
         private Opcode opcode;
 
-        private String instruction;
+        private String instruction;        
 
-        private String rs;                 
+        private String rs;                  //  parameters
         private String rd;
         private String rt;
         private String offset;
@@ -24,15 +24,15 @@ namespace COMPARC_Project_2
         
         public Instruction(string instructionLine)
         {
-            //opcode = new Opcode();
             this.instructionLine = instructionLine;
             this.setInstruction();
-            //this.setInstructionIndex();
             this.setParameters();
             this.opcode = new Opcode(this.instruction, this.rd, this.rs, this.rt, this.immediate, this.offset, this.bse);
         }
 
         #region setters
+
+        // sets the instruction
         private void setInstruction()
         {
             String[] splitIns = this.instructionLine.Split();
@@ -48,29 +48,11 @@ namespace COMPARC_Project_2
             }
         }
 
-        /*private void setInstructionIndex()                    
-        public void setInstructionIndex()   // i don't understand what this function does... -mark
-        {
-            String[] splitIns = this.instructionLine.Split();
-            String insIndex = "";
-
-            //second word/s should contain the registers
-            //first all the words after the intruction should be concatenated before splitting
-            for (int i = 0; i < splitIns.Length; i++)
-            {
-                insIndex += splitIns[i];
-            }
-            Console.WriteLine("setInstructionIndex output: " + insIndex);
-           // Console.WriteLine(insIndex);
-
-            //depending on the instruction split the instruction index to the indexes that are used
-        }*/
-
         // sets the parameters depending on the instruction
         private void setParameters()    
         {
-            String[]    separator = { ",", " ", "(", ")" };
-            String[] words = this.instruction.Split(separator, StringSplitOptions.RemoveEmptyEntries);  // splits the instruction per word to an array
+            String[]    separators = { ",", " ", "(", ")" };
+            String[]    words = this.instruction.Split(separators, StringSplitOptions.RemoveEmptyEntries);  // splits the instruction per word to an array
             
             switch (this.instruction)
             {
@@ -88,15 +70,30 @@ namespace COMPARC_Project_2
 
             // check if parameters are valid here
         }
+
         #endregion
 
 
         #region getters
-
+        
+        public String getInstructionLine()
+        {
+            return this.instructionLine;
+        }
 
         public Boolean getValid()
         {
             return this.valid;
+        }
+
+        public int getInstructionType()
+        {
+            return this.instructionType;
+        }
+
+        public Opcode getOpCode()
+        {
+            return this.opcode;
         }
 
         public String getInstruction() 
@@ -133,7 +130,6 @@ namespace COMPARC_Project_2
         {
             return this.bse;
         }
-
 
         #endregion 
 
