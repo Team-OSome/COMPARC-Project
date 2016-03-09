@@ -6,13 +6,31 @@ using System.Threading.Tasks;
 
 namespace COMPARC_Project_2
 {
-    public class Instruction
+    public class Instruction                
     {
+        private String instruction;
+        private Boolean valid;              // check if the instruction entered is valid
         private int instructionType;        //  branch instruction, load/store instruction, Arithmetic Instruction, etc. 
+        
+        public Instruction(string instruction)
+        {
+            this.instruction = instruction;
+            this.checkValid();
+        }
 
-        public Instruction()
+        private void checkValid()
         {
 
+        }
+
+        public Boolean getValid()
+        {
+            return this.valid;
+        }
+
+        public String getInstruction()
+        {
+            return this.instruction;
         }
     
     }

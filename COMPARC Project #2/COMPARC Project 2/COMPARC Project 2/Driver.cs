@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace COMPARC_Project_2
 {
-    static class Program
+    static class Driver
     {
         /// <summary>
         /// The main entry point for the application.
