@@ -10,17 +10,17 @@ using System.Windows.Forms;
 
 namespace COMPARC_Project_2
 {
-    public partial class Form1 : Form
+    public partial class InputForm : Form
     {
-        public Form1()
+        public InputForm()
         {
             InitializeComponent();
         }
 
         private void simulateBtn_Click(object sender, EventArgs e)
         {
-            if (programTB.Lines.Length > 0)
-                label1.Text = "line 1 : " + programTB.Lines[0]; 
+            int numLines = programTB.Lines.Length;
+            
         }
     }
 }
