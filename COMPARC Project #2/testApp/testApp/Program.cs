@@ -11,7 +11,7 @@ namespace testApp
         static void Main(string[] args)
         {
 
-            String line = "DSUBU R1, R2, R3";
+            String line = "LD R1,2000)R0)";
 
             String rs = "";
             String rd = "";
@@ -37,12 +37,12 @@ namespace testApp
                 case "BC": rd = null; rs = null; rt = null; offset = words[1]; immediate = null; bse = null; break;
             }
 
-            Console.WriteLine(rs);
-            Console.WriteLine(rd);
-            Console.WriteLine(rt);
-            Console.WriteLine(offset);
-            Console.WriteLine(bse);
-            Console.WriteLine(immediate);
+            Console.WriteLine("rs: " + rs);
+            Console.WriteLine("rd: " + rd);
+            Console.WriteLine("rt: " + rt);
+            Console.WriteLine("offset: " + offset);
+            Console.WriteLine("base: " + bse);
+            Console.WriteLine("imm: " + immediate);
 
 
             Console.ReadLine();

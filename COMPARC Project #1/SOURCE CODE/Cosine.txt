@@ -10,7 +10,7 @@ TWOPI:		.DOUBLE 6.283185307	; Constant dummy variable
 .CODE
 
 ; Initialization
-		;L.D	F1, INPUTRAD(R0)		; X in radians
+		;L.D	F1 , INPUTRAD(R0)		; X in radians
 		
 
 		L.D	F2, CONSTANT1(R0)		; Sum variable
@@ -20,7 +20,7 @@ TWOPI:		.DOUBLE 6.283185307	; Constant dummy variable
 		L.D 	F6, CONSTANT2(R0)		; Constant for negating
 		L.D 	F7, CONSTANT1(R0)		; For arithmetic	
 		L.D 	F12, TWOPI(R0)			; Value of 2(PI)
-		DADDIU	R1, R0, #0009			; Iterate R1 times (Must not be 0), AKA Epsilon
+		DADDIU	R 1, R0, #0009			; Iterate R1 times (Must not be 0), AKA Epsilon
 		DADDIU  R10, R0, #0001			; For arithmetic purposes
 
 		L.D	F1, INPUTRAD(R0)		; X in radians

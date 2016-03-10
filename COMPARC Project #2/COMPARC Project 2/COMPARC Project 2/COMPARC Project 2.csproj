@@ -53,6 +53,7 @@
     <Compile Include="Instruction.cs" />
     <Compile Include="Opcode.cs" />
     <Compile Include="Driver.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="InputForm.resx">
       <DependentUpon>InputForm.cs</DependentUpon>
