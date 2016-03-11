@@ -22,6 +22,7 @@ namespace COMPARC_Project_2
         private String rd;
         private String rt;
         private String offset;
+        private String branchLocation;
         private String bse;
         private String immediate;
 
@@ -48,16 +49,17 @@ namespace COMPARC_Project_2
         {
             String[] splitIns = this.instructionLine.Split();
 
+            if (splitIns[0].Contains(':'))
+            {
+                this.branchLocation = splitIns[0].TrimEnd(':');
+                this.instruction = splitIns[1];
+            }
             //  first word should contain the instruction
             if (checkExistingInstructions(splitIns[0].ToUpper()))   //if the 1st word in the line is an instruction, this.instruction gets the instruction
             {
                 this.instruction = splitIns[0].ToUpper();
             }
-            else if (splitIns[0].Contains(':'))
-            {
-                this.offset = splitIns[0];
-                this.instruction = splitIns[1];
-            }
+            
             else
             {
                 this.valid = false;
@@ -68,8 +70,17 @@ namespace COMPARC_Project_2
         private void setParameters()    
         {
             String[]    separators = { ",", " ", "(", ")" };
-            String[]    words = this.instructionLine.Split(separators, StringSplitOptions.RemoveEmptyEntries);  // splits the instruction line per word to an array
             
+            String[]    words = this.instructionLine.Split(separators, StringSplitOptions.RemoveEmptyEntries);  // splits the instruction line per word to an array
+            //if there is a branch location, remove it first... it is already saved as offset.
+            if (words[0].Contains(':'))
+            {
+                Console.WriteLine("Contains ':'");
+                words=words.Skip(1).ToArray();
+                Console.WriteLine("words now start with: " + words[0]);
+                Console.WriteLine("This instruction has offset: " + this.offset);
+            }
+
             switch (this.instruction)
             {
                 case "DSUBU" : 
@@ -85,6 +96,16 @@ namespace COMPARC_Project_2
             }
 
             // check if parameters are valid here
+        }
+
+        public void setOffset(String offset)
+        {
+            this.offset = offset;
+        }
+
+        public void setBranchLocation(String branchLocation)
+        {
+            this.branchLocation = branchLocation;
         }
 
         #endregion
@@ -144,6 +165,11 @@ namespace COMPARC_Project_2
         public String getBse()
         {
             return this.bse;
+        }
+
+        public String getBranchLocation()
+        {
+            return this.branchLocation;
         }
 
         #endregion 

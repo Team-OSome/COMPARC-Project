@@ -10,6 +10,7 @@ namespace COMPARC_Project_2
     {
         private List<Instruction> instruction;
         private List<Register> registers;
+        private int tempOffset;
 
         public Program(String[] program)
         {
@@ -26,13 +27,23 @@ namespace COMPARC_Project_2
             {
                 if (this.instruction[i].getInstruction().Equals("BNEC") || this.instruction[i].getInstruction().Equals("BC")) 
                 {
-                    Console.WriteLine("Found: " + this.instruction[i].getInstruction());
-                    /*
+                    Console.WriteLine("Found: " + this.instruction[i].getInstruction()+ ", i="+i);
+                    Console.WriteLine(this.instruction[i].getInstruction() + " branches to" + this.instruction[i].getOffset());
+                    
                     for (int j = 0; j < this.instruction.Count(); j++)
                     {
-                        
+                        if (this.instruction[i].getOffset().Equals(this.instruction[j].getBranchLocation()))
+                        {
+                            Console.WriteLine("i= " + i);
+                            Console.WriteLine("j= " + j);
+                            tempOffset = j - i -1;
+                            Console.WriteLine("tempOffset= " + tempOffset);
+                            this.instruction[i].setOffset(tempOffset.ToString());
+                            this.instruction[i].getOpCode().setOffset(tempOffset.ToString());
+                        }
+                            
                     }
-                     */
+                     
                 }
             }
         }
@@ -45,7 +56,7 @@ namespace COMPARC_Project_2
             }
         }
 
-        private Boolean isValid()
+        private Boolean isValid() //checks if all lines are valid
         {
             for (int i = 0; i < instruction.Count; i++)
                 if (this.instruction[i].getValid() == false)

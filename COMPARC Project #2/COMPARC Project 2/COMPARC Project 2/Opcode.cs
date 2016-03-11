@@ -234,6 +234,16 @@ namespace COMPARC_Project_2
             }
         }
 
+        public void setOffset(String offset)
+        {
+            this.offset = offset;
+            this.offsetDec = Int32.Parse(this.offset, System.Globalization.NumberStyles.HexNumber);
+            this.offsetO = Convert.ToString(offsetDec, 2);
+            this.offsetO = offsetO.PadLeft(26, '0');
+
+            Console.WriteLine("offsetO="+this.offsetO);
+        }
+
         public void printOpcodeBinary()
         {
             Console.WriteLine(opcodeString);
