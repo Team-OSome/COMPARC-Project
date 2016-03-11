@@ -53,6 +53,11 @@ namespace COMPARC_Project_2
             {
                 this.instruction = splitIns[0].ToUpper();
             }
+            else if (splitIns[0].Contains(':'))
+            {
+                this.offset = splitIns[0];
+                this.instruction = splitIns[1];
+            }
             else
             {
                 this.valid = false;

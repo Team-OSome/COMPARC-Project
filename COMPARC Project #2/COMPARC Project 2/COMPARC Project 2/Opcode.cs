@@ -200,11 +200,12 @@ namespace COMPARC_Project_2
             if (opcodeType.Equals('J')) //wait mali to... we have to solve for offset pa...
             {
                 try
-                {
+                {   /*
                     this.offsetDec = Int32.Parse(offset, System.Globalization.NumberStyles.HexNumber);
                     this.offsetO = Convert.ToString(offsetDec, 2);
                     this.offsetO = offsetO.PadLeft(26, '0');
                     this.opcodeString += offsetO;
+                     */
 
                     this.valid = true;
                 }
@@ -236,6 +237,11 @@ namespace COMPARC_Project_2
         public void printOpcodeBinary()
         {
             Console.WriteLine(opcodeString);
+        }
+
+        public char getOpcodeType()
+        {
+            return opcodeType;
         }
 
     }

@@ -9,12 +9,32 @@ namespace COMPARC_Project_2
     public class Program
     {
         private List<Instruction> instruction;
+        private List<Register> registers;
 
         public Program(String[] program)
         {
             this.instruction = new List<Instruction>();
+            //this.registers = new List<Register>();
             this.initializeInstructionArray(program);
+            this.setBranchOffsets();
             this.isValid();
+        }
+
+        private void setBranchOffsets()
+        {
+            for (int i = 0; i < this.instruction.Count(); i++)
+            {
+                if (this.instruction[i].getInstruction().Equals("BNEC") || this.instruction[i].getInstruction().Equals("BC")) 
+                {
+                    Console.WriteLine("Found: " + this.instruction[i].getInstruction());
+                    /*
+                    for (int j = 0; j < this.instruction.Count(); j++)
+                    {
+                        
+                    }
+                     */
+                }
+            }
         }
 
         private void initializeInstructionArray(String[] program)
