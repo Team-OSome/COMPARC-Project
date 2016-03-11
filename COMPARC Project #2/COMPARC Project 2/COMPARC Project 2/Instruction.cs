@@ -26,15 +26,18 @@ namespace COMPARC_Project_2
         private String bse;
         private String immediate;
 
+        private int lineNum;
+
         #endregion
 
-        public Instruction(string instructionLine)
+        public Instruction(string instructionLine, int lineNum)
         {
             this.instructionLine = instructionLine;
             this.setInstruction();
             this.setParameters();
+            this.lineNum = lineNum;
             Console.WriteLine(this.instruction + "," + this.rd + "," + this.rs + "," + this.rt + "," + this.immediate + "," + this.offset + "," + this.bse);
-            this.opcode = new Opcode(this.instruction, this.rd, this.rs, this.rt, this.immediate, this.offset, this.bse);
+            this.opcode = new Opcode(this.instruction, this.rd, this.rs, this.rt, this.immediate, this.offset, this.bse, this.lineNum);
             this.opcode.setParameters();
             if(this.opcode.getValid()){
                 this.valid = true;
@@ -43,7 +46,6 @@ namespace COMPARC_Project_2
         }
 
         #region setters
-
         // sets the instruction
         private void setInstruction()
         {
@@ -51,6 +53,7 @@ namespace COMPARC_Project_2
 
             if (splitIns[0].Contains(':'))
             {
+                Console.WriteLine("This instruction has a branch Location!");
                 this.branchLocation = splitIns[0].TrimEnd(':');
                 this.instruction = splitIns[1];
             }
@@ -60,7 +63,7 @@ namespace COMPARC_Project_2
                 this.instruction = splitIns[0].ToUpper();
             }
             
-            else
+            else //if instruction does not exist, instruction is invalid
             {
                 this.valid = false;
             }
@@ -87,7 +90,7 @@ namespace COMPARC_Project_2
                 case "DDIVU" :
                 case "DMODU" :
                 case "SLT" :
-                case "SELNEZ": this.rd = words[1]; this.rs = words[2]; this.rt = words[3]; this.offset = null;     this.immediate = null;     this.bse = null;     break;
+                case "SELNEZ":  this.rd = words[1]; this.rs = words[2]; this.rt = words[3]; this.offset = null;     this.immediate = null;     this.bse = null;     break;
                 case "BNEC":    this.rd = null;     this.rs = words[1]; this.rt = words[2]; this.offset = words[3]; this.immediate = null;     this.bse = null;     break;
                 case "LD" :
                 case "SD":      this.rd = null;     this.rs = null;     this.rt = words[1]; this.offset = words[2]; this.immediate = null;     this.bse = words[3]; break;
@@ -95,7 +98,7 @@ namespace COMPARC_Project_2
                 case "BC":      this.rd = null;     this.rs = null;     this.rt = null;     this.offset = words[1]; this.immediate = null;     this.bse = null;     break;
             }
 
-            // check if parameters are valid here
+            // check if parameters are valid here *** gawin pa ba to?
         }
 
         public void setOffset(String offset)

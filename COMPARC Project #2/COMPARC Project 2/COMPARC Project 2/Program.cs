@@ -9,7 +9,7 @@ namespace COMPARC_Project_2
     public class Program
     {
         private List<Instruction> instruction;
-        private List<Register> registers;
+        //private List<Register> registers;
         private int tempOffset;
 
         public Program(String[] program)
@@ -32,6 +32,7 @@ namespace COMPARC_Project_2
                     
                     for (int j = 0; j < this.instruction.Count(); j++)
                     {
+                        Console.WriteLine("branch location of line "+j+ ": "+this.instruction[j].getBranchLocation());
                         if (this.instruction[i].getOffset().Equals(this.instruction[j].getBranchLocation()))
                         {
                             Console.WriteLine("i= " + i);
@@ -52,7 +53,7 @@ namespace COMPARC_Project_2
         {
             for (int i = 0; i < program.Length; i++)
             {
-                this.instruction.Add(new Instruction(program[i]));
+                this.instruction.Add(new Instruction(program[i],i));
             }
         }
 
@@ -65,6 +66,17 @@ namespace COMPARC_Project_2
                     return false;
                 }
             return true;
+        }
+
+        private void showAllOpcodes() //checks if all lines are valid
+        {
+
+            for (int i = 0; i < instruction.Count; i++)
+            {
+                
+            }
+                System.Windows.Forms.MessageBox.Show("Error at line #" + (i + 1));
+              
         }
     }
 }

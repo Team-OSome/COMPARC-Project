@@ -39,9 +39,11 @@ namespace COMPARC_Project_2
         private String bseO;
         private int bseDec;
 
+        private int lineNum;
+
         #endregion
 
-        public Opcode(String instruction, String rd, String rs, String rt, String immediate, String offset, String bse)
+        public Opcode(String instruction, String rd, String rs, String rt, String immediate, String offset, String bse, int lineNum)
         {
             this.instruction = instruction;
             this.rd = rd;
@@ -50,6 +52,7 @@ namespace COMPARC_Project_2
             this.immediate = immediate;
             this.offset = offset;
             this.bse = bse;
+            this.lineNum = lineNum;
 
             this.opcodeType= getInstructionType(this.instruction);
             Console.WriteLine("Type:"+this.opcodeType);
@@ -234,12 +237,28 @@ namespace COMPARC_Project_2
             }
         }
 
-        public void setOffset(String offset)
-        {
+        public void setOffset(String offset) 
+        {   //offset can be negative. the offsetO should be the memory location of the branch location
+            //1st instruction = 1000
+            //2nd instruction = 1004, etc...
             this.offset = offset;
-            this.offsetDec = Int32.Parse(this.offset, System.Globalization.NumberStyles.HexNumber);
+            this.offsetDec = Int32.Parse(this.offset);
+            this.offsetDec *= 4;
+
+            this.offsetDec = this.lineNum+1000 +this.offsetDec;
+            this.offsetO = this.offsetDec.ToString();
+
+            this.offsetDec = Int32.Parse(offsetO, System.Globalization.NumberStyles.HexNumber);
             this.offsetO = Convert.ToString(offsetDec, 2);
-            this.offsetO = offsetO.PadLeft(26, '0');
+
+            //Console.WriteLine("OffsetO is: " + offsetO);
+            
+
+            
+            if (this.opcodeType.Equals('J'))                //BC
+                this.offsetO = offsetO.PadLeft(26, '0'); 
+            if (this.opcodeType.Equals('I'))                //BNEC
+                this.offsetO = offsetO.PadLeft(16, '0');
 
             Console.WriteLine("offsetO="+this.offsetO);
         }
