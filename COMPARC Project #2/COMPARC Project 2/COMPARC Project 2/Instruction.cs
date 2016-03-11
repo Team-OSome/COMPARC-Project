@@ -32,7 +32,13 @@ namespace COMPARC_Project_2
             this.instructionLine = instructionLine;
             this.setInstruction();
             this.setParameters();
+            Console.WriteLine(this.instruction + "," + this.rd + "," + this.rs + "," + this.rt + "," + this.immediate + "," + this.offset + "," + this.bse);
             this.opcode = new Opcode(this.instruction, this.rd, this.rs, this.rt, this.immediate, this.offset, this.bse);
+            this.opcode.setParameters();
+            if(this.opcode.getValid()){
+                this.valid = true;
+                Console.WriteLine("VALID!!!");
+            }
         }
 
         #region setters
@@ -65,7 +71,7 @@ namespace COMPARC_Project_2
                 case "DDIVU" :
                 case "DMODU" :
                 case "SLT" :
-                case "SELENEZ": this.rd = words[1]; this.rs = words[2]; this.rt = words[3]; this.offset = null;     this.immediate = null;     this.bse = null;     break;
+                case "SELNEZ": this.rd = words[1]; this.rs = words[2]; this.rt = words[3]; this.offset = null;     this.immediate = null;     this.bse = null;     break;
                 case "BNEC":    this.rd = null;     this.rs = words[1]; this.rt = words[2]; this.offset = words[3]; this.immediate = null;     this.bse = null;     break;
                 case "LD" :
                 case "SD":      this.rd = null;     this.rs = null;     this.rt = words[1]; this.offset = words[2]; this.immediate = null;     this.bse = words[3]; break;
@@ -142,15 +148,15 @@ namespace COMPARC_Project_2
             switch (instruction)
             {
                 case "DSUBU":
-                case "DDIV":
+                case "DDIVU":
                 case "DMODU":
                 case "SLT":
-                case "SELENEZ":
+                case "SELNEZ":
                 case "BNEC":
                 case "LD":
                 case "SD":
                 case "DADDIU":
-                case "BC": return true;
+                case "BC": return true; break;
                 default: return false;
             }
         }
