@@ -101,6 +101,16 @@ namespace COMPARC_Project_2
             return this.valid;
         }
 
+        public String getOpcodeString()
+        {
+            return opcodeString;
+        }
+
+        public String getOffsetO()
+        {
+            return this.offsetO;
+        }
+
         public void setParameters()
         {
             this.opcodeString += instructionO + " ";
@@ -109,11 +119,11 @@ namespace COMPARC_Project_2
             {
                 try
                 {
-                    Console.WriteLine("0");
+                    //Console.WriteLine("0");
                     this.rsO = this.rs.TrimStart('R');
                     this.rtO = this.rt.TrimStart('R');
                     this.rdO = this.rd.TrimStart('R');
-                    Console.WriteLine("1");
+                    //Console.WriteLine("1");
                     this.rsDec = Int32.Parse(rsO);
                     this.rtDec = Int32.Parse(rtO);
                     this.rdDec = Int32.Parse(rdO);
@@ -126,7 +136,10 @@ namespace COMPARC_Project_2
                     this.rtO = rtO.PadLeft(5, '0');
                     this.rdO = rdO.PadLeft(5, '0');
 
-                    this.valid = true;
+                    if (rsDec > 31 || rtDec > 31 || rdDec > 31)
+                        this.valid = false;
+                    else
+                        this.valid = true;
                 }
                 catch (Exception e) { };
             }
@@ -159,12 +172,27 @@ namespace COMPARC_Project_2
 
                         else if (this.instruction == "DADDIU") //this would need immediate
                         {
-                            this.immediateO = this.immediate.TrimStart('#');
-                            this.immediateDec = Int32.Parse(immediateO, System.Globalization.NumberStyles.HexNumber);
-                            this.immediateO = Convert.ToString(immediateDec, 2);
-                            this.immediateO = immediateO.PadLeft(16, '0');
+                            try
+                            {
+                                this.immediateO = this.immediate.TrimStart('#');
+                                this.immediateDec = Int32.Parse(immediateO, System.Globalization.NumberStyles.HexNumber);
+                                this.immediateO = Convert.ToString(immediateDec, 2);
+                                this.immediateO = immediateO.PadLeft(16, '0');
+                            }
+                            catch (Exception e) { };
                         }
-                        this.valid = true;
+
+
+                        if (immediateDec >= (8192 - 8) && immediateDec <= (16383 - 8) && (rsDec <= 31 || rtDec <= 31)) //immediateDec should be added to the value inside Rt...
+                        {
+                            this.valid = true;
+                        }
+
+                        else
+                            this.valid = false;
+                        
+
+                      
                     }catch (Exception e) { };
 
                 }
@@ -188,10 +216,17 @@ namespace COMPARC_Project_2
 
                         this.offsetO = this.offset.TrimStart('#');
                         this.offsetDec = Int32.Parse(offsetO, System.Globalization.NumberStyles.HexNumber);
-                        this.offsetO = Convert.ToString(offsetDec, 2);
-                        this.offsetO = offsetO.PadLeft(16, '0');
 
-                        this.valid = true;
+                        if (offsetDec >= 8192 && offsetDec <= 16383) //The value= base + immediate should not surpass memory locations: 2000h-3FFF
+                        {
+                            this.offsetO = Convert.ToString(offsetDec, 2);
+                            this.offsetO = offsetO.PadLeft(16, '0');
+
+                            this.valid = true;
+                        }
+
+                        else
+                            this.valid = false;
                     }
                     catch (Exception e) { };
                 }
@@ -215,6 +250,7 @@ namespace COMPARC_Project_2
                 catch (Exception e) { };
             }
             #endregion
+
 
             setOpcodeString(); //this is just a test, this should be called in the program.cs
             printOpcodeBinary();
@@ -243,7 +279,7 @@ namespace COMPARC_Project_2
             //2nd instruction = 1004, etc...
             this.offset = offset;
             this.offsetDec = Int32.Parse(this.offset);
-            this.offsetDec *= 4;
+            //this.offsetDec *= 4; //why times 4!?
 
             this.offsetDec = this.lineNum+1000 +this.offsetDec;
             this.offsetO = this.offsetDec.ToString();
@@ -261,6 +297,11 @@ namespace COMPARC_Project_2
                 this.offsetO = offsetO.PadLeft(16, '0');
 
             Console.WriteLine("offsetO="+this.offsetO);
+        }
+
+        public void addOpcodeString(String addition)
+        {
+            this.opcodeString += addition;
         }
 
         public void printOpcodeBinary()

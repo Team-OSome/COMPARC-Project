@@ -11,14 +11,22 @@ namespace COMPARC_Project_2
         private List<Instruction> instruction;
         //private List<Register> registers;
         private int tempOffset;
+        private Boolean hasBranch = false;
+        private Boolean instructionsValid = true;
 
         public Program(String[] program)
         {
             this.instruction = new List<Instruction>();
             //this.registers = new List<Register>();
             this.initializeInstructionArray(program);
-            this.setBranchOffsets();
             this.isValid();
+
+            if (this.instructionsValid && hasBranch)
+            {
+                this.setBranchOffsets();
+                showAllOpcodes();
+            }
+
         }
 
         private void setBranchOffsets()
@@ -29,7 +37,8 @@ namespace COMPARC_Project_2
                 {
                     Console.WriteLine("Found: " + this.instruction[i].getInstruction()+ ", i="+i);
                     Console.WriteLine(this.instruction[i].getInstruction() + " branches to" + this.instruction[i].getOffset());
-                    
+                    this.hasBranch = true;
+
                     for (int j = 0; j < this.instruction.Count(); j++)
                     {
                         Console.WriteLine("branch location of line "+j+ ": "+this.instruction[j].getBranchLocation());
@@ -40,7 +49,8 @@ namespace COMPARC_Project_2
                             tempOffset = j - i -1;
                             Console.WriteLine("tempOffset= " + tempOffset);
                             this.instruction[i].setOffset(tempOffset.ToString());
-                            this.instruction[i].getOpCode().setOffset(tempOffset.ToString());
+                            this.instruction[i].getOpcode().setOffset(tempOffset.ToString());
+                            this.instruction[i].getOpcode().addOpcodeString(this.instruction[i].getOpcode().getOffsetO());
                         }
                             
                     }
@@ -54,6 +64,11 @@ namespace COMPARC_Project_2
             for (int i = 0; i < program.Length; i++)
             {
                 this.instruction.Add(new Instruction(program[i],i));
+                if (!(this.instruction[i].getValid()))
+                    this.instructionsValid = false;
+                else if (this.instruction[i].getInstruction().Equals("BNEC") || this.instruction[i].getInstruction().Equals("BC"))
+                    this.hasBranch = true;
+                
             }
         }
 
@@ -70,12 +85,14 @@ namespace COMPARC_Project_2
 
         private void showAllOpcodes() //checks if all lines are valid
         {
-
+            
             for (int i = 0; i < instruction.Count; i++)
             {
-                
+                Console.WriteLine(this.instruction[i].getOpcode().getOpcodeString());
             }
-                System.Windows.Forms.MessageBox.Show("Error at line #" + (i + 1));
+             
+
+            
               
         }
     }

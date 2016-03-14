@@ -27,6 +27,13 @@ namespace COMPARC_Project_2
         private void simulateBtn_Click(object sender, EventArgs e)
         {
             this.program = new Program(programTB.Lines);
-        }  
+        }
+
+        private void registerButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        
     }
 }

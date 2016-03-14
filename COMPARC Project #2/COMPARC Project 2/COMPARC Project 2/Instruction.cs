@@ -13,6 +13,7 @@ namespace COMPARC_Project_2
 
         private String instructionLine;     //  complete instruction line
         private Boolean valid;              //  check if the instruction entered is valid
+        private Boolean instructionValid;
         private int instructionType;        //  branch instruction, load/store instruction, Arithmetic Instruction, etc.
         private Opcode opcode;
 
@@ -34,15 +35,27 @@ namespace COMPARC_Project_2
         {
             this.instructionLine = instructionLine;
             this.setInstruction();
-            this.setParameters();
-            this.lineNum = lineNum;
-            Console.WriteLine(this.instruction + "," + this.rd + "," + this.rs + "," + this.rt + "," + this.immediate + "," + this.offset + "," + this.bse);
-            this.opcode = new Opcode(this.instruction, this.rd, this.rs, this.rt, this.immediate, this.offset, this.bse, this.lineNum);
-            this.opcode.setParameters();
-            if(this.opcode.getValid()){
+            if (this.instructionValid)
+            {
+                this.setParameters();
+                this.lineNum = lineNum;
+
+                Console.WriteLine(this.instruction + "," + this.rd + "," + this.rs + "," + this.rt + "," + this.immediate + "," + this.offset + "," + this.bse);
+                this.opcode = new Opcode(this.instruction, this.rd, this.rs, this.rt, this.immediate, this.offset, this.bse, this.lineNum);
+                this.opcode.setParameters();
+            }
+
+            if (this.instructionValid == false || !(this.opcode.getValid()))
+            {
+                this.valid = false;
+                Console.WriteLine("INVALID!!!");
+            }
+
+            else if(this.opcode.getValid()){ //through the opcode class, this statement checks if the instruction is valid.
                 this.valid = true;
                 Console.WriteLine("VALID!!!");
             }
+            
         }
 
         #region setters
@@ -53,19 +66,28 @@ namespace COMPARC_Project_2
 
             if (splitIns[0].Contains(':'))
             {
-                Console.WriteLine("This instruction has a branch Location!");
+                Console.WriteLine("This instruction is a branch Location!");
                 this.branchLocation = splitIns[0].TrimEnd(':');
                 this.instruction = splitIns[1];
+                if(checkExistingInstructions(this.instruction.ToUpper()))
+                {
+                    Console.WriteLine("This branch instruction exists!");
+                    this.instructionValid = true;
+                }
             }
             //  first word should contain the instruction
-            if (checkExistingInstructions(splitIns[0].ToUpper()))   //if the 1st word in the line is an instruction, this.instruction gets the instruction
+            else if (checkExistingInstructions(splitIns[0].ToUpper()))   //if the 1st word in the line is an instruction, this.instruction gets the instruction
             {
+                Console.WriteLine("This instruction exists!");
                 this.instruction = splitIns[0].ToUpper();
+                this.instructionValid = true;
             }
             
             else //if instruction does not exist, instruction is invalid
             {
+                this.instructionValid = false;
                 this.valid = false;
+                Console.WriteLine("This instruction does not exist!");
             }
         }
 
@@ -98,7 +120,7 @@ namespace COMPARC_Project_2
                 case "BC":      this.rd = null;     this.rs = null;     this.rt = null;     this.offset = words[1]; this.immediate = null;     this.bse = null;     break;
             }
 
-            // check if parameters are valid here *** gawin pa ba to?
+            
         }
 
         public void setOffset(String offset)
@@ -130,7 +152,7 @@ namespace COMPARC_Project_2
             return this.instructionType;
         }
 
-        public Opcode getOpCode()
+        public Opcode getOpcode()
         {
             return this.opcode;
         }
@@ -190,7 +212,7 @@ namespace COMPARC_Project_2
                 case "LD":
                 case "SD":
                 case "DADDIU":
-                case "BC": return true; break;
+                case "BC": return true;
                 default: return false;
             }
         }
