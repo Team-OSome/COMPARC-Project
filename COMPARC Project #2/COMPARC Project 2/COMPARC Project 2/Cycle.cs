@@ -10,27 +10,27 @@ namespace COMPARC_Project_2
     {
         #region variables
 
-        private String IFID_IR { get; set; }
-        private String IFID_NPC { get; set; }
-        private String IFID_PC { get; set; }
+        public String IFID_IR { get; private set; }
+        public String IFID_NPC { get; private set; }
+        public String IFID_PC { get; private set; }
 
-        private String IDEX_A { get; set; }
-        private String IDEX_B { get; set; }
-        private String IDEX_IMM { get; set; }
-        private String IDEX_NPC { get; set; }
-        private String IDEX_IR { get; set; }
+        public String IDEX_A { get; private set; }
+        public String IDEX_B { get; private set; }
+        public String IDEX_IMM { get; private set; }
+        public String IDEX_NPC { get; private set; }
+        public String IDEX_IR { get; private set; }
 
-        private String EXMEM_ALUOutput { get; set; }
-        private String EXMEM_Cond { get; set; }
-        private String EXMEM_B { get; set; }
-        private String EXMEM_IR { get; set; }
+        public String EXMEM_ALUOutput { get; private set; }
+        public String EXMEM_Cond { get; private set; }
+        public String EXMEM_B { get; private set; }
+        public String EXMEM_IR { get; private set; }
 
-        private String MEMWB_LMD { get; set; }
-        private String MEMWB_Range { get; set; }
-        private String MEMWB_IR { get; set; }
-        private String MEMWB_ALUOutput { get; set; }
+        public String MEMWB_LMD { get; private set; }
+        public String MEMWB_Range { get; private set; }
+        public String MEMWB_IR { get; private set; }
+        public String MEMWB_ALUOutput { get; private set; }
 
-        private String WB_Rn { get; set; }
+        public String WB_Rn { get; private set; }
 
         #endregion
 
