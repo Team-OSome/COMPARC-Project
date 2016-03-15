@@ -83,7 +83,7 @@
             // registerButton
             // 
             this.registerButton.Location = new System.Drawing.Point(502, 25);
-            this.registerButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.registerButton.Margin = new System.Windows.Forms.Padding(2);
             this.registerButton.Name = "registerButton";
             this.registerButton.Size = new System.Drawing.Size(75, 22);
             this.registerButton.TabIndex = 4;
@@ -94,7 +94,7 @@
             // memoryButton
             // 
             this.memoryButton.Location = new System.Drawing.Point(502, 51);
-            this.memoryButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.memoryButton.Margin = new System.Windows.Forms.Padding(2);
             this.memoryButton.Name = "memoryButton";
             this.memoryButton.Size = new System.Drawing.Size(75, 22);
             this.memoryButton.TabIndex = 5;
@@ -106,17 +106,18 @@
             this.opcodePanel.BackColor = System.Drawing.SystemColors.Control;
             this.opcodePanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.opcodePanel.Location = new System.Drawing.Point(270, 25);
-            this.opcodePanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.opcodePanel.Margin = new System.Windows.Forms.Padding(2);
             this.opcodePanel.Name = "opcodePanel";
             this.opcodePanel.Size = new System.Drawing.Size(194, 271);
             this.opcodePanel.TabIndex = 6;
             // 
             // pipelineMapPanel
             // 
+            this.pipelineMapPanel.AutoScroll = true;
             this.pipelineMapPanel.BackColor = System.Drawing.SystemColors.Control;
             this.pipelineMapPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pipelineMapPanel.Location = new System.Drawing.Point(270, 334);
-            this.pipelineMapPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pipelineMapPanel.Margin = new System.Windows.Forms.Padding(2);
             this.pipelineMapPanel.Name = "pipelineMapPanel";
             this.pipelineMapPanel.Size = new System.Drawing.Size(543, 172);
             this.pipelineMapPanel.TabIndex = 7;
@@ -124,7 +125,7 @@
             // stepButton
             // 
             this.stepButton.Location = new System.Drawing.Point(1042, 496);
-            this.stepButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.stepButton.Margin = new System.Windows.Forms.Padding(2);
             this.stepButton.Name = "stepButton";
             this.stepButton.Size = new System.Drawing.Size(46, 41);
             this.stepButton.TabIndex = 8;
@@ -134,7 +135,7 @@
             // skipButton
             // 
             this.skipButton.Location = new System.Drawing.Point(1093, 496);
-            this.skipButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.skipButton.Margin = new System.Windows.Forms.Padding(2);
             this.skipButton.Name = "skipButton";
             this.skipButton.Size = new System.Drawing.Size(46, 41);
             this.skipButton.TabIndex = 9;
