@@ -177,7 +177,7 @@
             this.opCodeGridView.Name = "opCodeGridView";
             this.opCodeGridView.ReadOnly = true;
             this.opCodeGridView.RowHeadersVisible = false;
-            this.opCodeGridView.Size = new System.Drawing.Size(424, 252);
+            this.opCodeGridView.Size = new System.Drawing.Size(407, 252);
             this.opCodeGridView.TabIndex = 0;
             // 
             // pipelineMapPanel
@@ -938,6 +938,8 @@
             this.Controls.Add(this.simulateBtn);
             this.Controls.Add(this.enterProgLbl);
             this.Controls.Add(this.programTB);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.MaximizeBox = false;
             this.Name = "InputForm";
             this.Text = "MIPS 64 - Flush - Set B";
             this.Load += new System.EventHandler(this.InputForm_Load);
