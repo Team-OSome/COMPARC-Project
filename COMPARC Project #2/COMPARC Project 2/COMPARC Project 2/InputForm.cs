@@ -26,7 +26,15 @@ namespace COMPARC_Project_2
 
         private void simulateBtn_Click(object sender, EventArgs e)
         {
-            this.program = new Program(programTB.Lines);
+            String[] registers = new String[32] {r0TextBox.Text, r1TextBox.Text, r2TextBox.Text, r3TextBox.Text, r4TextBox.Text, 
+                                                r5TextBox.Text, r6TextBox.Text, r7TextBox.Text, r8TextBox.Text, r9TextBox.Text, 
+                                                r10TextBox.Text, r11TextBox.Text, r12TextBox.Text, r13TextBox.Text, r14TextBox.Text,
+                                                r15TextBox.Text, r16TextBox.Text, r17TextBox.Text, r18TextBox.Text, r19TextBox.Text,
+                                                r20TextBox.Text, r21TextBox.Text, r22TextBox.Text, r23TextBox.Text, r24TextBox.Text,
+                                                r25TextBox.Text, r26TextBox.Text, r27TextBox.Text, r28TextBox.Text, r29TextBox.Text,
+                                                r30TextBox.Text, r31TextBox.Text};
+
+            this.program = new Program(programTB.Lines, registers);
             //this.program.pipelineMap(); 
         }
 

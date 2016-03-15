@@ -10,18 +10,23 @@ namespace COMPARC_Project_2
     {
         private List<Instruction> instruction;
         private List<Cycle> cycle;
-        //private List<Register> registers;
+        private List<Register> registers;
         private int tempOffset;
         private Boolean hasBranch = false;
         private Boolean instructionsValid = true;
+        private Boolean registersValid = true;
 
-        public Program(String[] program)
+        String test;
+
+        public Program(String[] program, String[] registers)
         {
             this.instruction = new List<Instruction>();
-            //this.registers = new List<Register>();
+            this.registers = new List<Register>();
             this.initializeInstructionArray(program);
+            this.intializeRegisterArray(registers);
             this.isValid();
-
+            this.registersValid = isRegistersValid();
+            
             if (this.instructionsValid && hasBranch)
             {
                 this.setBranchOffsets();
@@ -29,37 +34,9 @@ namespace COMPARC_Project_2
             }
         }
 
-        private void setBranchOffsets()
-        {
-            for (int i = 0; i < this.instruction.Count(); i++)
-            {
-                if (this.instruction[i].getInstruction().Equals("BNEC") || this.instruction[i].getInstruction().Equals("BC")) 
-                {
-                    Console.WriteLine("Found: " + this.instruction[i].getInstruction()+ ", i="+i);
-                    Console.WriteLine(this.instruction[i].getInstruction() + " branches to" + this.instruction[i].getOffset());
-                    this.hasBranch = true;
+        #region setters 
 
-                    for (int j = 0; j < this.instruction.Count(); j++)
-                    {
-                        Console.WriteLine("branch location of line "+j+ ": "+this.instruction[j].getBranchLocation());
-                        if (this.instruction[i].getOffset().Equals(this.instruction[j].getBranchLocation()))
-                        {
-                            Console.WriteLine("i= " + i);
-                            Console.WriteLine("j= " + j);
-                            tempOffset = j - i -1;
-                            Console.WriteLine("tempOffset= " + tempOffset);
-                            this.instruction[i].setOffset(tempOffset.ToString());
-                            this.instruction[i].getOpcode().setOffset(tempOffset.ToString());
-                            this.instruction[i].getOpcode().addOpcodeString(this.instruction[i].getOpcode().getOffsetO());
-                        }
-                            
-                    }
-                     
-                }
-            }
-        }
-
-        private void initializeInstructionArray(String[] program)
+        private void initializeInstructionArray(String[] program) //sets all the instructions
         {
             for (int i = 0; i < program.Length; i++)
             {
@@ -67,10 +44,58 @@ namespace COMPARC_Project_2
                 if (!(this.instruction[i].getValid()))
                     this.instructionsValid = false;
                 else if (this.instruction[i].getInstruction().Equals("BNEC") || this.instruction[i].getInstruction().Equals("BC"))
-                    this.hasBranch = true;
-                
+                    this.hasBranch = true;              
+            }
+        } 
+
+        private void intializeRegisterArray(String[] registers)   //sets all registers
+        {
+            this.registers.Capacity = 32;
+            int num = 0;
+
+            for (int i = 0; i < registers.Length; i++)
+                registers[i] = registers[i].Replace(" ", string.Empty);
+
+            for (int i = 0; i < this.registers.Capacity; i++)
+            {
+                this.registers.Add(new Register("R" + num, registers[i]));
+                num++;
             }
         }
+
+        private void setBranchOffsets()                           //sets branch offset if an instruction is a jump
+        {
+            for (int i = 0; i < this.instruction.Count(); i++)
+            {
+                if (this.instruction[i].getInstruction().Equals("BNEC") || this.instruction[i].getInstruction().Equals("BC"))
+                {
+                    Console.WriteLine("Found: " + this.instruction[i].getInstruction() + ", i=" + i);
+                    Console.WriteLine(this.instruction[i].getInstruction() + " branches to" + this.instruction[i].getOffset());
+                    this.hasBranch = true;
+
+                    for (int j = 0; j < this.instruction.Count(); j++)
+                    {
+                        Console.WriteLine("branch location of line " + j + ": " + this.instruction[j].getBranchLocation());
+                        if (this.instruction[i].getOffset().Equals(this.instruction[j].getBranchLocation()))
+                        {
+                            Console.WriteLine("i= " + i);
+                            Console.WriteLine("j= " + j);
+                            tempOffset = j - i - 1;
+                            Console.WriteLine("tempOffset= " + tempOffset);
+                            this.instruction[i].setOffset(tempOffset.ToString());
+                            this.instruction[i].getOpcode().setOffset(tempOffset.ToString());
+                            this.instruction[i].getOpcode().addOpcodeString(this.instruction[i].getOpcode().getOffsetO());
+                        }
+
+                    }
+
+                }
+            }
+        }
+
+        #endregion
+
+        #region checking functions
 
         private Boolean isValid() //checks if all lines are valid
         {
@@ -82,6 +107,27 @@ namespace COMPARC_Project_2
                 }
             return true;
         }
+
+        private Boolean isRegistersValid() //checks if all registers are valid
+        {
+            for (int i = 0; i < this.registers.Capacity; i++)
+                if (!isHexValid(registers[i].getValue()) || registers[i].getValue().Length != 16)
+                {
+                    System.Windows.Forms.MessageBox.Show("ERROR AT : " + registers[i].getName());
+                    return false;
+                }
+            return true;
+        }
+
+        private Boolean isHexValid(String value)
+        {
+            if (value.All(c => "0123456789ABCDEF".Contains(c)))
+                return true;
+            else
+                return false;
+        }
+
+        #endregion
 
         private void showAllOpcodes() //checks if all lines are valid
         {
