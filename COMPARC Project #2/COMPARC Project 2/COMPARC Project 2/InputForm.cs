@@ -43,7 +43,8 @@ namespace COMPARC_Project_2
 
             this.program = new Program(programTB.Lines, registers);
 
-            setOpCodeGridView();
+            if(this.program.getInstructionsValid())
+                setOpCodeGridView();
 
             //this.program.pipelineMap(); 
         }

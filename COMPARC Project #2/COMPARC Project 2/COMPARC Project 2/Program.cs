@@ -24,7 +24,7 @@ namespace COMPARC_Project_2
             this.registers = new List<Register>();
             this.initializeInstructionArray(program);
             this.intializeRegisterArray(registers);
-            this.isValid();
+            instructionsValid = this.isValid();
             this.registersValid = isRegistersValid();
             
             if (this.instructionsValid && hasBranch)
@@ -107,6 +107,11 @@ namespace COMPARC_Project_2
         public String getInstructionLine(int lineNum)
         {
             return this.instruction[lineNum].getInstructionLine();
+        }
+
+        public Boolean getInstructionsValid()
+        {
+            return this.instructionsValid;
         }
 
         public int getInstructionLength()
