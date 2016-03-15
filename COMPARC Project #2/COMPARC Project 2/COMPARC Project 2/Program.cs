@@ -9,6 +9,7 @@ namespace COMPARC_Project_2
     public class Program
     {
         private List<Instruction> instruction;
+        private List<Cycle> cycle;
         //private List<Register> registers;
         private int tempOffset;
         private Boolean hasBranch = false;
@@ -26,7 +27,6 @@ namespace COMPARC_Project_2
                 this.setBranchOffsets();
                 showAllOpcodes();
             }
-
         }
 
         private void setBranchOffsets()
@@ -91,9 +91,7 @@ namespace COMPARC_Project_2
                 Console.WriteLine(this.instruction[i].getOpcode().getOpcodeString());
             }
              
-
-            
-              
         }
+
     }
 }
