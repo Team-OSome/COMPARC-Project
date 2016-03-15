@@ -16,8 +16,6 @@ namespace COMPARC_Project_2
         private Boolean instructionsValid = true;
         private Boolean registersValid = true;
 
-        String test;
-
         public Program(String[] program, String[] registers)
         {
             this.instruction = new List<Instruction>();
@@ -95,6 +93,20 @@ namespace COMPARC_Project_2
 
         #endregion
 
+        #region getters
+
+        public String getInstructionOpCode(int lineNum)
+        {
+            return this.instruction[lineNum].getOpcode().getOpcodeString();
+        }
+
+        public int getInstructionLength()
+        {
+            return this.instruction.Count;
+        }
+
+        #endregion
+
         #region checking functions
 
         private Boolean isValid() //checks if all lines are valid
@@ -138,6 +150,8 @@ namespace COMPARC_Project_2
             }
              
         }
+
+
 
     }
 }

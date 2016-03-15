@@ -141,7 +141,10 @@ namespace COMPARC_Project_2
                     else
                         this.valid = true;
                 }
-                catch (Exception e) { };
+                catch (Exception e) 
+                {
+                    System.Windows.Forms.MessageBox.Show(e.Message);
+                }
             }
             #endregion
 
@@ -179,7 +182,10 @@ namespace COMPARC_Project_2
                                 this.immediateO = Convert.ToString(immediateDec, 2);
                                 this.immediateO = immediateO.PadLeft(16, '0');
                             }
-                            catch (Exception e) { };
+                            catch (Exception e)
+                            {
+                                System.Windows.Forms.MessageBox.Show(e.Message);
+                            }
                         }
 
 
@@ -190,10 +196,14 @@ namespace COMPARC_Project_2
 
                         else
                             this.valid = false;
-                        
 
-                      
-                    }catch (Exception e) { };
+
+
+                    }
+                    catch (Exception e)
+                    {
+                        System.Windows.Forms.MessageBox.Show(e.Message);
+                    }
 
                 }
                 #endregion
@@ -228,7 +238,10 @@ namespace COMPARC_Project_2
                         else
                             this.valid = false;
                     }
-                    catch (Exception e) { };
+                    catch (Exception e)
+                    {
+                        System.Windows.Forms.MessageBox.Show(e.Message);
+                    }
                 }
                 #endregion
             }
@@ -247,7 +260,10 @@ namespace COMPARC_Project_2
 
                     this.valid = true;
                 }
-                catch (Exception e) { };
+                catch (Exception e)
+                {
+                    System.Windows.Forms.MessageBox.Show(e.Message);
+                }
             }
             #endregion
 

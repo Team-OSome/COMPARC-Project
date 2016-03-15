@@ -35,12 +35,28 @@ namespace COMPARC_Project_2
                                                 r30TextBox.Text, r31TextBox.Text};
 
             this.program = new Program(programTB.Lines, registers);
+
+            //MessageBox.Show(this.program.getInstructionOpCode(0));
+            //MessageBox.Show(this.program.getInstructionLength().ToString());
+
+            opCodeTextBox.Text = "Line 1" + Environment.NewLine;
+            opCodeTextBox.Text += "Line 2" + Environment.NewLine;
+            opCodeTextBox.Text += "Line 3" + Environment.NewLine;
+
             //this.program.pipelineMap(); 
         }
 
         private void registerButton_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void setOpCodeTextBox()
+        {
+            for (int i = 0; i < this.program.getInstructionLength(); i++)
+            {
+                opCodeTextBox.Text = 
+            }
         }
 
         

@@ -15,7 +15,6 @@ namespace COMPARC_Project_2
         {
             this.registerName = registerName;
             this.value = value;
-            Console.WriteLine(this.registerName + ": " + this.value);
         }
 
         public void setRegisterValue(String value)
