@@ -47,6 +47,14 @@ namespace COMPARC_Project_2
 
             if (this.instructionValid == false || !(this.opcode.getValid()))
             {
+                if (this.instructionValid == false)
+                {
+                    Console.WriteLine("instructionValid is false");
+                }
+                if (this.opcode.getValid() == false)
+                {
+                    Console.WriteLine("opcode is false");
+                }
                 this.valid = false;
                 Console.WriteLine("INVALID!!!");
             }
