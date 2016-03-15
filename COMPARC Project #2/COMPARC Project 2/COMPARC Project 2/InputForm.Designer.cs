@@ -36,22 +36,23 @@
             this.registerButton = new System.Windows.Forms.Button();
             this.memoryButton = new System.Windows.Forms.Button();
             this.opcodePanel = new System.Windows.Forms.Panel();
-            this.opcodeMapPanel = new System.Windows.Forms.Panel();
+            this.pipelineMapPanel = new System.Windows.Forms.Panel();
             this.stepButton = new System.Windows.Forms.Button();
             this.skipButton = new System.Windows.Forms.Button();
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
             this.opcodeLbl = new System.Windows.Forms.Label();
-            this.opcodePanel.SuspendLayout();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.pipelineMapLbl = new System.Windows.Forms.Label();
+            this.internalPipelineRegistersLbl = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.SuspendLayout();
             // 
             // programTB
             // 
-            this.programTB.Location = new System.Drawing.Point(16, 31);
-            this.programTB.Margin = new System.Windows.Forms.Padding(4);
+            this.programTB.Location = new System.Drawing.Point(12, 25);
             this.programTB.Multiline = true;
             this.programTB.Name = "programTB";
-            this.programTB.Size = new System.Drawing.Size(307, 619);
+            this.programTB.Size = new System.Drawing.Size(231, 481);
             this.programTB.TabIndex = 0;
             // 
             // contextMenuStrip1
@@ -63,19 +64,17 @@
             // enterProgLbl
             // 
             this.enterProgLbl.AutoSize = true;
-            this.enterProgLbl.Location = new System.Drawing.Point(16, 11);
-            this.enterProgLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.enterProgLbl.Location = new System.Drawing.Point(12, 9);
             this.enterProgLbl.Name = "enterProgLbl";
-            this.enterProgLbl.Size = new System.Drawing.Size(101, 17);
+            this.enterProgLbl.Size = new System.Drawing.Size(76, 13);
             this.enterProgLbl.TabIndex = 2;
             this.enterProgLbl.Text = "Program Input:";
             // 
             // simulateBtn
             // 
-            this.simulateBtn.Location = new System.Drawing.Point(360, 622);
-            this.simulateBtn.Margin = new System.Windows.Forms.Padding(4);
+            this.simulateBtn.Location = new System.Drawing.Point(145, 514);
             this.simulateBtn.Name = "simulateBtn";
-            this.simulateBtn.Size = new System.Drawing.Size(130, 28);
+            this.simulateBtn.Size = new System.Drawing.Size(98, 23);
             this.simulateBtn.TabIndex = 3;
             this.simulateBtn.Text = "Simulate";
             this.simulateBtn.UseVisualStyleBackColor = true;
@@ -83,9 +82,10 @@
             // 
             // registerButton
             // 
-            this.registerButton.Location = new System.Drawing.Point(929, 31);
+            this.registerButton.Location = new System.Drawing.Point(502, 25);
+            this.registerButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.registerButton.Name = "registerButton";
-            this.registerButton.Size = new System.Drawing.Size(100, 27);
+            this.registerButton.Size = new System.Drawing.Size(75, 22);
             this.registerButton.TabIndex = 4;
             this.registerButton.Text = "Registers";
             this.registerButton.UseVisualStyleBackColor = true;
@@ -93,9 +93,10 @@
             // 
             // memoryButton
             // 
-            this.memoryButton.Location = new System.Drawing.Point(929, 64);
+            this.memoryButton.Location = new System.Drawing.Point(502, 51);
+            this.memoryButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.memoryButton.Name = "memoryButton";
-            this.memoryButton.Size = new System.Drawing.Size(100, 27);
+            this.memoryButton.Size = new System.Drawing.Size(75, 22);
             this.memoryButton.TabIndex = 5;
             this.memoryButton.Text = "Memory";
             this.memoryButton.UseVisualStyleBackColor = true;
@@ -104,34 +105,38 @@
             // 
             this.opcodePanel.BackColor = System.Drawing.SystemColors.Control;
             this.opcodePanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.opcodePanel.Location = new System.Drawing.Point(360, 31);
+            this.opcodePanel.Location = new System.Drawing.Point(270, 25);
+            this.opcodePanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.opcodePanel.Name = "opcodePanel";
-            this.opcodePanel.Size = new System.Drawing.Size(544, 269);
+            this.opcodePanel.Size = new System.Drawing.Size(194, 271);
             this.opcodePanel.TabIndex = 6;
             // 
-            // opcodeMapPanel
+            // pipelineMapPanel
             // 
-            this.opcodeMapPanel.BackColor = System.Drawing.SystemColors.Control;
-            this.opcodeMapPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.opcodeMapPanel.Location = new System.Drawing.Point(360, 354);
-            this.opcodeMapPanel.Name = "opcodeMapPanel";
-            this.opcodeMapPanel.Size = new System.Drawing.Size(1158, 164);
-            this.opcodeMapPanel.TabIndex = 7;
+            this.pipelineMapPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.pipelineMapPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pipelineMapPanel.Location = new System.Drawing.Point(270, 334);
+            this.pipelineMapPanel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pipelineMapPanel.Name = "pipelineMapPanel";
+            this.pipelineMapPanel.Size = new System.Drawing.Size(543, 172);
+            this.pipelineMapPanel.TabIndex = 7;
             // 
             // stepButton
             // 
-            this.stepButton.Location = new System.Drawing.Point(360, 524);
+            this.stepButton.Location = new System.Drawing.Point(1042, 496);
+            this.stepButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.stepButton.Name = "stepButton";
-            this.stepButton.Size = new System.Drawing.Size(62, 50);
+            this.stepButton.Size = new System.Drawing.Size(46, 41);
             this.stepButton.TabIndex = 8;
             this.stepButton.Text = ">";
             this.stepButton.UseVisualStyleBackColor = true;
             // 
             // skipButton
             // 
-            this.skipButton.Location = new System.Drawing.Point(428, 524);
+            this.skipButton.Location = new System.Drawing.Point(1093, 496);
+            this.skipButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.skipButton.Name = "skipButton";
-            this.skipButton.Size = new System.Drawing.Size(62, 50);
+            this.skipButton.Size = new System.Drawing.Size(46, 41);
             this.skipButton.TabIndex = 9;
             this.skipButton.Text = ">>>";
             this.skipButton.UseVisualStyleBackColor = true;
@@ -144,33 +149,60 @@
             // opcodeLbl
             // 
             this.opcodeLbl.AutoSize = true;
-            this.opcodeLbl.Location = new System.Drawing.Point(357, 11);
+            this.opcodeLbl.Location = new System.Drawing.Point(268, 9);
+            this.opcodeLbl.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.opcodeLbl.Name = "opcodeLbl";
-            this.opcodeLbl.Size = new System.Drawing.Size(58, 17);
+            this.opcodeLbl.Size = new System.Drawing.Size(45, 13);
             this.opcodeLbl.TabIndex = 10;
             this.opcodeLbl.Text = "Opcode";
             // 
+            // panel1
+            // 
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Location = new System.Drawing.Point(835, 25);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(304, 466);
+            this.panel1.TabIndex = 11;
+            // 
+            // pipelineMapLbl
+            // 
+            this.pipelineMapLbl.AutoSize = true;
+            this.pipelineMapLbl.Location = new System.Drawing.Point(271, 316);
+            this.pipelineMapLbl.Name = "pipelineMapLbl";
+            this.pipelineMapLbl.Size = new System.Drawing.Size(68, 13);
+            this.pipelineMapLbl.TabIndex = 12;
+            this.pipelineMapLbl.Text = "Pipeline Map";
+            // 
+            // internalPipelineRegistersLbl
+            // 
+            this.internalPipelineRegistersLbl.AutoSize = true;
+            this.internalPipelineRegistersLbl.Location = new System.Drawing.Point(835, 8);
+            this.internalPipelineRegistersLbl.Name = "internalPipelineRegistersLbl";
+            this.internalPipelineRegistersLbl.Size = new System.Drawing.Size(129, 13);
+            this.internalPipelineRegistersLbl.TabIndex = 13;
+            this.internalPipelineRegistersLbl.Text = "Internal Pipeline Registers";
+            // 
             // InputForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1579, 690);
+            this.ClientSize = new System.Drawing.Size(1184, 561);
+            this.Controls.Add(this.internalPipelineRegistersLbl);
+            this.Controls.Add(this.pipelineMapLbl);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.opcodeLbl);
             this.Controls.Add(this.skipButton);
             this.Controls.Add(this.stepButton);
-            this.Controls.Add(this.opcodeMapPanel);
+            this.Controls.Add(this.pipelineMapPanel);
             this.Controls.Add(this.opcodePanel);
             this.Controls.Add(this.memoryButton);
             this.Controls.Add(this.registerButton);
             this.Controls.Add(this.simulateBtn);
             this.Controls.Add(this.enterProgLbl);
             this.Controls.Add(this.programTB);
-            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "InputForm";
             this.Text = "MIPS 64 - Flush - Set B";
             this.Load += new System.EventHandler(this.InputForm_Load);
-            this.opcodePanel.ResumeLayout(false);
-            this.opcodePanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -186,11 +218,14 @@
         private System.Windows.Forms.Button registerButton;
         private System.Windows.Forms.Button memoryButton;
         private System.Windows.Forms.Panel opcodePanel;
-        private System.Windows.Forms.Panel opcodeMapPanel;
+        private System.Windows.Forms.Panel pipelineMapPanel;
         private System.Windows.Forms.Button stepButton;
         private System.Windows.Forms.Button skipButton;
         private System.IO.FileSystemWatcher fileSystemWatcher1;
         private System.Windows.Forms.Label opcodeLbl;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label pipelineMapLbl;
+        private System.Windows.Forms.Label internalPipelineRegistersLbl;
         
     }
 }

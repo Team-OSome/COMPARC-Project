@@ -93,5 +93,9 @@ namespace COMPARC_Project_2
              
         }
 
+        public String[][] getPipelineMap()
+        {
+
+        }
     }
 }

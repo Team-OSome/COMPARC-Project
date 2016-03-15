@@ -8,6 +8,8 @@ namespace COMPARC_Project_2
 {
     public class Cycle
     {
+        #region variables
+
         private String IFID_IR { get; set; }
         private String IFID_NPC { get; set; }
         private String IFID_PC { get; set; }
@@ -29,7 +31,9 @@ namespace COMPARC_Project_2
         private String MEMWB_ALUOutput { get; set; }
 
         private String WB_Rn { get; set; }
-        
+
+        #endregion
+
         public Cycle()
         {
             IFID_IR = null;
