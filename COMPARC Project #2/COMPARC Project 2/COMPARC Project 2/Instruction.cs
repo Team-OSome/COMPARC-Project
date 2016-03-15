@@ -155,7 +155,7 @@ namespace COMPARC_Project_2
             return this.valid;
         }
 
-        public int getInstructionType()
+        public String getInstructionType()
         {
             return this.instructionType;
         }

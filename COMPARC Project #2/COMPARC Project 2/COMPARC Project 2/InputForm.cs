@@ -21,6 +21,13 @@ namespace COMPARC_Project_2
 
         private void InputForm_Load(object sender, EventArgs e)
         {
+            opCodeGridView.Columns.Add("Line Number", "Line Number");
+            opCodeGridView.Columns.Add("Instruction", "Instruction");
+            opCodeGridView.Columns.Add("Op Code", "Op Code");
+
+            memoryGridView.Columns.Add("Memory Location", "Memory Location");
+            memoryGridView.Columns.Add("Value", "Value");
+            initializeMemory();
 
         }
 
@@ -36,12 +43,7 @@ namespace COMPARC_Project_2
 
             this.program = new Program(programTB.Lines, registers);
 
-            //MessageBox.Show(this.program.getInstructionOpCode(0));
-            //MessageBox.Show(this.program.getInstructionLength().ToString());
-
-            opCodeTextBox.Text = "Line 1" + Environment.NewLine;
-            opCodeTextBox.Text += "Line 2" + Environment.NewLine;
-            opCodeTextBox.Text += "Line 3" + Environment.NewLine;
+            setOpCodeGridView();
 
             //this.program.pipelineMap(); 
         }
@@ -51,11 +53,26 @@ namespace COMPARC_Project_2
 
         }
 
-        private void setOpCodeTextBox()
+        private void setOpCodeGridView()
         {
+            int hex = 0x00;
+            opCodeGridView.Rows.Clear();
+
             for (int i = 0; i < this.program.getInstructionLength(); i++)
             {
-                opCodeTextBox.Text = "";
+                opCodeGridView.Rows.Add(hex.ToString("x").ToUpper(), this.program.getInstructionLine(i), this.program.getInstructionOpCode(i));
+                hex += 4;
+            }
+        }
+
+        private void initializeMemory()
+        {
+            int hex = 0x2000;
+
+            for (int i = 0; i < 8192; i++)
+            {
+                memoryGridView.Rows.Add(hex.ToString("x").ToUpper(), "00");
+                hex++;
             }
         }
 
