@@ -59,8 +59,8 @@ namespace COMPARC_Project_2
         }
 
         #region setters
-        // sets the instruction
-        private void setInstruction()
+
+        private void setInstruction() // sets the instruction
         {
             String[] splitIns = this.instructionLine.Split();
 
@@ -91,8 +91,8 @@ namespace COMPARC_Project_2
             }
         }
 
-        // sets the parameters depending on the instruction
-        private void setParameters()    
+
+        private void setParameters()     // sets the parameters depending on the instruction
         {
             String[]    separators = { ",", " ", "(", ")" };
             
