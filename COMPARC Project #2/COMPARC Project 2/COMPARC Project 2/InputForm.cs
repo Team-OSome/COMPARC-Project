@@ -21,7 +21,11 @@ namespace COMPARC_Project_2
 
         private void InputForm_Load(object sender, EventArgs e)
         {
-
+            opCodeGridView.Columns.Clear();
+            opCodeGridView.Columns.Add("Line Number", "Line Number");
+            opCodeGridView.Columns.Add("Instruction", "Instruction");
+            opCodeGridView.Columns.Add("OP Code", "OP Code");
+            
         }
 
         private void simulateBtn_Click(object sender, EventArgs e)
@@ -36,12 +40,8 @@ namespace COMPARC_Project_2
 
             this.program = new Program(programTB.Lines, registers);
 
-            //MessageBox.Show(this.program.getInstructionOpCode(0));
-            //MessageBox.Show(this.program.getInstructionLength().ToString());
-
-            opCodeTextBox.Text = "Line 1" + Environment.NewLine;
-            opCodeTextBox.Text += "Line 2" + Environment.NewLine;
-            opCodeTextBox.Text += "Line 3" + Environment.NewLine;
+            setOpCodeGridView();
+            
 
             //this.program.pipelineMap(); 
         }
@@ -51,14 +51,18 @@ namespace COMPARC_Project_2
 
         }
 
-        private void setOpCodeTextBox()
+        private void setOpCodeGridView()
         {
+            int line = 0x00;
+
+            opCodeGridView.Rows.Clear();
+
             for (int i = 0; i < this.program.getInstructionLength(); i++)
             {
-                opCodeTextBox.Text = 
+                opCodeGridView.Rows.Add(line.ToString("x").ToUpper(), this.program.getInstructionLine(i), this.program.getInstructionOpCode(i));
+                line += 4;
             }
         }
-
-        
+      
     }
 }

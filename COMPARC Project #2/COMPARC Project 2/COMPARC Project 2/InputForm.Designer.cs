@@ -34,7 +34,7 @@
             this.enterProgLbl = new System.Windows.Forms.Label();
             this.simulateBtn = new System.Windows.Forms.Button();
             this.opcodePanel = new System.Windows.Forms.Panel();
-            this.opCodeTextBox = new System.Windows.Forms.TextBox();
+            this.opCodeGridView = new System.Windows.Forms.DataGridView();
             this.pipelineMapPanel = new System.Windows.Forms.Panel();
             this.stepButton = new System.Windows.Forms.Button();
             this.skipButton = new System.Windows.Forms.Button();
@@ -114,6 +114,7 @@
             this.r1Label = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.opcodePanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.opCodeGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.dataTabs.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -157,22 +158,27 @@
             this.opcodePanel.AutoScroll = true;
             this.opcodePanel.BackColor = System.Drawing.SystemColors.Control;
             this.opcodePanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.opcodePanel.Controls.Add(this.opCodeTextBox);
+            this.opcodePanel.Controls.Add(this.opCodeGridView);
             this.opcodePanel.Location = new System.Drawing.Point(270, 25);
             this.opcodePanel.Margin = new System.Windows.Forms.Padding(2);
             this.opcodePanel.Name = "opcodePanel";
-            this.opcodePanel.Size = new System.Drawing.Size(194, 271);
+            this.opcodePanel.Size = new System.Drawing.Size(227, 271);
             this.opcodePanel.TabIndex = 6;
             // 
-            // opCodeTextBox
+            // opCodeGridView
             // 
-            this.opCodeTextBox.Location = new System.Drawing.Point(3, 4);
-            this.opCodeTextBox.MinimumSize = new System.Drawing.Size(186, 262);
-            this.opCodeTextBox.Multiline = true;
-            this.opCodeTextBox.Name = "opCodeTextBox";
-            this.opCodeTextBox.ReadOnly = true;
-            this.opCodeTextBox.Size = new System.Drawing.Size(186, 262);
-            this.opCodeTextBox.TabIndex = 0;
+            this.opCodeGridView.AllowUserToAddRows = false;
+            this.opCodeGridView.AllowUserToDeleteRows = false;
+            this.opCodeGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.opCodeGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.opCodeGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.opCodeGridView.Dock = System.Windows.Forms.DockStyle.Left;
+            this.opCodeGridView.Location = new System.Drawing.Point(0, 0);
+            this.opCodeGridView.Name = "opCodeGridView";
+            this.opCodeGridView.ReadOnly = true;
+            this.opCodeGridView.RowHeadersVisible = false;
+            this.opCodeGridView.Size = new System.Drawing.Size(424, 252);
+            this.opCodeGridView.TabIndex = 0;
             // 
             // pipelineMapPanel
             // 
@@ -936,7 +942,7 @@
             this.Text = "MIPS 64 - Flush - Set B";
             this.Load += new System.EventHandler(this.InputForm_Load);
             this.opcodePanel.ResumeLayout(false);
-            this.opcodePanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.opCodeGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
             this.dataTabs.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
@@ -1031,7 +1037,7 @@
         private System.Windows.Forms.Label labelR2;
         private System.Windows.Forms.Label labelR1;
         private System.Windows.Forms.Label r0Label;
-        private System.Windows.Forms.TextBox opCodeTextBox;
+        private System.Windows.Forms.DataGridView opCodeGridView;
         
     }
 }

@@ -100,6 +100,11 @@ namespace COMPARC_Project_2
             return this.instruction[lineNum].getOpcode().getOpcodeString();
         }
 
+        public String getInstructionLine(int lineNum)
+        {
+            return this.instruction[lineNum].getInstructionLine();
+        }
+
         public int getInstructionLength()
         {
             return this.instruction.Count;
