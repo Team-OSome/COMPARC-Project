@@ -240,7 +240,7 @@ namespace COMPARC_Project_2
                 else
                 {
                     this.cycle[i].setInstructionFetch(this.instruction[i].getOpcode().getOpcodeString(), this.cycle[i - 1].IFID_NPC);
-                    this.cycle[i].setInstructionDecode(this.instruction[i-1].getOpcode().getOpcodeString().Substring(7,5), this.instruction[i - 1].getOpcode().getOpcodeString().Substring(13, 5), this.instruction[i - 1].getOpcode().getOpcodeString().Substring(18, 16), this.cycle[i - 1].IFID_IR, this.cycle[i - 1].IFID_NPC);
+                    this.cycle[i].setInstructionDecode(this.instruction[i-1].getOpcode().getOpcodeString().Substring(7,5), this.instruction[i - 1].getOpcode().getOpcodeString().Substring(13, 5), this.instruction[i - 1].getOpcode().getOpcodeString().Substring(18), this.cycle[i - 1].IFID_IR, this.cycle[i - 1].IFID_NPC);
                     //this.cycle[i].setExecution("help", this.cycle[i - 1].IDEX_B, "cond", this.cycle[i - 1].IDEX_IR);
                     if (this.checkDataHazard(this.instruction[i],this.instruction[i-1]))
                     {
