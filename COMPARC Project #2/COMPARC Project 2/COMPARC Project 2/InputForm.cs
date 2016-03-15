@@ -55,7 +55,7 @@ namespace COMPARC_Project_2
         {
             for (int i = 0; i < this.program.getInstructionLength(); i++)
             {
-                opCodeTextBox.Text = 
+                opCodeTextBox.Text = "";
             }
         }
 

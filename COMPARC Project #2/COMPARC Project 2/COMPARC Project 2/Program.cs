@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace COMPARC_Project_2
 {
@@ -19,6 +20,7 @@ namespace COMPARC_Project_2
         public Program(String[] program, String[] registers)
         {
             this.instruction = new List<Instruction>();
+            this.cycle = new List<Cycle>();
             this.registers = new List<Register>();
             this.initializeInstructionArray(program);
             this.intializeRegisterArray(registers);
@@ -30,6 +32,8 @@ namespace COMPARC_Project_2
                 this.setBranchOffsets();
                 showAllOpcodes();
             }
+
+            this.pipeline();
         }
 
         #region setters 
@@ -151,7 +155,36 @@ namespace COMPARC_Project_2
              
         }
 
+        private void pipeline()
+        {
+            int i = 0;
+            do
+            {
+                this.cycle.Add(new Cycle());
 
+                
+                if (i == 0)     
+                {
+                    this.cycle[i].setInstructionFetch(this.instruction[i].getOpcode().getOpcodeString(), "4");      //  if first cycle, NPC & PC = 4       
+                }
+                else
+                {
+                    this.cycle[i].setInstructionFetch(this.instruction[i].getOpcode().getOpcodeString(), this.cycle[i - 1].IFID_NPC);
+                    this.cycle[i].setInstructionDecode(this.cycle[i - 1].IFID_IR, this.cycle[i - 1].IFID_NPC);
+                    //this.cycle[i].setExecution("help", this.cycle[i - 1].IDEX_B, "cond", this.cycle[i - 1].IDEX_IR);
+                }
+                
+                i++;
+            } while (i < this.instruction.Count);
+            MessageBox.Show(i.ToString());
+        }
+
+        private Boolean checkDataHazard(Instruction currInstruction, Instruction prevInstruction)
+        {
+
+
+            return false;
+        }
 
     }
 }
