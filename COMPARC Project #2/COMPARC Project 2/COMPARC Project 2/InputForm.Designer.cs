@@ -113,11 +113,14 @@
             this.r2Label = new System.Windows.Forms.Label();
             this.r1Label = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.memoryGridView = new System.Windows.Forms.DataGridView();
             this.opcodePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.opCodeGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
             this.dataTabs.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.memoryGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // programTB
@@ -913,13 +916,28 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.memoryGridView);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(222, 245);
+            this.tabPage2.Size = new System.Drawing.Size(199, 245);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Memory";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // memoryGridView
+            // 
+            this.memoryGridView.AllowUserToAddRows = false;
+            this.memoryGridView.AllowUserToDeleteRows = false;
+            this.memoryGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.memoryGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.memoryGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.memoryGridView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.memoryGridView.Location = new System.Drawing.Point(3, 3);
+            this.memoryGridView.Name = "memoryGridView";
+            this.memoryGridView.RowHeadersVisible = false;
+            this.memoryGridView.Size = new System.Drawing.Size(193, 239);
+            this.memoryGridView.TabIndex = 0;
             // 
             // InputForm
             // 
@@ -949,6 +967,8 @@
             this.dataTabs.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.memoryGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1040,6 +1060,7 @@
         private System.Windows.Forms.Label labelR1;
         private System.Windows.Forms.Label r0Label;
         private System.Windows.Forms.DataGridView opCodeGridView;
+        private System.Windows.Forms.DataGridView memoryGridView;
         
     }
 }

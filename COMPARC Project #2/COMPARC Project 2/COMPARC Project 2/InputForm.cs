@@ -21,10 +21,14 @@ namespace COMPARC_Project_2
 
         private void InputForm_Load(object sender, EventArgs e)
         {
-            opCodeGridView.Columns.Clear();
             opCodeGridView.Columns.Add("Line Number", "Line Number");
             opCodeGridView.Columns.Add("Instruction", "Instruction");
             opCodeGridView.Columns.Add("OP Code", "OP Code");
+
+            memoryGridView.Columns.Add("Memory Location", "Memory Location");
+            memoryGridView.Columns.Add("Value", "Value");
+            intializeMemory();
+
             
         }
 
@@ -42,7 +46,6 @@ namespace COMPARC_Project_2
 
             setOpCodeGridView();
             
-
             //this.program.pipelineMap(); 
         }
 
@@ -54,13 +57,24 @@ namespace COMPARC_Project_2
         private void setOpCodeGridView()
         {
             int line = 0x00;
-
             opCodeGridView.Rows.Clear();
 
             for (int i = 0; i < this.program.getInstructionLength(); i++)
             {
                 opCodeGridView.Rows.Add(line.ToString("x").ToUpper(), this.program.getInstructionLine(i), this.program.getInstructionOpCode(i));
                 line += 4;
+            }
+        }
+
+        private void intializeMemory()
+        {
+            int line = 0x2000;
+            opCodeGridView.Rows.Clear();
+
+            for (int i = 0; i < 8192; i++)
+            {
+                memoryGridView.Rows.Add(line.ToString("x").ToUpper(), "00");
+                line++;
             }
         }
       
