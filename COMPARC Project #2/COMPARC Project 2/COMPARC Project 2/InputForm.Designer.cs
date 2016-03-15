@@ -162,7 +162,7 @@
             this.opcodePanel.Location = new System.Drawing.Point(270, 25);
             this.opcodePanel.Margin = new System.Windows.Forms.Padding(2);
             this.opcodePanel.Name = "opcodePanel";
-            this.opcodePanel.Size = new System.Drawing.Size(227, 271);
+            this.opcodePanel.Size = new System.Drawing.Size(331, 271);
             this.opcodePanel.TabIndex = 6;
             // 
             // opCodeGridView
@@ -256,10 +256,10 @@
             // 
             this.dataTabs.Controls.Add(this.tabPage1);
             this.dataTabs.Controls.Add(this.tabPage2);
-            this.dataTabs.Location = new System.Drawing.Point(502, 25);
+            this.dataTabs.Location = new System.Drawing.Point(606, 25);
             this.dataTabs.Name = "dataTabs";
             this.dataTabs.SelectedIndex = 0;
-            this.dataTabs.Size = new System.Drawing.Size(311, 271);
+            this.dataTabs.Size = new System.Drawing.Size(207, 271);
             this.dataTabs.TabIndex = 14;
             // 
             // tabPage1
@@ -335,7 +335,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(303, 245);
+            this.tabPage1.Size = new System.Drawing.Size(199, 245);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Registers";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -344,7 +344,7 @@
             // 
             this.r31TextBox.Location = new System.Drawing.Point(30, 812);
             this.r31TextBox.Name = "r31TextBox";
-            this.r31TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r31TextBox.Size = new System.Drawing.Size(136, 20);
             this.r31TextBox.TabIndex = 71;
             this.r31TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -352,7 +352,7 @@
             // 
             this.r30TextBox.Location = new System.Drawing.Point(30, 786);
             this.r30TextBox.Name = "r30TextBox";
-            this.r30TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r30TextBox.Size = new System.Drawing.Size(136, 20);
             this.r30TextBox.TabIndex = 70;
             this.r30TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -360,7 +360,7 @@
             // 
             this.r29TextBox.Location = new System.Drawing.Point(30, 760);
             this.r29TextBox.Name = "r29TextBox";
-            this.r29TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r29TextBox.Size = new System.Drawing.Size(136, 20);
             this.r29TextBox.TabIndex = 69;
             this.r29TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -368,7 +368,7 @@
             // 
             this.r28TextBox.Location = new System.Drawing.Point(30, 734);
             this.r28TextBox.Name = "r28TextBox";
-            this.r28TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r28TextBox.Size = new System.Drawing.Size(136, 20);
             this.r28TextBox.TabIndex = 68;
             this.r28TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -376,7 +376,7 @@
             // 
             this.r27TextBox.Location = new System.Drawing.Point(30, 708);
             this.r27TextBox.Name = "r27TextBox";
-            this.r27TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r27TextBox.Size = new System.Drawing.Size(136, 20);
             this.r27TextBox.TabIndex = 67;
             this.r27TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -384,7 +384,7 @@
             // 
             this.r26TextBox.Location = new System.Drawing.Point(30, 682);
             this.r26TextBox.Name = "r26TextBox";
-            this.r26TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r26TextBox.Size = new System.Drawing.Size(136, 20);
             this.r26TextBox.TabIndex = 66;
             this.r26TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -392,7 +392,7 @@
             // 
             this.r25TextBox.Location = new System.Drawing.Point(30, 656);
             this.r25TextBox.Name = "r25TextBox";
-            this.r25TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r25TextBox.Size = new System.Drawing.Size(136, 20);
             this.r25TextBox.TabIndex = 65;
             this.r25TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -400,7 +400,7 @@
             // 
             this.r24TextBox.Location = new System.Drawing.Point(30, 630);
             this.r24TextBox.Name = "r24TextBox";
-            this.r24TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r24TextBox.Size = new System.Drawing.Size(136, 20);
             this.r24TextBox.TabIndex = 64;
             this.r24TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -408,7 +408,7 @@
             // 
             this.r23TextBox.Location = new System.Drawing.Point(30, 604);
             this.r23TextBox.Name = "r23TextBox";
-            this.r23TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r23TextBox.Size = new System.Drawing.Size(136, 20);
             this.r23TextBox.TabIndex = 63;
             this.r23TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -416,7 +416,7 @@
             // 
             this.r22TextBox.Location = new System.Drawing.Point(30, 578);
             this.r22TextBox.Name = "r22TextBox";
-            this.r22TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r22TextBox.Size = new System.Drawing.Size(136, 20);
             this.r22TextBox.TabIndex = 62;
             this.r22TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -424,7 +424,7 @@
             // 
             this.r21TextBox.Location = new System.Drawing.Point(30, 552);
             this.r21TextBox.Name = "r21TextBox";
-            this.r21TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r21TextBox.Size = new System.Drawing.Size(136, 20);
             this.r21TextBox.TabIndex = 61;
             this.r21TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -432,7 +432,7 @@
             // 
             this.r20TextBox.Location = new System.Drawing.Point(30, 526);
             this.r20TextBox.Name = "r20TextBox";
-            this.r20TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r20TextBox.Size = new System.Drawing.Size(136, 20);
             this.r20TextBox.TabIndex = 60;
             this.r20TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -440,7 +440,7 @@
             // 
             this.r19TextBox.Location = new System.Drawing.Point(30, 500);
             this.r19TextBox.Name = "r19TextBox";
-            this.r19TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r19TextBox.Size = new System.Drawing.Size(136, 20);
             this.r19TextBox.TabIndex = 59;
             this.r19TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -448,7 +448,7 @@
             // 
             this.r18TextBox.Location = new System.Drawing.Point(30, 474);
             this.r18TextBox.Name = "r18TextBox";
-            this.r18TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r18TextBox.Size = new System.Drawing.Size(136, 20);
             this.r18TextBox.TabIndex = 58;
             this.r18TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -456,7 +456,7 @@
             // 
             this.r17TextBox.Location = new System.Drawing.Point(30, 448);
             this.r17TextBox.Name = "r17TextBox";
-            this.r17TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r17TextBox.Size = new System.Drawing.Size(136, 20);
             this.r17TextBox.TabIndex = 57;
             this.r17TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -464,7 +464,7 @@
             // 
             this.r16TextBox.Location = new System.Drawing.Point(30, 422);
             this.r16TextBox.Name = "r16TextBox";
-            this.r16TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r16TextBox.Size = new System.Drawing.Size(136, 20);
             this.r16TextBox.TabIndex = 56;
             this.r16TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -472,7 +472,7 @@
             // 
             this.r15TextBox.Location = new System.Drawing.Point(30, 396);
             this.r15TextBox.Name = "r15TextBox";
-            this.r15TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r15TextBox.Size = new System.Drawing.Size(136, 20);
             this.r15TextBox.TabIndex = 55;
             this.r15TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -480,7 +480,7 @@
             // 
             this.r14TextBox.Location = new System.Drawing.Point(30, 370);
             this.r14TextBox.Name = "r14TextBox";
-            this.r14TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r14TextBox.Size = new System.Drawing.Size(136, 20);
             this.r14TextBox.TabIndex = 54;
             this.r14TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -488,7 +488,7 @@
             // 
             this.r13TextBox.Location = new System.Drawing.Point(30, 344);
             this.r13TextBox.Name = "r13TextBox";
-            this.r13TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r13TextBox.Size = new System.Drawing.Size(136, 20);
             this.r13TextBox.TabIndex = 53;
             this.r13TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -496,7 +496,7 @@
             // 
             this.r12TextBox.Location = new System.Drawing.Point(30, 318);
             this.r12TextBox.Name = "r12TextBox";
-            this.r12TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r12TextBox.Size = new System.Drawing.Size(136, 20);
             this.r12TextBox.TabIndex = 52;
             this.r12TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -504,7 +504,7 @@
             // 
             this.r11TextBox.Location = new System.Drawing.Point(30, 292);
             this.r11TextBox.Name = "r11TextBox";
-            this.r11TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r11TextBox.Size = new System.Drawing.Size(136, 20);
             this.r11TextBox.TabIndex = 51;
             this.r11TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -512,7 +512,7 @@
             // 
             this.r10TextBox.Location = new System.Drawing.Point(30, 266);
             this.r10TextBox.Name = "r10TextBox";
-            this.r10TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r10TextBox.Size = new System.Drawing.Size(136, 20);
             this.r10TextBox.TabIndex = 50;
             this.r10TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -520,7 +520,7 @@
             // 
             this.r9TextBox.Location = new System.Drawing.Point(30, 240);
             this.r9TextBox.Name = "r9TextBox";
-            this.r9TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r9TextBox.Size = new System.Drawing.Size(136, 20);
             this.r9TextBox.TabIndex = 49;
             this.r9TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -528,7 +528,7 @@
             // 
             this.r8TextBox.Location = new System.Drawing.Point(30, 214);
             this.r8TextBox.Name = "r8TextBox";
-            this.r8TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r8TextBox.Size = new System.Drawing.Size(136, 20);
             this.r8TextBox.TabIndex = 48;
             this.r8TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -536,7 +536,7 @@
             // 
             this.r7TextBox.Location = new System.Drawing.Point(30, 188);
             this.r7TextBox.Name = "r7TextBox";
-            this.r7TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r7TextBox.Size = new System.Drawing.Size(136, 20);
             this.r7TextBox.TabIndex = 47;
             this.r7TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -544,7 +544,7 @@
             // 
             this.r6TextBox.Location = new System.Drawing.Point(30, 162);
             this.r6TextBox.Name = "r6TextBox";
-            this.r6TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r6TextBox.Size = new System.Drawing.Size(136, 20);
             this.r6TextBox.TabIndex = 46;
             this.r6TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -552,7 +552,7 @@
             // 
             this.r5TextBox.Location = new System.Drawing.Point(30, 136);
             this.r5TextBox.Name = "r5TextBox";
-            this.r5TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r5TextBox.Size = new System.Drawing.Size(136, 20);
             this.r5TextBox.TabIndex = 45;
             this.r5TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -560,7 +560,7 @@
             // 
             this.r4TextBox.Location = new System.Drawing.Point(30, 110);
             this.r4TextBox.Name = "r4TextBox";
-            this.r4TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r4TextBox.Size = new System.Drawing.Size(136, 20);
             this.r4TextBox.TabIndex = 44;
             this.r4TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -568,7 +568,7 @@
             // 
             this.r3TextBox.Location = new System.Drawing.Point(30, 84);
             this.r3TextBox.Name = "r3TextBox";
-            this.r3TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r3TextBox.Size = new System.Drawing.Size(136, 20);
             this.r3TextBox.TabIndex = 43;
             this.r3TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -576,7 +576,7 @@
             // 
             this.r2TextBox.Location = new System.Drawing.Point(30, 58);
             this.r2TextBox.Name = "r2TextBox";
-            this.r2TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r2TextBox.Size = new System.Drawing.Size(136, 20);
             this.r2TextBox.TabIndex = 42;
             this.r2TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -584,7 +584,7 @@
             // 
             this.r1TextBox.Location = new System.Drawing.Point(30, 32);
             this.r1TextBox.Name = "r1TextBox";
-            this.r1TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r1TextBox.Size = new System.Drawing.Size(136, 20);
             this.r1TextBox.TabIndex = 41;
             this.r1TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -601,7 +601,7 @@
             // 
             this.r0TextBox.Location = new System.Drawing.Point(30, 6);
             this.r0TextBox.Name = "r0TextBox";
-            this.r0TextBox.Size = new System.Drawing.Size(250, 20);
+            this.r0TextBox.Size = new System.Drawing.Size(136, 20);
             this.r0TextBox.TabIndex = 39;
             this.r0TextBox.Text = "0000 0000 0000 0000";
             // 
@@ -916,7 +916,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(303, 245);
+            this.tabPage2.Size = new System.Drawing.Size(222, 245);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Memory";
             this.tabPage2.UseVisualStyleBackColor = true;
