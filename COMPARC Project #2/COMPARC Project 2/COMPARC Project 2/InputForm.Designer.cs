@@ -114,9 +114,11 @@
             this.r1Label = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.memoryGridView = new System.Windows.Forms.DataGridView();
+            this.internalPipeRegLbl = new System.Windows.Forms.Label();
             this.opcodePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.opCodeGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
+            this.panel1.SuspendLayout();
             this.dataTabs.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -232,6 +234,7 @@
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.internalPipeRegLbl);
             this.panel1.Location = new System.Drawing.Point(835, 25);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(304, 481);
@@ -939,6 +942,14 @@
             this.memoryGridView.Size = new System.Drawing.Size(193, 239);
             this.memoryGridView.TabIndex = 0;
             // 
+            // internalPipeRegLbl
+            // 
+            this.internalPipeRegLbl.AutoSize = true;
+            this.internalPipeRegLbl.Location = new System.Drawing.Point(4, 4);
+            this.internalPipeRegLbl.Name = "internalPipeRegLbl";
+            this.internalPipeRegLbl.Size = new System.Drawing.Size(0, 13);
+            this.internalPipeRegLbl.TabIndex = 0;
+            // 
             // InputForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -964,6 +975,8 @@
             this.opcodePanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.opCodeGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.dataTabs.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -1061,6 +1074,7 @@
         private System.Windows.Forms.Label r0Label;
         private System.Windows.Forms.DataGridView opCodeGridView;
         private System.Windows.Forms.DataGridView memoryGridView;
+        private System.Windows.Forms.Label internalPipeRegLbl;
         
     }
 }

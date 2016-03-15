@@ -66,11 +66,11 @@ namespace COMPARC_Project_2
             this.IFID_PC = this.IFID_NPC;
         }
 
-        public void setInstructionDecode(string IFID_IR, string IFID_NPC)
+        public void setInstructionDecode(string A, string B, string IMM, string IFID_IR, string IFID_NPC)
         {
-            this.IDEX_A = "";   // [IF/ID.IR 21..25]
-            this.IDEX_B = "";   // [IF/ID.IR 16..20]
-            this.IDEX_IMM = ""; // [Sign Extend + IF/ID.IR 0..15]
+            this.IDEX_A = A;   // [IF/ID.IR 21..25]
+            this.IDEX_B = B;   // [IF/ID.IR 16..20]
+            this.IDEX_IMM = IMM; // [Sign Extend + IF/ID.IR 0..15]
 
             this.IDEX_IR = IFID_IR;
             this.IDEX_NPC = IFID_NPC;

@@ -46,7 +46,21 @@ namespace COMPARC_Project_2
             if(this.program.getInstructionsValid())
                 setOpCodeGridView();
 
-            //this.program.pipelineMap(); 
+            internalPipeRegLbl.Text = "";
+            for (int i = 0; i < program.getNumCycles(); i++)
+            {
+                internalPipeRegLbl.Text += "Cycle: " + (i + 1).ToString() + "\n";
+                internalPipeRegLbl.Text += "Instruction Fetch \n";
+                internalPipeRegLbl.Text += "    IF/ID.IR  = " + program.getIFID_IR(i) + "\n";
+                internalPipeRegLbl.Text += "    IF/ID.NPC = " + program.getIFID_NPC(i) + "\n";
+                internalPipeRegLbl.Text += "    IF/ID.PC  = " + program.getIFID_PC(i) + "\n";
+                internalPipeRegLbl.Text += "Instruction Decode \n";
+                internalPipeRegLbl.Text += "    ID/EX.A   = " + program.getIDEX_A(i) + "\n";
+                internalPipeRegLbl.Text += "    ID/EX.B   = " + program.getIDEX_B(i) + "\n";
+                internalPipeRegLbl.Text += "    ID/EX.IMM = " + program.getIDEX_IMM(i) + "\n";
+                internalPipeRegLbl.Text += "    ID/EX.IR  = " + program.getIDEX_IR(i) + "\n";
+                internalPipeRegLbl.Text += "    ID/EX.NPC = " + program.getIDEX_NPC(i) + "\n";
+            }
         }
 
         private void registerButton_Click(object sender, EventArgs e)

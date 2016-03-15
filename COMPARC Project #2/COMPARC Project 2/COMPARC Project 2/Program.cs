@@ -11,6 +11,7 @@ namespace COMPARC_Project_2
     {
         private List<Instruction> instruction;
         private List<Cycle> cycle;
+        private int numCycles;
         private List<Register> registers;
         private int tempOffset;
         private Boolean hasBranch = false;
@@ -165,30 +166,6 @@ namespace COMPARC_Project_2
              
         }
 
-        private void pipeline()
-        {
-            int i = 0;
-            do
-            {
-                this.cycle.Add(new Cycle());
-
-                
-                if (i == 0)     
-                {
-                    this.cycle[i].setInstructionFetch(this.instruction[i].getOpcode().getOpcodeString(), "4");      //  if first cycle, NPC & PC = 4       
-                }
-                else
-                {
-                    this.cycle[i].setInstructionFetch(this.instruction[i].getOpcode().getOpcodeString(), this.cycle[i - 1].IFID_NPC);
-                    this.cycle[i].setInstructionDecode(this.cycle[i - 1].IFID_IR, this.cycle[i - 1].IFID_NPC);
-                    //this.cycle[i].setExecution("help", this.cycle[i - 1].IDEX_B, "cond", this.cycle[i - 1].IDEX_IR);
-                }
-                
-                i++;
-            } while (i < this.instruction.Count);
-            MessageBox.Show(i.ToString());
-        }
-
         private Boolean checkDataHazard(Instruction currInstruction, Instruction prevInstruction)
         {
 
@@ -246,5 +223,79 @@ namespace COMPARC_Project_2
             return false;
         }
 
+
+        private void pipeline()
+        {
+            int i = 0;
+            this.numCycles = 0;
+            do
+            {
+                this.cycle.Add(new Cycle());
+                this.numCycles++;
+                
+                if (i == 0)     
+                {
+                    this.cycle[i].setInstructionFetch(this.instruction[i].getOpcode().getOpcodeString(), "4");      //  if first cycle, NPC & PC = 4       
+                }
+                else
+                {
+                    this.cycle[i].setInstructionFetch(this.instruction[i].getOpcode().getOpcodeString(), this.cycle[i - 1].IFID_NPC);
+                    this.cycle[i].setInstructionDecode(this.instruction[i-1].getOpcode().getOpcodeString().Substring(7,5), this.instruction[i - 1].getOpcode().getOpcodeString().Substring(13, 5), this.instruction[i - 1].getOpcode().getOpcodeString().Substring(18, 16), this.cycle[i - 1].IFID_IR, this.cycle[i - 1].IFID_NPC);
+                    //this.cycle[i].setExecution("help", this.cycle[i - 1].IDEX_B, "cond", this.cycle[i - 1].IDEX_IR);
+                    if (this.checkDataHazard(this.instruction[i],this.instruction[i-1]))
+                    {
+                        MessageBox.Show("Data Hazard!");
+                        i = this.instruction.Count;
+                    }
+                }
+                
+                i++;
+            } while (i < this.instruction.Count);
+            
+        }
+
+        public String getIFID_IR(int i)
+        {
+            return this.cycle[i].IFID_IR;
+        }
+
+        public String getIFID_NPC(int i)
+        {
+            return this.cycle[i].IFID_NPC;
+        }
+
+        public String getIFID_PC(int i)
+        {
+            return this.cycle[i].IFID_PC;
+        }
+
+        public String getIDEX_A(int i)
+        {
+            return this.cycle[i].IDEX_A;
+        }
+        public String getIDEX_B(int i)
+        {
+            return this.cycle[i].IDEX_B;
+        }
+
+        public String getIDEX_IMM(int i)
+        {
+            return this.cycle[i].IDEX_IMM;
+        }
+
+        public String getIDEX_IR(int i)
+        {
+            return this.cycle[i].IDEX_IR;
+        }
+
+        public String getIDEX_NPC(int i)
+        {
+            return this.cycle[i].IDEX_NPC;
+        }
+
+        public int getNumCycles()
+        {
+            return this.numCycles;
+        }
     }
 }
