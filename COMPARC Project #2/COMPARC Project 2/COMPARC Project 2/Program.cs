@@ -187,6 +187,56 @@ namespace COMPARC_Project_2
         private Boolean checkDataHazard(Instruction currInstruction, Instruction prevInstruction)
         {
 
+            // I to I
+            if (prevInstruction.getOpcode().getOpcodeType() == 'I' && currInstruction.getOpcode().getOpcodeType() == 'I')
+            {
+                // I to load/store
+                if (prevInstruction.getOpcode().rtO == currInstruction.getOpcode().bseO)
+                {
+                    return true;
+                }
+
+                //I to not load/store
+                if (prevInstruction.getOpcode().rtO == currInstruction.getOpcode().rsO)
+                {
+                    return true;
+                }
+            }
+
+            // R to R
+            if (prevInstruction.getOpcode().getOpcodeType() == 'R' && currInstruction.getOpcode().getOpcodeType() == 'R')
+            {
+                //  rd = rs || rd = rt
+                if (prevInstruction.getOpcode().rdO == currInstruction.getOpcode().rsO || prevInstruction.getOpcode().rdO == currInstruction.getOpcode().rtO)
+                {
+                    return true;
+                }
+            }
+
+            // I to R
+            if (prevInstruction.getOpcode().getOpcodeType() == 'I' && currInstruction.getOpcode().getOpcodeType() == 'R')
+            {
+                if (prevInstruction.getOpcode().rtO == currInstruction.getOpcode().rsO || prevInstruction.getOpcode().rtO == currInstruction.getOpcode().rtO)
+                {
+                    return true;
+                }
+            }
+
+            // R to I
+            if (prevInstruction.getOpcode().getOpcodeType() == 'I' && currInstruction.getOpcode().getOpcodeType() == 'R')
+            {
+                // R to load/store
+                if (prevInstruction.getOpcode().rdO == currInstruction.getOpcode().bseO)
+                {
+                    return true;
+                }
+
+                // R to not load/store
+                if (prevInstruction.getOpcode().rdO == currInstruction.getOpcode().rsO)
+                {
+                    return true;
+                }
+            }
 
             return false;
         }

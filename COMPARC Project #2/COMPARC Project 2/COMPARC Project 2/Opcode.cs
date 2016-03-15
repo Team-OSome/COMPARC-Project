@@ -26,9 +26,9 @@ namespace COMPARC_Project_2
 
         //these are the Opcode versions
         private String instructionO;
-        private String rsO;
-        private String rdO;
-        private String rtO;
+        public String rsO { get; private set; }
+        public String rdO { get; private set; }
+        public String rtO { get; private set; }
         private int rsDec;
         private int rdDec;
         private int rtDec;
@@ -36,7 +36,7 @@ namespace COMPARC_Project_2
         private int offsetDecO;
         private String immediateO;
         private int immediateDec;
-        private String bseO;
+        public String bseO { get; private set; }
         private int bseDec;
 
         private int lineNum;
