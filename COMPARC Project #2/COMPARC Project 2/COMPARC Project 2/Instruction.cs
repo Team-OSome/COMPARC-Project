@@ -14,7 +14,7 @@ namespace COMPARC_Project_2
         private String instructionLine;     //  complete instruction line
         private Boolean valid;              //  check if the instruction entered is valid
         private Boolean instructionValid;
-        private int instructionType;        //  branch instruction, load/store instruction, Arithmetic Instruction, etc.
+        private String instructionType;     //  Load Instruction, Store Instruction, Register-Register ALU Instruction, Register-Immediate ALU Instruction, Branch Instruction
         private Opcode opcode;
 
         private String instruction;         //  instruction mnemonic only
@@ -100,7 +100,7 @@ namespace COMPARC_Project_2
         }
 
 
-        private void setParameters()     // sets the parameters depending on the instruction
+        private void setParameters()     // sets the parameters rt, rs, rd (depending on the instruction) and the instruction type
         {
             String[]    separators = { ",", " ", "(", ")" };
             
@@ -120,12 +120,12 @@ namespace COMPARC_Project_2
                 case "DDIVU" :
                 case "DMODU" :
                 case "SLT" :
-                case "SELNEZ":  this.rd = words[1]; this.rs = words[2]; this.rt = words[3]; this.offset = null;     this.immediate = null;     this.bse = null;     break;
-                case "BNEC":    this.rd = null;     this.rs = words[1]; this.rt = words[2]; this.offset = words[3]; this.immediate = null;     this.bse = null;     break;
-                case "LD" :
-                case "SD":      this.rd = null;     this.rs = null;     this.rt = words[1]; this.offset = words[2]; this.immediate = null;     this.bse = words[3]; break;
-                case "DADDIU":  this.rd = null;     this.rs = words[2]; this.rt = words[1]; this.offset = null;     this.immediate = words[3]; this.bse = null;     break;
-                case "BC":      this.rd = null;     this.rs = null;     this.rt = null;     this.offset = words[1]; this.immediate = null;     this.bse = null;     break;
+                case "SELNEZ":  this.rd = words[1]; this.rs = words[2]; this.rt = words[3]; this.offset = null;     this.immediate = null;     this.bse = null;     instructionType = "Register-Register ALU Instruction";    break;
+                case "BNEC":    this.rd = null;     this.rs = words[1]; this.rt = words[2]; this.offset = words[3]; this.immediate = null;     this.bse = null;     instructionType = "Branch Instruction";                   break;
+                case "LD" :     this.rd = null;     this.rs = null;     this.rt = words[1]; this.offset = words[2]; this.immediate = null;     this.bse = words[3]; instructionType = "Load Instruction";                    break;
+                case "SD":      this.rd = null;     this.rs = null;     this.rt = words[1]; this.offset = words[2]; this.immediate = null;     this.bse = words[3]; instructionType = "Store Instruction";                    break;
+                case "DADDIU":  this.rd = null;     this.rs = words[2]; this.rt = words[1]; this.offset = null;     this.immediate = words[3]; this.bse = null;     instructionType = "Register-Immediate ALU Instruction";   break;
+                case "BC":      this.rd = null;     this.rs = null;     this.rt = null;     this.offset = words[1]; this.immediate = null;     this.bse = null;     instructionType = "Branch Instruction";                   break;
             }
 
             
