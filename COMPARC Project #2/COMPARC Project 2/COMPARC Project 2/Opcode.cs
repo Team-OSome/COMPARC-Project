@@ -281,15 +281,17 @@ namespace COMPARC_Project_2
             this.offsetDec = Int32.Parse(this.offset);
             //this.offsetDec *= 4; //why times 4!?
 
-            this.offsetDec = this.lineNum+1000 +this.offsetDec;
-            this.offsetO = this.offsetDec.ToString();
+            this.offsetDec = this.lineNum +this.offsetDec;
+            //this.offsetO = this.offsetDec.ToString();
 
-            this.offsetDec = Int32.Parse(offsetO, System.Globalization.NumberStyles.HexNumber);
+
+
+            //this.offsetDec = Int32.Parse(offsetO, System.Globalization.NumberStyles.HexNumber);
             this.offsetO = Convert.ToString(offsetDec, 2);
 
             //Console.WriteLine("OffsetO is: " + offsetO);
             
-
+            //SIGN EXTEND DAPAT TO!!!
             
             if (this.opcodeType.Equals('J'))                //BC
                 this.offsetO = offsetO.PadLeft(26, '0'); 
