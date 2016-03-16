@@ -122,150 +122,6 @@ namespace COMPARC_Project_2
             return this.instruction.Count;
         }
 
-        #endregion
-
-        #region checking functions
-
-        private Boolean isValid() //checks if all lines are valid
-        {
-            for (int i = 0; i < instruction.Count; i++)
-                if (this.instruction[i].getValid() == false)
-                {
-                    System.Windows.Forms.MessageBox.Show("Error at line #" + (i + 1));
-                    return false;
-                }
-            return true;
-        }
-
-        private Boolean isRegistersValid() //checks if all registers are valid
-        {
-            for (int i = 0; i < this.registers.Capacity; i++)
-                if (!isHexValid(registers[i].getValue()) || registers[i].getValue().Length != 16)
-                {
-                    System.Windows.Forms.MessageBox.Show("ERROR AT : " + registers[i].getName());
-                    return false;
-                }
-            return true;
-        }
-
-        private Boolean isHexValid(String value)
-        {
-            if (value.All(c => "0123456789ABCDEF".Contains(c)))
-                return true;
-            else
-                return false;
-        }
-
-        #endregion
-
-        private void showAllOpcodes() //checks if all lines are valid
-        {
-            
-            for (int i = 0; i < instruction.Count; i++)
-            {
-                Console.WriteLine(this.instruction[i].getOpcode().getOpcodeString());
-            }
-             
-        }
-
-        private Boolean checkDataHazard(Instruction currInstruction, Instruction prevInstruction)
-        {
-
-            // I to I
-            if (prevInstruction.getOpcode().getOpcodeType() == 'I' && currInstruction.getOpcode().getOpcodeType() == 'I')
-            {
-                // I to load/store
-                if (prevInstruction.getOpcode().rtO == currInstruction.getOpcode().bseO)
-                {
-                    return true;
-                }
-
-                //I to not load/store
-                if (prevInstruction.getOpcode().rtO == currInstruction.getOpcode().rsO)
-                {
-                    return true;
-                }
-            }
-
-            // R to R
-            if (prevInstruction.getOpcode().getOpcodeType() == 'R' && currInstruction.getOpcode().getOpcodeType() == 'R')
-            {
-                //  rd = rs || rd = rt
-                if (prevInstruction.getOpcode().rdO == currInstruction.getOpcode().rsO || prevInstruction.getOpcode().rdO == currInstruction.getOpcode().rtO)
-                {
-                    return true;
-                }
-            }
-
-            // I to R
-            if (prevInstruction.getOpcode().getOpcodeType() == 'I' && currInstruction.getOpcode().getOpcodeType() == 'R')
-            {
-                if (prevInstruction.getOpcode().rtO == currInstruction.getOpcode().rsO || prevInstruction.getOpcode().rtO == currInstruction.getOpcode().rtO)
-                {
-                    return true;
-                }
-            }
-
-            // R to I
-            if (prevInstruction.getOpcode().getOpcodeType() == 'I' && currInstruction.getOpcode().getOpcodeType() == 'R')
-            {
-                // R to load/store
-                if (prevInstruction.getOpcode().rdO == currInstruction.getOpcode().bseO)
-                {
-                    return true;
-                }
-
-                // R to not load/store
-                if (prevInstruction.getOpcode().rdO == currInstruction.getOpcode().rsO)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-
-        private void pipeline()
-        {
-            int i = 0;
-            this.numCycles = 0;
-            do
-            {
-                this.cycle.Add(new Cycle());
-                this.numCycles++;
-                
-                if (i == 0)     
-                {
-                    this.cycle[i].setInstructionFetch(this.instruction[i].getOpcode().getOpcodeString(), "4");      //  if first cycle, NPC & PC = 4       
-                }
-                else
-                {
-                    this.cycle[i].setInstructionFetch(this.instruction[i].getOpcode().getOpcodeString(), this.cycle[i - 1].IFID_NPC);
-                    this.cycle[i].setInstructionDecode(
-                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().getOpcodeString().Substring(7, 5), 2)].getValue(),   //get data in the A ([IF/ID.IR 21..25])
-                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().getOpcodeString().Substring(13, 5), 2)].getValue(),  //get data in the B ([IF/ID.IR 16..20])
-                        this.instruction[i - 1].getOpcode().getOpcodeString().Substring(18), 
-                        this.cycle[i - 1].IFID_IR, this.cycle[i - 1].IFID_NPC);
-                    if (this.checkDataHazard(this.instruction[i],this.instruction[i-1]))
-                    {
-                        MessageBox.Show("Data Hazard!");
-                        i = this.instruction.Count;
-                    }
-                    
-                    this.cycle[i].setExecution(
-                        this.instruction[i - 1].getInstruction(),
-                        this.instruction[i - 1].getInstructionType(), 
-                        this.cycle[i - 1].IDEX_A, 
-                        this.cycle[i - 1].IDEX_B, 
-                        this.cycle[i - 1].IDEX_IMM, 
-                        this.cycle[i - 1].IDEX_IR);
-                }
-                
-                i++;
-            } while (i < this.instruction.Count);
-            
-        }
 
         public String getIFID_IR(int i)
         {
@@ -330,5 +186,150 @@ namespace COMPARC_Project_2
         {
             return this.numCycles;
         }
+
+        #endregion
+
+        #region checking functions
+
+        private Boolean isValid() //checks if all lines are valid
+        {
+            for (int i = 0; i < instruction.Count; i++)
+                if (this.instruction[i].getValid() == false)
+                {
+                    System.Windows.Forms.MessageBox.Show("Error at line #" + (i + 1));
+                    return false;
+                }
+            return true;
+        }
+
+        private Boolean isRegistersValid() //checks if all registers are valid
+        {
+            for (int i = 0; i < this.registers.Capacity; i++)
+                if (!isHexValid(registers[i].getValue()) || registers[i].getValue().Length != 16)
+                {
+                    System.Windows.Forms.MessageBox.Show("ERROR AT : " + registers[i].getName());
+                    return false;
+                }
+            return true;
+        }
+
+        private Boolean isHexValid(String value)
+        {
+            if (value.All(c => "0123456789ABCDEF".Contains(c)))
+                return true;
+            else
+                return false;
+        }
+
+        private Boolean checkDataHazard(Instruction currInstruction, Instruction prevInstruction)
+        {
+
+            // I to I
+            if (prevInstruction.getOpcode().getOpcodeType() == 'I' && currInstruction.getOpcode().getOpcodeType() == 'I')
+            {
+                // I to load/store
+                if (prevInstruction.getOpcode().rtO == currInstruction.getOpcode().bseO)
+                {
+                    return true;
+                }
+
+                //I to not load/store
+                if (prevInstruction.getOpcode().rtO == currInstruction.getOpcode().rsO)
+                {
+                    return true;
+                }
+            }
+
+            // R to R
+            if (prevInstruction.getOpcode().getOpcodeType() == 'R' && currInstruction.getOpcode().getOpcodeType() == 'R')
+            {
+                //  rd = rs || rd = rt
+                if (prevInstruction.getOpcode().rdO == currInstruction.getOpcode().rsO || prevInstruction.getOpcode().rdO == currInstruction.getOpcode().rtO)
+                {
+                    return true;
+                }
+            }
+
+            // I to R
+            if (prevInstruction.getOpcode().getOpcodeType() == 'I' && currInstruction.getOpcode().getOpcodeType() == 'R')
+            {
+                if (prevInstruction.getOpcode().rtO == currInstruction.getOpcode().rsO || prevInstruction.getOpcode().rtO == currInstruction.getOpcode().rtO)
+                {
+                    return true;
+                }
+            }
+
+            // R to I
+            if (prevInstruction.getOpcode().getOpcodeType() == 'I' && currInstruction.getOpcode().getOpcodeType() == 'R')
+            {
+                // R to load/store
+                if (prevInstruction.getOpcode().rdO == currInstruction.getOpcode().bseO)
+                {
+                    return true;
+                }
+
+                // R to not load/store
+                if (prevInstruction.getOpcode().rdO == currInstruction.getOpcode().rsO)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+
+        #endregion
+
+        private void showAllOpcodes() //checks if all lines are valid
+        {
+            
+            for (int i = 0; i < instruction.Count; i++)
+            {
+                Console.WriteLine(this.instruction[i].getOpcode().getOpcodeString());
+            }
+             
+        }
+
+        private void pipeline()
+        {
+            int i = 0;
+            this.numCycles = 0;
+            do
+            {
+                this.cycle.Add(new Cycle());
+                this.numCycles++;
+                
+                if (i == 0)     
+                {
+                    this.cycle[i].setInstructionFetch(this.instruction[i].getOpcode().getOpcodeString(), "4");      //  if first cycle, NPC & PC = 4       
+                }
+                else
+                {
+                    this.cycle[i].setInstructionFetch(this.instruction[i].getOpcode().getOpcodeString(), this.cycle[i - 1].IFID_NPC);
+                    this.cycle[i].setInstructionDecode(
+                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().getOpcodeString().Substring(7, 5), 2)].getValue(),   //get data in the A ([IF/ID.IR 21..25])
+                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().getOpcodeString().Substring(13, 5), 2)].getValue(),  //get data in the B ([IF/ID.IR 16..20])
+                        this.instruction[i - 1].getOpcode().getOpcodeString().Substring(18), 
+                        this.cycle[i - 1].IFID_IR, this.cycle[i - 1].IFID_NPC);                   
+                    this.cycle[i].setExecution(
+                        this.instruction[i - 1].getInstruction(),
+                        this.instruction[i - 1].getInstructionType(), 
+                        this.cycle[i - 1].IDEX_A, 
+                        this.cycle[i - 1].IDEX_B, 
+                        this.cycle[i - 1].IDEX_IMM, 
+                        this.cycle[i - 1].IDEX_IR);
+                    if (this.checkDataHazard(this.instruction[i], this.instruction[i - 1]))
+                    {
+                        MessageBox.Show("Data Hazard!");
+                        i = this.instruction.Count;
+                    }
+                }
+                
+                i++;
+            } while (i < this.instruction.Count);
+            
+        }
+
     }
 }
