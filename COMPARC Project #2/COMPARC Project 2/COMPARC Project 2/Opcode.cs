@@ -189,7 +189,7 @@ namespace COMPARC_Project_2
                         }
 
 
-                        if (immediateDec >= (8192 - 8) && immediateDec <= (16383 - 8) && (rsDec <= 31 || rtDec <= 31)) //immediateDec should be added to the value inside Rt...
+                        if (rsDec >= 0 || rtDec <= 31) //immediateDec should be added to the value inside Rt...
                         {
                             this.valid = true;
                         }

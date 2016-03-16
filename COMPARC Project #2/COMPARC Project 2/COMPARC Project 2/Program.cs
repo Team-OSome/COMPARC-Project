@@ -302,7 +302,7 @@ namespace COMPARC_Project_2
                 
                 if (i == 0)     
                 {
-                    this.cycle[i].setInstructionFetch(this.instruction[i].getOpcode().getOpcodeString(), "4");      //  if first cycle, NPC & PC = 4       
+                    this.cycle[i].setInstructionFetch(this.instruction[i].getOpcode().getOpcodeString(), "0");      //  if first cycle, NPC & PC = 4       
                 }
                 else
                 {
