@@ -290,20 +290,16 @@ namespace COMPARC_Project_2
         }
 
         public void setOffset(String offset) 
-        {   //offset can be negative. the offsetO should be the memory location of the branch location
-            //1st instruction = 1000
-            //2nd instruction = 1004, etc...
+        {   
             this.offset = offset;
+            Console.WriteLine("offset=" + offset);
+
             this.offsetDec = Int32.Parse(this.offset);
-            //this.offsetDec *= 4; //why times 4!?
+            Console.WriteLine("offsetDec=" + offsetDec);
 
-            this.offsetDec = this.lineNum +this.offsetDec;
-            //this.offsetO = this.offsetDec.ToString();
-
-
-
-            //this.offsetDec = Int32.Parse(offsetO, System.Globalization.NumberStyles.HexNumber);
+           
             this.offsetO = Convert.ToString(offsetDec, 2);
+            Console.WriteLine("offsetO=" + offsetO);
 
             //Console.WriteLine("OffsetO is: " + offsetO);
             
