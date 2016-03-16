@@ -41,6 +41,8 @@ namespace COMPARC_Project_2
 
         private int lineNum;
 
+        private String hexOpcodeString;
+
         #endregion
 
         public Opcode(String instruction, String rd, String rs, String rt, String immediate, String offset, String bse, int lineNum)
@@ -326,6 +328,40 @@ namespace COMPARC_Project_2
         public char getOpcodeType()
         {
             return opcodeType;
+        }
+
+        public void setHexOpcodeString()
+        {
+            this.hexOpcodeString = BinaryStringToHexString(this.opcodeString.Replace(" ", ""));
+        }
+
+        public String getHexOpcodeString()
+        {
+            return this.hexOpcodeString;
+        }
+
+
+
+        public static String BinaryStringToHexString(String binary)
+        {
+            StringBuilder result = new StringBuilder(binary.Length / 8 + 1);
+
+            // TODO: check all 1's or 0's... Will throw otherwise
+
+            int mod4Len = binary.Length % 8;
+            if (mod4Len != 0)
+            {
+                // pad to length multiple of 8
+                binary = binary.PadLeft(((binary.Length / 8) + 1) * 8, '0');
+            }
+
+            for (int i = 0; i < binary.Length; i += 8)
+            {
+                string eightBits = binary.Substring(i, 8);
+                result.AppendFormat("{0:X2}", Convert.ToByte(eightBits, 2));
+            }
+
+            return result.ToString();
         }
 
     }

@@ -61,8 +61,14 @@ namespace COMPARC_Project_2
             if (this.instructionsValid && hasBranch)
             {
                 this.setBranchOffsets();
-                showAllOpcodes();
             }
+
+            for (int i = 0; i < instruction.Count(); i++)
+            {
+                this.instruction[i].getOpcode().setHexOpcodeString();
+            }
+                showAllOpcodes();
+                showAllHexOpcodes();
 
             this.pipeline();
         }
@@ -334,7 +340,7 @@ namespace COMPARC_Project_2
 
         #endregion
 
-        private void showAllOpcodes() //checks if all lines are valid
+        private void showAllOpcodes() 
         {
             
             for (int i = 0; i < instruction.Count; i++)
@@ -342,6 +348,16 @@ namespace COMPARC_Project_2
                 Console.WriteLine(this.instruction[i].getOpcode().getOpcodeString());
             }
              
+        }
+
+        private void showAllHexOpcodes() //checks if all lines are valid
+        {
+
+            for (int i = 0; i < instruction.Count; i++)
+            {
+                Console.WriteLine(this.instruction[i].getOpcode().getHexOpcodeString());
+            }
+
         }
 
         private void pipeline()
