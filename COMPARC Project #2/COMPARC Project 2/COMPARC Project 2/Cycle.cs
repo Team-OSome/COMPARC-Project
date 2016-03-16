@@ -68,19 +68,56 @@ namespace COMPARC_Project_2
 
         public void setInstructionDecode(string A, string B, string IMM, string IFID_IR, string IFID_NPC)
         {
+            char signextend;
             this.IDEX_A = A;   // [IF/ID.IR 21..25]
             this.IDEX_B = B;   // [IF/ID.IR 16..20]
-            this.IDEX_IMM = IMM; // [Sign Extend + IF/ID.IR 0..15]
+
+            this.IDEX_IMM = IMM.Replace(" ", "");       //  remove white spaces
+            signextend = this.IDEX_IMM[0];              //  get sign extend value
+            String text = this.IDEX_IMM;                // convert to hex
+            String val = Convert.ToInt32(text, 2).ToString("X").ToUpper();
+            text = "";
+            for (int i = val.Length; i < 4; i++)
+            {
+                text += "0";
+            }
+            text += val;
+            this.IDEX_IMM = text;
+            if (signextend == '1')
+            {
+                this.IDEX_IMM = "FFFF FFFF FFFF " + this.IDEX_IMM;
+            }
+            else
+            {
+                this.IDEX_IMM = "0000 0000 0000 " + this.IDEX_IMM;
+            }
 
             this.IDEX_IR = IFID_IR;
             this.IDEX_NPC = IFID_NPC;
         }
 
-        public void setExecution(string ALUOutput, string IDEX_B, string cond, string IDEX_IR)
+        public void setExecution(string instruction, string instructionType, string IDEX_A, string IDEX_B, string IDEX_IMM, string IDEX_IR)
         {
-            this.EXMEM_ALUOutput = ALUOutput;
+            if (instructionType == "Register-Register ALU Instruction")
+            {
+                //DSUBU
+                if (instruction == "DSUBU")
+                {
+                    this.EXMEM_ALUOutput = (Convert.ToInt32(IDEX_A, 16) - Convert.ToInt32(IDEX_B, 16)).ToString();
+                    this.EXMEM_Cond = "0";
+                }
+                else if (instruction == "DDIVU")
+                {
+                   
+                }
+                //DDIVU
+                //DMODU
+                //SLT
+                //SELNEZ
+            }
+            //this.EXMEM_ALUOutput = ALUOutput;
             this.EXMEM_B = IDEX_B;
-            this.EXMEM_Cond = cond;
+            //this.EXMEM_Cond = cond;
             this.EXMEM_IR = IDEX_IR;
         }
 

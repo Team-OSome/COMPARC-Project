@@ -47,7 +47,12 @@ namespace COMPARC_Project_2
                 setOpCodeGridView();
 
             //MessageBox.Show(memoryGridView.SelectedRows[0].Cells["Value"].Value.ToString());
-          
+            this.displayInternalPipelineRegisters();
+            
+        }
+
+        private void displayInternalPipelineRegisters()
+        {
             internalPipeRegLbl.Text = "";
             for (int i = 0; i < program.getNumCycles(); i++)
             {
@@ -62,6 +67,12 @@ namespace COMPARC_Project_2
                 internalPipeRegLbl.Text += "    ID/EX.IMM = " + program.getIDEX_IMM(i) + "\n";
                 internalPipeRegLbl.Text += "    ID/EX.IR  = " + program.getIDEX_IR(i) + "\n";
                 internalPipeRegLbl.Text += "    ID/EX.NPC = " + program.getIDEX_NPC(i) + "\n";
+                internalPipeRegLbl.Text += "Execution \n";
+                internalPipeRegLbl.Text += "    EX/MEM.ALUOutput   = " + program.getEXMEM_ALUOutput(i) + "\n";
+                internalPipeRegLbl.Text += "    EX/MEM.COND   = " + program.getEXMEM_Cond(i) + "\n";
+                internalPipeRegLbl.Text += "    EX/MEM.IR   = " + program.getEXMEM_IR(i) + "\n";
+                internalPipeRegLbl.Text += "    EX/MEM.B   = " + program.getEXMEM_B(i) + "\n";
+                internalPipeRegLbl.Text += "\n";
             }
         }
 

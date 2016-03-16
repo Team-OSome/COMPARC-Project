@@ -182,7 +182,7 @@
             this.opCodeGridView.Name = "opCodeGridView";
             this.opCodeGridView.ReadOnly = true;
             this.opCodeGridView.RowHeadersVisible = false;
-            this.opCodeGridView.Size = new System.Drawing.Size(422, 252);
+            this.opCodeGridView.Size = new System.Drawing.Size(329, 269);
             this.opCodeGridView.TabIndex = 0;
             // 
             // pipelineMapPanel

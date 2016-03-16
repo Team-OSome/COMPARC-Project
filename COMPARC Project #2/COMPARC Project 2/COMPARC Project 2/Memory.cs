@@ -16,11 +16,11 @@ namespace COMPARC_Project_2
             this.memoryLocation = memoryLocation;
             this.Value = Value;
         }
-
+        /*
         public Boolean isMemoryValid()
         {
 
         }
-
+        */
     }
 }

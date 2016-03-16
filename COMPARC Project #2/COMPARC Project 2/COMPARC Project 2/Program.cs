@@ -242,13 +242,24 @@ namespace COMPARC_Project_2
                 else
                 {
                     this.cycle[i].setInstructionFetch(this.instruction[i].getOpcode().getOpcodeString(), this.cycle[i - 1].IFID_NPC);
-                    this.cycle[i].setInstructionDecode(this.instruction[i-1].getOpcode().getOpcodeString().Substring(7,5), this.instruction[i - 1].getOpcode().getOpcodeString().Substring(13, 5), this.instruction[i - 1].getOpcode().getOpcodeString().Substring(18), this.cycle[i - 1].IFID_IR, this.cycle[i - 1].IFID_NPC);
-                    //this.cycle[i].setExecution("help", this.cycle[i - 1].IDEX_B, "cond", this.cycle[i - 1].IDEX_IR);
+                    this.cycle[i].setInstructionDecode(
+                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().getOpcodeString().Substring(7, 5), 2)].getValue(),   //get data in the A ([IF/ID.IR 21..25])
+                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().getOpcodeString().Substring(13, 5), 2)].getValue(),  //get data in the B ([IF/ID.IR 16..20])
+                        this.instruction[i - 1].getOpcode().getOpcodeString().Substring(18), 
+                        this.cycle[i - 1].IFID_IR, this.cycle[i - 1].IFID_NPC);
                     if (this.checkDataHazard(this.instruction[i],this.instruction[i-1]))
                     {
                         MessageBox.Show("Data Hazard!");
                         i = this.instruction.Count;
                     }
+                    
+                    this.cycle[i].setExecution(
+                        this.instruction[i - 1].getInstruction(),
+                        this.instruction[i - 1].getInstructionType(), 
+                        this.cycle[i - 1].IDEX_A, 
+                        this.cycle[i - 1].IDEX_B, 
+                        this.cycle[i - 1].IDEX_IMM, 
+                        this.cycle[i - 1].IDEX_IR);
                 }
                 
                 i++;
@@ -293,6 +304,26 @@ namespace COMPARC_Project_2
         public String getIDEX_NPC(int i)
         {
             return this.cycle[i].IDEX_NPC;
+        }
+
+        public String getEXMEM_ALUOutput(int i)
+        {
+            return this.cycle[i].EXMEM_ALUOutput;
+        }
+
+        public String getEXMEM_Cond(int i)
+        {
+            return this.cycle[i].EXMEM_Cond;
+        }
+
+        public String getEXMEM_IR(int i)
+        {
+            return this.cycle[i].EXMEM_IR;
+        }
+
+        public String getEXMEM_B(int i)
+        {
+            return this.cycle[i].EXMEM_B;
         }
 
         public int getNumCycles()
