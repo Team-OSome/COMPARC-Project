@@ -35,7 +35,6 @@
             this.simulateBtn = new System.Windows.Forms.Button();
             this.opcodePanel = new System.Windows.Forms.Panel();
             this.opCodeGridView = new System.Windows.Forms.DataGridView();
-            this.pipelineMapPanel = new System.Windows.Forms.Panel();
             this.stepButton = new System.Windows.Forms.Button();
             this.skipButton = new System.Windows.Forms.Button();
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
@@ -115,6 +114,7 @@
             this.r1Label = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.memoryGridView = new System.Windows.Forms.DataGridView();
+            this.pipelineMapGridView = new System.Windows.Forms.DataGridView();
             this.opcodePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.opCodeGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
@@ -123,6 +123,7 @@
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.memoryGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pipelineMapGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // programTB
@@ -184,17 +185,6 @@
             this.opCodeGridView.RowHeadersVisible = false;
             this.opCodeGridView.Size = new System.Drawing.Size(329, 269);
             this.opCodeGridView.TabIndex = 0;
-            // 
-            // pipelineMapPanel
-            // 
-            this.pipelineMapPanel.AutoScroll = true;
-            this.pipelineMapPanel.BackColor = System.Drawing.SystemColors.Control;
-            this.pipelineMapPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pipelineMapPanel.Location = new System.Drawing.Point(270, 334);
-            this.pipelineMapPanel.Margin = new System.Windows.Forms.Padding(2);
-            this.pipelineMapPanel.Name = "pipelineMapPanel";
-            this.pipelineMapPanel.Size = new System.Drawing.Size(543, 172);
-            this.pipelineMapPanel.TabIndex = 7;
             // 
             // stepButton
             // 
@@ -952,11 +942,24 @@
             this.memoryGridView.Size = new System.Drawing.Size(193, 239);
             this.memoryGridView.TabIndex = 0;
             // 
+            // pipelineMapGridView
+            // 
+            this.pipelineMapGridView.AllowUserToAddRows = false;
+            this.pipelineMapGridView.AllowUserToDeleteRows = false;
+            this.pipelineMapGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.pipelineMapGridView.Location = new System.Drawing.Point(270, 332);
+            this.pipelineMapGridView.Name = "pipelineMapGridView";
+            this.pipelineMapGridView.ReadOnly = true;
+            this.pipelineMapGridView.RowHeadersVisible = false;
+            this.pipelineMapGridView.Size = new System.Drawing.Size(539, 174);
+            this.pipelineMapGridView.TabIndex = 15;
+            // 
             // InputForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1150, 562);
+            this.Controls.Add(this.pipelineMapGridView);
             this.Controls.Add(this.dataTabs);
             this.Controls.Add(this.internalPipelineRegistersLbl);
             this.Controls.Add(this.pipelineMapLbl);
@@ -964,7 +967,6 @@
             this.Controls.Add(this.opcodeLbl);
             this.Controls.Add(this.skipButton);
             this.Controls.Add(this.stepButton);
-            this.Controls.Add(this.pipelineMapPanel);
             this.Controls.Add(this.opcodePanel);
             this.Controls.Add(this.simulateBtn);
             this.Controls.Add(this.enterProgLbl);
@@ -984,6 +986,7 @@
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.memoryGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pipelineMapGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -996,7 +999,6 @@
         private System.Windows.Forms.Label enterProgLbl;
         private System.Windows.Forms.Button simulateBtn;
         private System.Windows.Forms.Panel opcodePanel;
-        private System.Windows.Forms.Panel pipelineMapPanel;
         private System.Windows.Forms.Button stepButton;
         private System.Windows.Forms.Button skipButton;
         private System.IO.FileSystemWatcher fileSystemWatcher1;
@@ -1077,6 +1079,7 @@
         private System.Windows.Forms.DataGridView opCodeGridView;
         private System.Windows.Forms.DataGridView memoryGridView;
         private System.Windows.Forms.Label internalPipeRegLbl;
+        private System.Windows.Forms.DataGridView pipelineMapGridView;
         
     }
 }

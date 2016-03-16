@@ -48,6 +48,7 @@ namespace COMPARC_Project_2
 
             //MessageBox.Show(memoryGridView.SelectedRows[0].Cells["Value"].Value.ToString());
             this.displayInternalPipelineRegisters();
+            this.displayPipelineMap();
             
         }
 
@@ -79,6 +80,16 @@ namespace COMPARC_Project_2
         private void registerButton_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void displayPipelineMap()
+        {
+            pipelineMapGridView.Columns.Clear();
+            pipelineMapGridView.Columns.Add("Instruction", "Instruction");
+            for (int i = 0; i < program.getNumCycles(); i++)
+            {
+                pipelineMapGridView.Columns.Add("Cycle " + (i + 1), "Cycle " + (i + 1));
+            }
         }
 
         #region set/intialize functions
