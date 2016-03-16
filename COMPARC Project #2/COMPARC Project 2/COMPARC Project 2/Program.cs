@@ -17,12 +17,14 @@ namespace COMPARC_Project_2
         private Boolean hasBranch = false;
         private Boolean instructionsValid = true;
         private Boolean registersValid = true;
+        private List<Memory> memory;
 
         public Program(String[] program, String[] registers)
         {
             this.instruction = new List<Instruction>();
             this.cycle = new List<Cycle>();
             this.registers = new List<Register>();
+            this.memory = new List<Memory>();
             this.initializeInstructionArray(program);
             this.intializeRegisterArray(registers);
             instructionsValid = this.isValid();

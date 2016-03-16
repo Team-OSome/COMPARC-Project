@@ -41,6 +41,7 @@
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
             this.opcodeLbl = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.internalPipeRegLbl = new System.Windows.Forms.Label();
             this.pipelineMapLbl = new System.Windows.Forms.Label();
             this.internalPipelineRegistersLbl = new System.Windows.Forms.Label();
             this.dataTabs = new System.Windows.Forms.TabControl();
@@ -114,7 +115,6 @@
             this.r1Label = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.memoryGridView = new System.Windows.Forms.DataGridView();
-            this.internalPipeRegLbl = new System.Windows.Forms.Label();
             this.opcodePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.opCodeGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
@@ -239,6 +239,14 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(304, 481);
             this.panel1.TabIndex = 11;
+            // 
+            // internalPipeRegLbl
+            // 
+            this.internalPipeRegLbl.AutoSize = true;
+            this.internalPipeRegLbl.Location = new System.Drawing.Point(4, 4);
+            this.internalPipeRegLbl.Name = "internalPipeRegLbl";
+            this.internalPipeRegLbl.Size = new System.Drawing.Size(0, 13);
+            this.internalPipeRegLbl.TabIndex = 0;
             // 
             // pipelineMapLbl
             // 
@@ -607,6 +615,7 @@
             // 
             this.r0TextBox.Location = new System.Drawing.Point(30, 6);
             this.r0TextBox.Name = "r0TextBox";
+            this.r0TextBox.ReadOnly = true;
             this.r0TextBox.Size = new System.Drawing.Size(136, 20);
             this.r0TextBox.TabIndex = 39;
             this.r0TextBox.Text = "0000 0000 0000 0000";
@@ -941,14 +950,6 @@
             this.memoryGridView.RowHeadersVisible = false;
             this.memoryGridView.Size = new System.Drawing.Size(193, 239);
             this.memoryGridView.TabIndex = 0;
-            // 
-            // internalPipeRegLbl
-            // 
-            this.internalPipeRegLbl.AutoSize = true;
-            this.internalPipeRegLbl.Location = new System.Drawing.Point(4, 4);
-            this.internalPipeRegLbl.Name = "internalPipeRegLbl";
-            this.internalPipeRegLbl.Size = new System.Drawing.Size(0, 13);
-            this.internalPipeRegLbl.TabIndex = 0;
             // 
             // InputForm
             // 

@@ -46,6 +46,8 @@ namespace COMPARC_Project_2
             if(this.program.getInstructionsValid())
                 setOpCodeGridView();
 
+            //MessageBox.Show(memoryGridView.SelectedRows[0].Cells["Value"].Value.ToString());
+          
             internalPipeRegLbl.Text = "";
             for (int i = 0; i < program.getNumCycles(); i++)
             {
@@ -67,6 +69,8 @@ namespace COMPARC_Project_2
         {
 
         }
+
+        #region set/intialize functions
 
         private void setOpCodeGridView()
         {
@@ -91,6 +95,7 @@ namespace COMPARC_Project_2
             }
         }
 
-        
+        #endregion
+
     }
 }
