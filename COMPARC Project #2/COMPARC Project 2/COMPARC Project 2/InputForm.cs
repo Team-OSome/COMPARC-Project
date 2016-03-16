@@ -41,38 +41,11 @@ namespace COMPARC_Project_2
 
             this.displayInternalPipelineRegisters();
             this.displayPipelineMap();
+            this.refreshRegisters();
             
         }
 
-        private void displayInternalPipelineRegisters()
-        {
-            internalPipeRegLbl.Text = "";
-            for (int i = 0; i < program.getNumCycles(); i++)
-            {
-                internalPipeRegLbl.Text += "Cycle: " + (i + 1).ToString() + "\n";
-                internalPipeRegLbl.Text += "Instruction Fetch \n";
-                internalPipeRegLbl.Text += "    IF/ID.IR  = " + program.getIFID_IR(i) + "\n";
-                internalPipeRegLbl.Text += "    IF/ID.NPC = " + program.getIFID_NPC(i) + "\n";
-                internalPipeRegLbl.Text += "    IF/ID.PC  = " + program.getIFID_PC(i) + "\n";
-                internalPipeRegLbl.Text += "Instruction Decode \n";
-                internalPipeRegLbl.Text += "    ID/EX.A   = " + program.getIDEX_A(i) + "\n";
-                internalPipeRegLbl.Text += "    ID/EX.B   = " + program.getIDEX_B(i) + "\n";
-                internalPipeRegLbl.Text += "    ID/EX.IMM = " + program.getIDEX_IMM(i) + "\n";
-                internalPipeRegLbl.Text += "    ID/EX.IR  = " + program.getIDEX_IR(i) + "\n";
-                internalPipeRegLbl.Text += "    ID/EX.NPC = " + program.getIDEX_NPC(i) + "\n";
-                internalPipeRegLbl.Text += "Execution \n";
-                internalPipeRegLbl.Text += "    EX/MEM.ALUOutput   = " + program.getEXMEM_ALUOutput(i) + "\n";
-                internalPipeRegLbl.Text += "    EX/MEM.COND   = " + program.getEXMEM_Cond(i) + "\n";
-                internalPipeRegLbl.Text += "    EX/MEM.IR   = " + program.getEXMEM_IR(i) + "\n";
-                internalPipeRegLbl.Text += "    EX/MEM.B   = " + program.getEXMEM_B(i) + "\n";
-                internalPipeRegLbl.Text += "\n";
-            }
-        }
 
-        private void registerButton_Click(object sender, EventArgs e)
-        {
-
-        }
 
         #region text box getters
 
@@ -105,6 +78,46 @@ namespace COMPARC_Project_2
 
         #region set/display/view functions
 
+        private String addSpaces(string text)
+        {
+            return text.Substring(0, 4) + " " + text.Substring(4, 4) + " " + text.Substring(8, 4) + " " + text.Substring(12, 4);
+        }
+
+        private void refreshRegisters()
+        {
+            r1TextBox.Text = this.addSpaces(this.program.getRegisterData(1));
+            r2TextBox.Text = this.addSpaces(this.program.getRegisterData(2));
+            r3TextBox.Text = this.addSpaces(this.program.getRegisterData(3));
+            r4TextBox.Text = this.addSpaces(this.program.getRegisterData(4));
+            r5TextBox.Text = this.addSpaces(this.program.getRegisterData(5));
+            r6TextBox.Text = this.addSpaces(this.program.getRegisterData(6));
+            r7TextBox.Text = this.addSpaces(this.program.getRegisterData(7));
+            r8TextBox.Text = this.addSpaces(this.program.getRegisterData(8));
+            r9TextBox.Text = this.addSpaces(this.program.getRegisterData(9));
+            r10TextBox.Text = this.addSpaces(this.program.getRegisterData(10));
+            r11TextBox.Text = this.addSpaces(this.program.getRegisterData(11));
+            r12TextBox.Text = this.addSpaces(this.program.getRegisterData(12));
+            r13TextBox.Text = this.addSpaces(this.program.getRegisterData(13));
+            r14TextBox.Text = this.addSpaces(this.program.getRegisterData(14));
+            r15TextBox.Text = this.addSpaces(this.program.getRegisterData(15));
+            r16TextBox.Text = this.addSpaces(this.program.getRegisterData(16));
+            r17TextBox.Text = this.addSpaces(this.program.getRegisterData(17));
+            r18TextBox.Text = this.addSpaces(this.program.getRegisterData(18));
+            r19TextBox.Text = this.addSpaces(this.program.getRegisterData(19));
+            r20TextBox.Text = this.addSpaces(this.program.getRegisterData(20));
+            r21TextBox.Text = this.addSpaces(this.program.getRegisterData(21));
+            r22TextBox.Text = this.addSpaces(this.program.getRegisterData(22));
+            r23TextBox.Text = this.addSpaces(this.program.getRegisterData(23));
+            r24TextBox.Text = this.addSpaces(this.program.getRegisterData(24));
+            r25TextBox.Text = this.addSpaces(this.program.getRegisterData(25));
+            r26TextBox.Text = this.addSpaces(this.program.getRegisterData(26));
+            r27TextBox.Text = this.addSpaces(this.program.getRegisterData(27));
+            r28TextBox.Text = this.addSpaces(this.program.getRegisterData(28));
+            r29TextBox.Text = this.addSpaces(this.program.getRegisterData(29));
+            r30TextBox.Text = this.addSpaces(this.program.getRegisterData(30));
+            r31TextBox.Text = this.addSpaces(this.program.getRegisterData(31));
+        }
+
         private void setOpCodeGridView()
         {
             int hex = 0x0000;
@@ -125,6 +138,38 @@ namespace COMPARC_Project_2
             {
                 memoryGridView.Rows.Add(hex.ToString("x").ToUpper(), "00");
                 hex--;
+            }
+        }
+
+        private void displayInternalPipelineRegisters()
+        {
+            internalPipeRegLbl.Text = "";
+            for (int i = 0; i < program.getNumCycles(); i++)
+            {
+                internalPipeRegLbl.Text += "Cycle: " + (i + 1).ToString() + "\n";
+                internalPipeRegLbl.Text += "Instruction Fetch \n";
+                internalPipeRegLbl.Text += "    IF/ID.IR  = " + program.getIFID_IR(i) + "\n";
+                internalPipeRegLbl.Text += "    IF/ID.NPC = " + program.getIFID_NPC(i) + "\n";
+                internalPipeRegLbl.Text += "    IF/ID.PC  = " + program.getIFID_PC(i) + "\n";
+                internalPipeRegLbl.Text += "Instruction Decode \n";
+                internalPipeRegLbl.Text += "    ID/EX.A   = " + program.getIDEX_A(i) + "\n";
+                internalPipeRegLbl.Text += "    ID/EX.B   = " + program.getIDEX_B(i) + "\n";
+                internalPipeRegLbl.Text += "    ID/EX.IMM = " + program.getIDEX_IMM(i) + "\n";
+                internalPipeRegLbl.Text += "    ID/EX.IR  = " + program.getIDEX_IR(i) + "\n";
+                internalPipeRegLbl.Text += "    ID/EX.NPC = " + program.getIDEX_NPC(i) + "\n";
+                internalPipeRegLbl.Text += "Execution \n";
+                internalPipeRegLbl.Text += "    EX/MEM.ALUOutput   = " + program.getEXMEM_ALUOutput(i) + "\n";
+                internalPipeRegLbl.Text += "    EX/MEM.COND   = " + program.getEXMEM_Cond(i) + "\n";
+                internalPipeRegLbl.Text += "    EX/MEM.IR   = " + program.getEXMEM_IR(i) + "\n";
+                internalPipeRegLbl.Text += "    EX/MEM.B   = " + program.getEXMEM_B(i) + "\n";
+                internalPipeRegLbl.Text += "Memory Access \n";
+                internalPipeRegLbl.Text += "    MEM/WB.LMD   = " + program.getMEMWB_LMD(i) + "\n";
+                internalPipeRegLbl.Text += "    MEM/WB.Range   = " + program.getMEMWB_Range(i) + "\n";
+                internalPipeRegLbl.Text += "    MEM/WB.IR  = " + program.getMEMWB_IR(i) + "\n";
+                internalPipeRegLbl.Text += "    MEM/WB.ALUOutput   = " + program.getMEMWB_ALUOutput(i) + "\n";
+                internalPipeRegLbl.Text += "Write Back \n";
+                internalPipeRegLbl.Text += "    Rn = " + program.getMEMWB_ALUOutput(i); //   program.getWriteBackRegister(i) + " = " + program.getMEMWB_ALUOutput(i);
+                internalPipeRegLbl.Text += "\n";
             }
         }
 

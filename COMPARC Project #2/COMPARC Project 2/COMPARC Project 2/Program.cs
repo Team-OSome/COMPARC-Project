@@ -168,7 +168,10 @@ namespace COMPARC_Project_2
             return this.instruction.Count;
         }
 
-
+        public String getRegisterData(int i)
+        {
+            return this.registers[i].getValue();
+        }
         public String getIFID_IR(int i)
         {
             return this.cycle[i].IFID_IR;
@@ -226,6 +229,26 @@ namespace COMPARC_Project_2
         public String getEXMEM_B(int i)
         {
             return this.cycle[i].EXMEM_B;
+        }
+
+        public String getMEMWB_LMD(int i)
+        {
+            return this.cycle[i].MEMWB_LMD;
+        }
+
+        public String getMEMWB_Range(int i)
+        {
+            return this.cycle[i].MEMWB_Range;
+        }
+
+        public String getMEMWB_ALUOutput(int i)
+        {
+            return this.cycle[i].MEMWB_ALUOutput;
+        }
+
+        public String getMEMWB_IR(int i)
+        {
+            return this.cycle[i].MEMWB_IR;
         }
 
         public int getNumCycles()
@@ -363,32 +386,59 @@ namespace COMPARC_Project_2
         private void pipeline()
         {
             int i = 0;
-
+            int totalCycles = this.instruction.Count;
+            Boolean noMoreIF = false;
+            //int completedCycles = 0;
             this.numCycles = 0;
             do
             {
                 this.cycle.Add(new Cycle());
                 this.numCycles++;
-                
-                if (i == 0)     
+
+                if (i == 0)     //  if first cycle, NPC & PC = 4
                 {
-                    this.cycle[i].setInstructionFetch(this.instruction[i].getOpcode().getOpcodeString(), "0");      //  if first cycle, NPC & PC = 4       
+                    this.cycle[i].setInstructionFetch(
+                        this.instruction[i].getOpcode().getOpcodeString(), 
+                        "0",
+                        this.instruction[i].getInstruction(),
+                        this.instruction[i].getInstructionType()
+                        );             
                 }
                 else
                 {
-                    this.cycle[i].setInstructionFetch(this.instruction[i].getOpcode().getOpcodeString(), this.cycle[i - 1].IFID_NPC);
-                    this.cycle[i].setInstructionDecode(
-                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().getOpcodeString().Substring(7, 5), 2)].getValue(),   //get data in the A ([IF/ID.IR 21..25])
-                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().getOpcodeString().Substring(13, 5), 2)].getValue(),  //get data in the B ([IF/ID.IR 16..20])
-                        this.instruction[i - 1].getOpcode().getOpcodeString().Substring(18), 
-                        this.cycle[i - 1].IFID_IR, this.cycle[i - 1].IFID_NPC);                   
+                   this.cycle[i].setInstructionFetch(
+                        this.instruction[i].getOpcode().getOpcodeString(),
+                        this.cycle[i - 1].IFID_NPC,
+                        this.instruction[i].getInstruction(),
+                        this.instruction[i].getInstructionType()
+                        );     
+		           this.cycle[i].setInstructionDecode(
+                        this.registers[Convert.ToInt32(this.cycle[i - 1].IFID_IR.Substring(7, 5), 2)].getValue(),   //get data in the A ([IF/ID.IR 21..25])
+                        this.registers[Convert.ToInt32(this.cycle[i - 1].IFID_IR.Substring(13, 5), 2)].getValue(),  //get data in the B ([IF/ID.IR 16..20])
+                        this.instruction[i - 1].getOpcode().getOpcodeString().Substring(18),
+                        this.cycle[i - 1].IFID_IR,
+                        this.cycle[i - 1].IFID_NPC,
+                        this.cycle[i - 1].IFID_instruction,
+                        this.cycle[i - 1].IFID_instructionType
+                        );
                     this.cycle[i].setExecution(
-                        this.instruction[i - 1].getInstruction(),
-                        this.instruction[i - 1].getInstructionType(), 
-                        this.cycle[i - 1].IDEX_A, 
-                        this.cycle[i - 1].IDEX_B, 
-                        this.cycle[i - 1].IDEX_IMM, 
-                        this.cycle[i - 1].IDEX_IR);
+                        this.cycle[i - 1].IDEX_A,
+                        this.cycle[i - 1].IDEX_B,
+                        this.cycle[i - 1].IDEX_IMM,
+                        this.cycle[i - 1].IDEX_IR,
+                        this.cycle[i - 1].IDEX_instruction,
+                        this.cycle[i - 1].IDEX_instructionType
+                        );
+                    this.cycle[i].setMemoryAccess(
+                        this.cycle[i - 1].EXMEM_IR,
+                        this.cycle[i - 1].EXMEM_ALUOutput,
+                        this.cycle[i - 1].EXMEM_instruction,
+                        this.cycle[i - 1].EXMEM_instructionType
+                        );
+
+                    //  Write Back
+                    this.pipelineWriteBack(i);
+                    /*
                     if (this.checkDataHazard(this.instruction[i], this.instruction[i - 1]))
                     {
                         for (int k = i; k < 3+i; k++)
@@ -407,12 +457,39 @@ namespace COMPARC_Project_2
                         }
                         i += 3;
                     }
+                     */
 
                 }
                 i++;
-            } while (i < this.instruction.Count);
+            } while (i < totalCycles);
             
         }
+
+        private void pipelineWriteBack(int i)
+        {
+            if (this.cycle[i - 1].MEMWB_instructionType == "Register-Register ALU Instruction")
+            {
+                this.registers[Convert.ToInt32(this.cycle[i - 1].MEMWB_IR.Substring(19, 5), 2)].setRegisterValue(this.cycle[i - 1].MEMWB_ALUOutput);
+            }
+            else if (this.cycle[i - 1].MEMWB_instructionType == "Register-Immediate ALU Instruction")
+            {
+
+            }
+            else if (this.cycle[i - 1].MEMWB_instructionType == "Load Instruction")
+            {
+
+            }
+            else
+            {
+
+            }
+        }
+        /*
+        public String getWriteBackRegister(int i)
+        {
+            return "R" + Convert.ToInt32(this.cycle[i - 1].MEMWB_IR.Substring(19, 5), 2);
+        }
+         */
 
     }
 }
