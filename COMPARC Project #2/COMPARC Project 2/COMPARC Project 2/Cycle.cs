@@ -10,6 +10,7 @@ namespace COMPARC_Project_2
     {
         #region variables
 
+        public Boolean stall { get; set; }
         public String IFID_IR { get; private set; }
         public String IFID_NPC { get; private set; }
         public String IFID_PC { get; private set; }
@@ -36,27 +37,29 @@ namespace COMPARC_Project_2
 
         public Cycle()
         {
-            IFID_IR = null;
-            IFID_NPC = null;
-            IFID_PC = null;
+            this.stall = false;
 
-            IDEX_A = null;
-            IDEX_B = null;
-            IDEX_IMM = null;
-            IDEX_NPC = null;
-            IDEX_IR = null;
+            this.IFID_IR = null;
+            this.IFID_NPC = null;
+            this.IFID_PC = null;
 
-            EXMEM_ALUOutput = null;
-            EXMEM_Cond = null;
-            EXMEM_B = null;
-            EXMEM_IR = null;
+            this.IDEX_A = null;
+            this.IDEX_B = null;
+            this.IDEX_IMM = null;
+            this.IDEX_NPC = null;
+            this.IDEX_IR = null;
 
-            MEMWB_LMD = null;
-            MEMWB_Range = null;
-            MEMWB_IR = null;
-            MEMWB_ALUOutput = null;
+            this.EXMEM_ALUOutput = null;
+            this.EXMEM_Cond = null;
+            this.EXMEM_B = null;
+            this.EXMEM_IR = null;
 
-            WB_Rn = null;        
+            this.MEMWB_LMD = null;
+            this.MEMWB_Range = null;
+            this.MEMWB_IR = null;
+            this.MEMWB_ALUOutput = null;
+
+            this.WB_Rn = null;        
         }
 
         public void setInstructionFetch(string opcode, string programCtr)

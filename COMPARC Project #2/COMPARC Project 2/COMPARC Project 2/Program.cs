@@ -294,6 +294,7 @@ namespace COMPARC_Project_2
         private void pipeline()
         {
             int i = 0;
+
             this.numCycles = 0;
             do
             {
@@ -321,11 +322,24 @@ namespace COMPARC_Project_2
                         this.cycle[i - 1].IDEX_IR);
                     if (this.checkDataHazard(this.instruction[i], this.instruction[i - 1]))
                     {
-                        MessageBox.Show("Data Hazard!");
-                        i = this.instruction.Count;
+                        for (int k = i; k < 3+i; k++)
+                        {
+                            this.cycle.Add(new Cycle());
+                            this.numCycles++;
+                            this.cycle[k].stall = true;
+
+                            this.cycle[k].setExecution(
+                                this.instruction[k - 1].getInstruction(),
+                                this.instruction[k - 1].getInstructionType(),
+                                this.cycle[k - 1].IDEX_A,
+                                this.cycle[k - 1].IDEX_B,
+                                this.cycle[k - 1].IDEX_IMM,
+                                this.cycle[k - 1].IDEX_IR);
+                        }
+                        i += 3;
                     }
+
                 }
-                
                 i++;
             } while (i < this.instruction.Count);
             
