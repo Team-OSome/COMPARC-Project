@@ -19,7 +19,8 @@ namespace COMPARC_Project_2
 
         public void setRegisterValue(String value)
         {
-            this.value = value;
+            if(this.registerName != "R0")
+                this.value = value;
         }
 
         public String getValue()

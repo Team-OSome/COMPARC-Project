@@ -16,11 +16,16 @@ namespace COMPARC_Project_2
             this.memoryLocation = memoryLocation;
             this.Value = Value;
         }
-        /*
-        public Boolean isMemoryValid()
-        {
 
+        public String getValue()
+        {
+            return this.Value;
         }
-        */
+
+        public String getLocation()
+        {
+            return this.memoryLocation;
+        }
+
     }
 }

@@ -33,20 +33,12 @@ namespace COMPARC_Project_2
 
         private void simulateBtn_Click(object sender, EventArgs e)
         {
-            String[] registers = new String[32] {r0TextBox.Text, r1TextBox.Text, r2TextBox.Text, r3TextBox.Text, r4TextBox.Text, 
-                                                r5TextBox.Text, r6TextBox.Text, r7TextBox.Text, r8TextBox.Text, r9TextBox.Text, 
-                                                r10TextBox.Text, r11TextBox.Text, r12TextBox.Text, r13TextBox.Text, r14TextBox.Text,
-                                                r15TextBox.Text, r16TextBox.Text, r17TextBox.Text, r18TextBox.Text, r19TextBox.Text,
-                                                r20TextBox.Text, r21TextBox.Text, r22TextBox.Text, r23TextBox.Text, r24TextBox.Text,
-                                                r25TextBox.Text, r26TextBox.Text, r27TextBox.Text, r28TextBox.Text, r29TextBox.Text,
-                                                r30TextBox.Text, r31TextBox.Text};
-
-            this.program = new Program(programTB.Lines, registers);
+           
+            this.program = new Program(programTB.Lines, getRegisterTextBox(), getMemoryTextBox());
 
             if(this.program.getInstructionsValid())
                 setOpCodeGridView();
 
-            //MessageBox.Show(memoryGridView.SelectedRows[0].Cells["Value"].Value.ToString());
             this.displayInternalPipelineRegisters();
             this.displayPipelineMap();
             
@@ -82,21 +74,40 @@ namespace COMPARC_Project_2
 
         }
 
-        private void displayPipelineMap()
+        #region text box getters
+
+        private String[] getRegisterTextBox()
         {
-            pipelineMapGridView.Columns.Clear();
-            pipelineMapGridView.Columns.Add("Instruction", "Instruction");
-            for (int i = 0; i < program.getNumCycles(); i++)
-            {
-                pipelineMapGridView.Columns.Add("Cycle " + (i + 1), "Cycle " + (i + 1));
-            }
+            String[] registers = new String[32] {r0TextBox.Text, r1TextBox.Text, r2TextBox.Text, r3TextBox.Text, r4TextBox.Text, 
+                                                r5TextBox.Text, r6TextBox.Text, r7TextBox.Text, r8TextBox.Text, r9TextBox.Text, 
+                                                r10TextBox.Text, r11TextBox.Text, r12TextBox.Text, r13TextBox.Text, r14TextBox.Text,
+                                                r15TextBox.Text, r16TextBox.Text, r17TextBox.Text, r18TextBox.Text, r19TextBox.Text,
+                                                r20TextBox.Text, r21TextBox.Text, r22TextBox.Text, r23TextBox.Text, r24TextBox.Text,
+                                                r25TextBox.Text, r26TextBox.Text, r27TextBox.Text, r28TextBox.Text, r29TextBox.Text,
+                                                r30TextBox.Text, r31TextBox.Text};
+            return registers;
+
         }
 
-        #region set/intialize functions
+        private String[] getMemoryTextBox()
+        {
+            String[] memory = new String[8192];
+
+            for (int i = 0; i < 8192; i++)
+            {
+                memory[i] = memoryGridView.Rows[i].Cells["Value"].Value.ToString().ToUpper().Replace(" ", String.Empty);
+            }
+
+            return memory;
+        }
+
+        #endregion
+
+        #region set/display/view functions
 
         private void setOpCodeGridView()
         {
-            int hex = 0x00;
+            int hex = 0x0000;
             opCodeGridView.Rows.Clear();
 
             for (int i = 0; i < this.program.getInstructionLength(); i++)
@@ -108,12 +119,22 @@ namespace COMPARC_Project_2
 
         private void initializeMemory()
         {
-            int hex = 0x2000;
+            int hex = 0x3FFF;
 
             for (int i = 0; i < 8192; i++)
             {
                 memoryGridView.Rows.Add(hex.ToString("x").ToUpper(), "00");
-                hex++;
+                hex--;
+            }
+        }
+
+        private void displayPipelineMap()
+        {
+            pipelineMapGridView.Columns.Clear();
+            pipelineMapGridView.Columns.Add("Instruction", "Instruction");
+            for (int i = 0; i < program.getNumCycles(); i++)
+            {
+                pipelineMapGridView.Columns.Add("Cycle " + (i + 1), "Cycle " + (i + 1));
             }
         }
 

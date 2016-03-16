@@ -17,9 +17,10 @@ namespace COMPARC_Project_2
         private Boolean hasBranch = false;
         private Boolean instructionsValid = true;
         private Boolean registersValid = true;
+        private Boolean memoryValid = true;
         private List<Memory> memory;
 
-        public Program(String[] program, String[] registers)
+        public Program(String[] program, String[] registers, String[] memory)
         {
             this.instruction = new List<Instruction>();
             this.cycle = new List<Cycle>();
@@ -27,8 +28,11 @@ namespace COMPARC_Project_2
             this.memory = new List<Memory>();
             this.initializeInstructionArray(program);
             this.intializeRegisterArray(registers);
-            instructionsValid = this.isValid();
+            this.intializeMemoryArray(memory);
+            
+            this.instructionsValid = this.isValid();
             this.registersValid = isRegistersValid();
+            this.memoryValid = isMemoryValid();
             
             if (this.instructionsValid && hasBranch)
             {
@@ -39,7 +43,7 @@ namespace COMPARC_Project_2
             this.pipeline();
         }
 
-        #region setters 
+        #region setters/intializers 
 
         private void initializeInstructionArray(String[] program) //sets all the instructions
         {
@@ -65,6 +69,18 @@ namespace COMPARC_Project_2
             {
                 this.registers.Add(new Register("R" + num, registers[i]));
                 num++;
+            }
+        }
+
+        private void intializeMemoryArray(String[] memory)
+        {
+            this.memory.Capacity = 8192;
+            int num = 0x3FFF;
+
+            for (int i = 0; i < this.memory.Capacity; i++)
+            {
+                this.memory.Add(new Memory(num.ToString("x").ToUpper(), memory[i]));
+                num--;
             }
         }
 
@@ -205,12 +221,25 @@ namespace COMPARC_Project_2
         private Boolean isRegistersValid() //checks if all registers are valid
         {
             for (int i = 0; i < this.registers.Capacity; i++)
-                if (!isHexValid(registers[i].getValue()) || registers[i].getValue().Length != 16)
+                if (!isHexValid(this.registers[i].getValue()) || this.registers[i].getValue().Length != 16)
                 {
-                    System.Windows.Forms.MessageBox.Show("ERROR AT : " + registers[i].getName());
+                    System.Windows.Forms.MessageBox.Show("ERROR AT : " + this.registers[i].getName());
                     return false;
                 }
             return true;
+        }
+
+        private Boolean isMemoryValid() //checks if all memory location values are valid
+        {
+            for (int i = 0; i < this.memory.Capacity; i++)
+                if (!isHexValid(this.memory[i].getValue()) || this.memory[i].getValue().Length != 2)
+                {
+                    System.Windows.Forms.MessageBox.Show("ERROR AT MEMORY LOCATION : " + this.memory[i].getLocation());
+                    return false;
+                }
+
+            return true;
+            
         }
 
         private Boolean isHexValid(String value)
