@@ -19,6 +19,7 @@ namespace COMPARC_Project_2
         private Boolean registersValid = true;
         private Boolean memoryValid = true;
         private List<Memory> memory;
+        private String[] program;
 
         public Program(String[] program, String[] registers, String[] memory)
         {
@@ -26,7 +27,30 @@ namespace COMPARC_Project_2
             this.cycle = new List<Cycle>();
             this.registers = new List<Register>();
             this.memory = new List<Memory>();
-            this.initializeInstructionArray(program);
+
+            List<String> programList = program.ToList<String>();
+
+            for (int i = 0; i < programList.Count(); i++)
+            {
+                Console.WriteLine(i + ":" + programList.ElementAt(i)+".");
+            }
+
+            for (int i = 0; i < programList.Count(); i++) 
+            {
+                //Console.WriteLine(i + ":" + programList.ElementAt(i));
+                if (programList.ElementAt(i).Equals("") || programList.ElementAt(i).Equals(" ") || programList.ElementAt(i).Equals(13) || programList.ElementAt(i).Equals(0))
+                {
+                    Console.WriteLine("Removed line i=" + i);
+                    programList.RemoveAt(i);
+                    i--;
+                }
+            }
+
+            this.program = programList.ToArray();
+
+
+
+            this.initializeInstructionArray(this.program);
             this.intializeRegisterArray(registers);
             this.intializeMemoryArray(memory);
             
