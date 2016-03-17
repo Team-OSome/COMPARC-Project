@@ -35,8 +35,6 @@
             this.simulateBtn = new System.Windows.Forms.Button();
             this.opcodePanel = new System.Windows.Forms.Panel();
             this.opCodeGridView = new System.Windows.Forms.DataGridView();
-            this.stepButton = new System.Windows.Forms.Button();
-            this.skipButton = new System.Windows.Forms.Button();
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
             this.opcodeLbl = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -115,6 +113,51 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.memoryGridView = new System.Windows.Forms.DataGridView();
             this.pipelineMapGridView = new System.Windows.Forms.DataGridView();
+            this.internalPipelineRegistersPanel = new System.Windows.Forms.Panel();
+            this.Rn_Lbl = new System.Windows.Forms.Label();
+            this.MEMWB_ALUOutput_Lbl = new System.Windows.Forms.Label();
+            this.MEMWB_IR_Lbl = new System.Windows.Forms.Label();
+            this.MEMWB_LMD_Lbl = new System.Windows.Forms.Label();
+            this.EXMEM_B_Lbl = new System.Windows.Forms.Label();
+            this.EXMEM_IR_Lbl = new System.Windows.Forms.Label();
+            this.EXMEM_Cond_Lbl = new System.Windows.Forms.Label();
+            this.EXMEM_ALUOutput_Lbl = new System.Windows.Forms.Label();
+            this.IDEX_NPC_Lbl = new System.Windows.Forms.Label();
+            this.IDEX_IR_Lbl = new System.Windows.Forms.Label();
+            this.IDEX_IMM_Lbl = new System.Windows.Forms.Label();
+            this.IDEX_B_Lbl = new System.Windows.Forms.Label();
+            this.IDEX_A_Lbl = new System.Windows.Forms.Label();
+            this.IFID_PC_Lbl = new System.Windows.Forms.Label();
+            this.IFID_NPC_Lbl = new System.Windows.Forms.Label();
+            this.IFID_IR_Lbl = new System.Windows.Forms.Label();
+            this.Rn = new System.Windows.Forms.Label();
+            this.MEMWB_IR = new System.Windows.Forms.Label();
+            this.MEMWB_ALUOutput = new System.Windows.Forms.Label();
+            this.MEMWB_LMD = new System.Windows.Forms.Label();
+            this.EXMEM_Cond = new System.Windows.Forms.Label();
+            this.EXMEM_IR = new System.Windows.Forms.Label();
+            this.EXMEM_B = new System.Windows.Forms.Label();
+            this.EXMEM_ALUOutput = new System.Windows.Forms.Label();
+            this.IDEX_B = new System.Windows.Forms.Label();
+            this.IDEX_IMM = new System.Windows.Forms.Label();
+            this.IDEX_IR = new System.Windows.Forms.Label();
+            this.IDEX_NPC = new System.Windows.Forms.Label();
+            this.IDEX_A = new System.Windows.Forms.Label();
+            this.IFID_NPC = new System.Windows.Forms.Label();
+            this.IFID_PC = new System.Windows.Forms.Label();
+            this.IFID_IR = new System.Windows.Forms.Label();
+            this.cycleLbl = new System.Windows.Forms.Label();
+            this.writeBackLbl = new System.Windows.Forms.Label();
+            this.memoryAccessLbl = new System.Windows.Forms.Label();
+            this.instructionDecodeLbl = new System.Windows.Forms.Label();
+            this.executionLbl = new System.Windows.Forms.Label();
+            this.instructionFetchLbl = new System.Windows.Forms.Label();
+            this.nextCycleBtn = new System.Windows.Forms.Button();
+            this.prevCycleBtn = new System.Windows.Forms.Button();
+            this.lastCycleBtn = new System.Windows.Forms.Button();
+            this.gotoCycleTB = new System.Windows.Forms.TextBox();
+            this.firstCycleBtn = new System.Windows.Forms.Button();
+            this.gotoCycleBtn = new System.Windows.Forms.Button();
             this.opcodePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.opCodeGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
@@ -124,6 +167,7 @@
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.memoryGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pipelineMapGridView)).BeginInit();
+            this.internalPipelineRegistersPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // programTB
@@ -186,26 +230,6 @@
             this.opCodeGridView.Size = new System.Drawing.Size(329, 269);
             this.opCodeGridView.TabIndex = 0;
             // 
-            // stepButton
-            // 
-            this.stepButton.Location = new System.Drawing.Point(1043, 512);
-            this.stepButton.Margin = new System.Windows.Forms.Padding(2);
-            this.stepButton.Name = "stepButton";
-            this.stepButton.Size = new System.Drawing.Size(46, 41);
-            this.stepButton.TabIndex = 8;
-            this.stepButton.Text = ">";
-            this.stepButton.UseVisualStyleBackColor = true;
-            // 
-            // skipButton
-            // 
-            this.skipButton.Location = new System.Drawing.Point(1093, 512);
-            this.skipButton.Margin = new System.Windows.Forms.Padding(2);
-            this.skipButton.Name = "skipButton";
-            this.skipButton.Size = new System.Drawing.Size(46, 41);
-            this.skipButton.TabIndex = 9;
-            this.skipButton.Text = ">>>";
-            this.skipButton.UseVisualStyleBackColor = true;
-            // 
             // fileSystemWatcher1
             // 
             this.fileSystemWatcher1.EnableRaisingEvents = true;
@@ -226,9 +250,9 @@
             this.panel1.AutoScroll = true;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.internalPipeRegLbl);
-            this.panel1.Location = new System.Drawing.Point(835, 25);
+            this.panel1.Location = new System.Drawing.Point(1164, 47);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(304, 481);
+            this.panel1.Size = new System.Drawing.Size(304, 438);
             this.panel1.TabIndex = 11;
             // 
             // internalPipeRegLbl
@@ -954,19 +978,466 @@
             this.pipelineMapGridView.Size = new System.Drawing.Size(539, 174);
             this.pipelineMapGridView.TabIndex = 15;
             // 
+            // internalPipelineRegistersPanel
+            // 
+            this.internalPipelineRegistersPanel.Controls.Add(this.Rn_Lbl);
+            this.internalPipelineRegistersPanel.Controls.Add(this.MEMWB_ALUOutput_Lbl);
+            this.internalPipelineRegistersPanel.Controls.Add(this.MEMWB_IR_Lbl);
+            this.internalPipelineRegistersPanel.Controls.Add(this.MEMWB_LMD_Lbl);
+            this.internalPipelineRegistersPanel.Controls.Add(this.EXMEM_B_Lbl);
+            this.internalPipelineRegistersPanel.Controls.Add(this.EXMEM_IR_Lbl);
+            this.internalPipelineRegistersPanel.Controls.Add(this.EXMEM_Cond_Lbl);
+            this.internalPipelineRegistersPanel.Controls.Add(this.EXMEM_ALUOutput_Lbl);
+            this.internalPipelineRegistersPanel.Controls.Add(this.IDEX_NPC_Lbl);
+            this.internalPipelineRegistersPanel.Controls.Add(this.IDEX_IR_Lbl);
+            this.internalPipelineRegistersPanel.Controls.Add(this.IDEX_IMM_Lbl);
+            this.internalPipelineRegistersPanel.Controls.Add(this.IDEX_B_Lbl);
+            this.internalPipelineRegistersPanel.Controls.Add(this.IDEX_A_Lbl);
+            this.internalPipelineRegistersPanel.Controls.Add(this.IFID_PC_Lbl);
+            this.internalPipelineRegistersPanel.Controls.Add(this.IFID_NPC_Lbl);
+            this.internalPipelineRegistersPanel.Controls.Add(this.IFID_IR_Lbl);
+            this.internalPipelineRegistersPanel.Controls.Add(this.Rn);
+            this.internalPipelineRegistersPanel.Controls.Add(this.MEMWB_IR);
+            this.internalPipelineRegistersPanel.Controls.Add(this.MEMWB_ALUOutput);
+            this.internalPipelineRegistersPanel.Controls.Add(this.MEMWB_LMD);
+            this.internalPipelineRegistersPanel.Controls.Add(this.EXMEM_Cond);
+            this.internalPipelineRegistersPanel.Controls.Add(this.EXMEM_IR);
+            this.internalPipelineRegistersPanel.Controls.Add(this.EXMEM_B);
+            this.internalPipelineRegistersPanel.Controls.Add(this.EXMEM_ALUOutput);
+            this.internalPipelineRegistersPanel.Controls.Add(this.IDEX_B);
+            this.internalPipelineRegistersPanel.Controls.Add(this.IDEX_IMM);
+            this.internalPipelineRegistersPanel.Controls.Add(this.IDEX_IR);
+            this.internalPipelineRegistersPanel.Controls.Add(this.IDEX_NPC);
+            this.internalPipelineRegistersPanel.Controls.Add(this.IDEX_A);
+            this.internalPipelineRegistersPanel.Controls.Add(this.IFID_NPC);
+            this.internalPipelineRegistersPanel.Controls.Add(this.IFID_PC);
+            this.internalPipelineRegistersPanel.Controls.Add(this.IFID_IR);
+            this.internalPipelineRegistersPanel.Controls.Add(this.cycleLbl);
+            this.internalPipelineRegistersPanel.Controls.Add(this.writeBackLbl);
+            this.internalPipelineRegistersPanel.Controls.Add(this.memoryAccessLbl);
+            this.internalPipelineRegistersPanel.Controls.Add(this.instructionDecodeLbl);
+            this.internalPipelineRegistersPanel.Controls.Add(this.executionLbl);
+            this.internalPipelineRegistersPanel.Controls.Add(this.instructionFetchLbl);
+            this.internalPipelineRegistersPanel.Location = new System.Drawing.Point(835, 26);
+            this.internalPipelineRegistersPanel.Name = "internalPipelineRegistersPanel";
+            this.internalPipelineRegistersPanel.Size = new System.Drawing.Size(304, 463);
+            this.internalPipelineRegistersPanel.TabIndex = 16;
+            // 
+            // Rn_Lbl
+            // 
+            this.Rn_Lbl.AutoSize = true;
+            this.Rn_Lbl.Location = new System.Drawing.Point(166, 410);
+            this.Rn_Lbl.Name = "Rn_Lbl";
+            this.Rn_Lbl.Size = new System.Drawing.Size(0, 13);
+            this.Rn_Lbl.TabIndex = 37;
+            // 
+            // MEMWB_ALUOutput_Lbl
+            // 
+            this.MEMWB_ALUOutput_Lbl.AutoSize = true;
+            this.MEMWB_ALUOutput_Lbl.Location = new System.Drawing.Point(166, 363);
+            this.MEMWB_ALUOutput_Lbl.Name = "MEMWB_ALUOutput_Lbl";
+            this.MEMWB_ALUOutput_Lbl.Size = new System.Drawing.Size(0, 13);
+            this.MEMWB_ALUOutput_Lbl.TabIndex = 36;
+            // 
+            // MEMWB_IR_Lbl
+            // 
+            this.MEMWB_IR_Lbl.AutoSize = true;
+            this.MEMWB_IR_Lbl.Location = new System.Drawing.Point(166, 347);
+            this.MEMWB_IR_Lbl.Name = "MEMWB_IR_Lbl";
+            this.MEMWB_IR_Lbl.Size = new System.Drawing.Size(0, 13);
+            this.MEMWB_IR_Lbl.TabIndex = 35;
+            // 
+            // MEMWB_LMD_Lbl
+            // 
+            this.MEMWB_LMD_Lbl.AutoSize = true;
+            this.MEMWB_LMD_Lbl.Location = new System.Drawing.Point(166, 331);
+            this.MEMWB_LMD_Lbl.Name = "MEMWB_LMD_Lbl";
+            this.MEMWB_LMD_Lbl.Size = new System.Drawing.Size(0, 13);
+            this.MEMWB_LMD_Lbl.TabIndex = 34;
+            // 
+            // EXMEM_B_Lbl
+            // 
+            this.EXMEM_B_Lbl.AutoSize = true;
+            this.EXMEM_B_Lbl.Location = new System.Drawing.Point(166, 285);
+            this.EXMEM_B_Lbl.Name = "EXMEM_B_Lbl";
+            this.EXMEM_B_Lbl.Size = new System.Drawing.Size(0, 13);
+            this.EXMEM_B_Lbl.TabIndex = 33;
+            // 
+            // EXMEM_IR_Lbl
+            // 
+            this.EXMEM_IR_Lbl.AutoSize = true;
+            this.EXMEM_IR_Lbl.Location = new System.Drawing.Point(166, 269);
+            this.EXMEM_IR_Lbl.Name = "EXMEM_IR_Lbl";
+            this.EXMEM_IR_Lbl.Size = new System.Drawing.Size(0, 13);
+            this.EXMEM_IR_Lbl.TabIndex = 32;
+            // 
+            // EXMEM_Cond_Lbl
+            // 
+            this.EXMEM_Cond_Lbl.AutoSize = true;
+            this.EXMEM_Cond_Lbl.Location = new System.Drawing.Point(166, 253);
+            this.EXMEM_Cond_Lbl.Name = "EXMEM_Cond_Lbl";
+            this.EXMEM_Cond_Lbl.Size = new System.Drawing.Size(0, 13);
+            this.EXMEM_Cond_Lbl.TabIndex = 31;
+            // 
+            // EXMEM_ALUOutput_Lbl
+            // 
+            this.EXMEM_ALUOutput_Lbl.AutoSize = true;
+            this.EXMEM_ALUOutput_Lbl.Location = new System.Drawing.Point(166, 237);
+            this.EXMEM_ALUOutput_Lbl.Name = "EXMEM_ALUOutput_Lbl";
+            this.EXMEM_ALUOutput_Lbl.Size = new System.Drawing.Size(0, 13);
+            this.EXMEM_ALUOutput_Lbl.TabIndex = 30;
+            // 
+            // IDEX_NPC_Lbl
+            // 
+            this.IDEX_NPC_Lbl.AutoSize = true;
+            this.IDEX_NPC_Lbl.Location = new System.Drawing.Point(166, 192);
+            this.IDEX_NPC_Lbl.Name = "IDEX_NPC_Lbl";
+            this.IDEX_NPC_Lbl.Size = new System.Drawing.Size(0, 13);
+            this.IDEX_NPC_Lbl.TabIndex = 29;
+            // 
+            // IDEX_IR_Lbl
+            // 
+            this.IDEX_IR_Lbl.AutoSize = true;
+            this.IDEX_IR_Lbl.Location = new System.Drawing.Point(166, 176);
+            this.IDEX_IR_Lbl.Name = "IDEX_IR_Lbl";
+            this.IDEX_IR_Lbl.Size = new System.Drawing.Size(0, 13);
+            this.IDEX_IR_Lbl.TabIndex = 28;
+            // 
+            // IDEX_IMM_Lbl
+            // 
+            this.IDEX_IMM_Lbl.AutoSize = true;
+            this.IDEX_IMM_Lbl.Location = new System.Drawing.Point(166, 160);
+            this.IDEX_IMM_Lbl.Name = "IDEX_IMM_Lbl";
+            this.IDEX_IMM_Lbl.Size = new System.Drawing.Size(0, 13);
+            this.IDEX_IMM_Lbl.TabIndex = 27;
+            // 
+            // IDEX_B_Lbl
+            // 
+            this.IDEX_B_Lbl.AutoSize = true;
+            this.IDEX_B_Lbl.Location = new System.Drawing.Point(166, 144);
+            this.IDEX_B_Lbl.Name = "IDEX_B_Lbl";
+            this.IDEX_B_Lbl.Size = new System.Drawing.Size(0, 13);
+            this.IDEX_B_Lbl.TabIndex = 26;
+            // 
+            // IDEX_A_Lbl
+            // 
+            this.IDEX_A_Lbl.AutoSize = true;
+            this.IDEX_A_Lbl.Location = new System.Drawing.Point(166, 128);
+            this.IDEX_A_Lbl.Name = "IDEX_A_Lbl";
+            this.IDEX_A_Lbl.Size = new System.Drawing.Size(0, 13);
+            this.IDEX_A_Lbl.TabIndex = 25;
+            // 
+            // IFID_PC_Lbl
+            // 
+            this.IFID_PC_Lbl.AutoSize = true;
+            this.IFID_PC_Lbl.Location = new System.Drawing.Point(166, 82);
+            this.IFID_PC_Lbl.Name = "IFID_PC_Lbl";
+            this.IFID_PC_Lbl.Size = new System.Drawing.Size(0, 13);
+            this.IFID_PC_Lbl.TabIndex = 24;
+            // 
+            // IFID_NPC_Lbl
+            // 
+            this.IFID_NPC_Lbl.AutoSize = true;
+            this.IFID_NPC_Lbl.Location = new System.Drawing.Point(166, 68);
+            this.IFID_NPC_Lbl.Name = "IFID_NPC_Lbl";
+            this.IFID_NPC_Lbl.Size = new System.Drawing.Size(0, 13);
+            this.IFID_NPC_Lbl.TabIndex = 23;
+            // 
+            // IFID_IR_Lbl
+            // 
+            this.IFID_IR_Lbl.AutoSize = true;
+            this.IFID_IR_Lbl.Location = new System.Drawing.Point(166, 51);
+            this.IFID_IR_Lbl.Name = "IFID_IR_Lbl";
+            this.IFID_IR_Lbl.Size = new System.Drawing.Size(0, 13);
+            this.IFID_IR_Lbl.TabIndex = 22;
+            // 
+            // Rn
+            // 
+            this.Rn.AutoSize = true;
+            this.Rn.Location = new System.Drawing.Point(35, 410);
+            this.Rn.Name = "Rn";
+            this.Rn.Size = new System.Drawing.Size(21, 13);
+            this.Rn.TabIndex = 21;
+            this.Rn.Text = "Rn";
+            // 
+            // MEMWB_IR
+            // 
+            this.MEMWB_IR.AutoSize = true;
+            this.MEMWB_IR.Location = new System.Drawing.Point(35, 347);
+            this.MEMWB_IR.Name = "MEMWB_IR";
+            this.MEMWB_IR.Size = new System.Drawing.Size(69, 13);
+            this.MEMWB_IR.TabIndex = 20;
+            this.MEMWB_IR.Text = "MEM/WB.IR";
+            // 
+            // MEMWB_ALUOutput
+            // 
+            this.MEMWB_ALUOutput.AutoSize = true;
+            this.MEMWB_ALUOutput.Location = new System.Drawing.Point(35, 363);
+            this.MEMWB_ALUOutput.Name = "MEMWB_ALUOutput";
+            this.MEMWB_ALUOutput.Size = new System.Drawing.Size(111, 13);
+            this.MEMWB_ALUOutput.TabIndex = 19;
+            this.MEMWB_ALUOutput.Text = "MEM/WB.ALUOutput";
+            // 
+            // MEMWB_LMD
+            // 
+            this.MEMWB_LMD.AutoSize = true;
+            this.MEMWB_LMD.Location = new System.Drawing.Point(35, 331);
+            this.MEMWB_LMD.Name = "MEMWB_LMD";
+            this.MEMWB_LMD.Size = new System.Drawing.Size(81, 13);
+            this.MEMWB_LMD.TabIndex = 18;
+            this.MEMWB_LMD.Text = "MEM/WB.LMD";
+            // 
+            // EXMEM_Cond
+            // 
+            this.EXMEM_Cond.AutoSize = true;
+            this.EXMEM_Cond.Location = new System.Drawing.Point(35, 253);
+            this.EXMEM_Cond.Name = "EXMEM_Cond";
+            this.EXMEM_Cond.Size = new System.Drawing.Size(79, 13);
+            this.EXMEM_Cond.TabIndex = 17;
+            this.EXMEM_Cond.Text = "EX/MEM.Cond";
+            // 
+            // EXMEM_IR
+            // 
+            this.EXMEM_IR.AutoSize = true;
+            this.EXMEM_IR.Location = new System.Drawing.Point(35, 269);
+            this.EXMEM_IR.Name = "EXMEM_IR";
+            this.EXMEM_IR.Size = new System.Drawing.Size(65, 13);
+            this.EXMEM_IR.TabIndex = 16;
+            this.EXMEM_IR.Text = "EX/MEM.IR";
+            // 
+            // EXMEM_B
+            // 
+            this.EXMEM_B.AutoSize = true;
+            this.EXMEM_B.Location = new System.Drawing.Point(35, 285);
+            this.EXMEM_B.Name = "EXMEM_B";
+            this.EXMEM_B.Size = new System.Drawing.Size(61, 13);
+            this.EXMEM_B.TabIndex = 15;
+            this.EXMEM_B.Text = "EX/MEM.B";
+            // 
+            // EXMEM_ALUOutput
+            // 
+            this.EXMEM_ALUOutput.AutoSize = true;
+            this.EXMEM_ALUOutput.Location = new System.Drawing.Point(35, 237);
+            this.EXMEM_ALUOutput.Name = "EXMEM_ALUOutput";
+            this.EXMEM_ALUOutput.Size = new System.Drawing.Size(107, 13);
+            this.EXMEM_ALUOutput.TabIndex = 14;
+            this.EXMEM_ALUOutput.Text = "EX/MEM.ALUOutput";
+            // 
+            // IDEX_B
+            // 
+            this.IDEX_B.AutoSize = true;
+            this.IDEX_B.Location = new System.Drawing.Point(35, 144);
+            this.IDEX_B.Name = "IDEX_B";
+            this.IDEX_B.Size = new System.Drawing.Size(47, 13);
+            this.IDEX_B.TabIndex = 13;
+            this.IDEX_B.Text = "ID/EX.B";
+            // 
+            // IDEX_IMM
+            // 
+            this.IDEX_IMM.AutoSize = true;
+            this.IDEX_IMM.Location = new System.Drawing.Point(35, 160);
+            this.IDEX_IMM.Name = "IDEX_IMM";
+            this.IDEX_IMM.Size = new System.Drawing.Size(61, 13);
+            this.IDEX_IMM.TabIndex = 12;
+            this.IDEX_IMM.Text = "ID/EX.IMM";
+            // 
+            // IDEX_IR
+            // 
+            this.IDEX_IR.AutoSize = true;
+            this.IDEX_IR.Location = new System.Drawing.Point(35, 176);
+            this.IDEX_IR.Name = "IDEX_IR";
+            this.IDEX_IR.Size = new System.Drawing.Size(51, 13);
+            this.IDEX_IR.TabIndex = 11;
+            this.IDEX_IR.Text = "ID/EX.IR";
+            // 
+            // IDEX_NPC
+            // 
+            this.IDEX_NPC.AutoSize = true;
+            this.IDEX_NPC.Location = new System.Drawing.Point(35, 192);
+            this.IDEX_NPC.Name = "IDEX_NPC";
+            this.IDEX_NPC.Size = new System.Drawing.Size(62, 13);
+            this.IDEX_NPC.TabIndex = 10;
+            this.IDEX_NPC.Text = "ID/EX.NPC";
+            // 
+            // IDEX_A
+            // 
+            this.IDEX_A.AutoSize = true;
+            this.IDEX_A.Location = new System.Drawing.Point(35, 128);
+            this.IDEX_A.Name = "IDEX_A";
+            this.IDEX_A.Size = new System.Drawing.Size(47, 13);
+            this.IDEX_A.TabIndex = 9;
+            this.IDEX_A.Text = "ID/EX.A";
+            // 
+            // IFID_NPC
+            // 
+            this.IFID_NPC.AutoSize = true;
+            this.IFID_NPC.Location = new System.Drawing.Point(35, 68);
+            this.IFID_NPC.Name = "IFID_NPC";
+            this.IFID_NPC.Size = new System.Drawing.Size(57, 13);
+            this.IFID_NPC.TabIndex = 8;
+            this.IFID_NPC.Text = "IF/ID.NPC";
+            // 
+            // IFID_PC
+            // 
+            this.IFID_PC.AutoSize = true;
+            this.IFID_PC.Location = new System.Drawing.Point(35, 85);
+            this.IFID_PC.Name = "IFID_PC";
+            this.IFID_PC.Size = new System.Drawing.Size(49, 13);
+            this.IFID_PC.TabIndex = 7;
+            this.IFID_PC.Text = "IF/ID.PC";
+            // 
+            // IFID_IR
+            // 
+            this.IFID_IR.AutoSize = true;
+            this.IFID_IR.Location = new System.Drawing.Point(35, 51);
+            this.IFID_IR.Name = "IFID_IR";
+            this.IFID_IR.Size = new System.Drawing.Size(46, 13);
+            this.IFID_IR.TabIndex = 6;
+            this.IFID_IR.Text = "IF/ID.IR";
+            // 
+            // cycleLbl
+            // 
+            this.cycleLbl.AutoSize = true;
+            this.cycleLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cycleLbl.Location = new System.Drawing.Point(124, 8);
+            this.cycleLbl.Name = "cycleLbl";
+            this.cycleLbl.Size = new System.Drawing.Size(42, 17);
+            this.cycleLbl.TabIndex = 5;
+            this.cycleLbl.Text = "Cycle";
+            // 
+            // writeBackLbl
+            // 
+            this.writeBackLbl.AutoSize = true;
+            this.writeBackLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.writeBackLbl.Location = new System.Drawing.Point(5, 387);
+            this.writeBackLbl.Name = "writeBackLbl";
+            this.writeBackLbl.Size = new System.Drawing.Size(76, 17);
+            this.writeBackLbl.TabIndex = 4;
+            this.writeBackLbl.Text = "Write Back";
+            // 
+            // memoryAccessLbl
+            // 
+            this.memoryAccessLbl.AutoSize = true;
+            this.memoryAccessLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.memoryAccessLbl.Location = new System.Drawing.Point(5, 309);
+            this.memoryAccessLbl.Name = "memoryAccessLbl";
+            this.memoryAccessLbl.Size = new System.Drawing.Size(107, 17);
+            this.memoryAccessLbl.TabIndex = 3;
+            this.memoryAccessLbl.Text = "Memory Access";
+            // 
+            // instructionDecodeLbl
+            // 
+            this.instructionDecodeLbl.AutoSize = true;
+            this.instructionDecodeLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.instructionDecodeLbl.Location = new System.Drawing.Point(5, 106);
+            this.instructionDecodeLbl.Name = "instructionDecodeLbl";
+            this.instructionDecodeLbl.Size = new System.Drawing.Size(126, 17);
+            this.instructionDecodeLbl.TabIndex = 2;
+            this.instructionDecodeLbl.Text = "Instruction Decode";
+            // 
+            // executionLbl
+            // 
+            this.executionLbl.AutoSize = true;
+            this.executionLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.executionLbl.Location = new System.Drawing.Point(5, 214);
+            this.executionLbl.Name = "executionLbl";
+            this.executionLbl.Size = new System.Drawing.Size(69, 17);
+            this.executionLbl.TabIndex = 1;
+            this.executionLbl.Text = "Execution";
+            // 
+            // instructionFetchLbl
+            // 
+            this.instructionFetchLbl.AutoSize = true;
+            this.instructionFetchLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.instructionFetchLbl.Location = new System.Drawing.Point(5, 30);
+            this.instructionFetchLbl.Name = "instructionFetchLbl";
+            this.instructionFetchLbl.Size = new System.Drawing.Size(112, 17);
+            this.instructionFetchLbl.TabIndex = 0;
+            this.instructionFetchLbl.Text = "Instruction Fetch";
+            // 
+            // nextCycleBtn
+            // 
+            this.nextCycleBtn.Location = new System.Drawing.Point(1024, 500);
+            this.nextCycleBtn.Name = "nextCycleBtn";
+            this.nextCycleBtn.Size = new System.Drawing.Size(54, 44);
+            this.nextCycleBtn.TabIndex = 17;
+            this.nextCycleBtn.Text = ">";
+            this.nextCycleBtn.UseVisualStyleBackColor = true;
+            this.nextCycleBtn.Visible = false;
+            this.nextCycleBtn.Click += new System.EventHandler(this.nextCycleBtn_Click);
+            // 
+            // prevCycleBtn
+            // 
+            this.prevCycleBtn.Location = new System.Drawing.Point(897, 500);
+            this.prevCycleBtn.Name = "prevCycleBtn";
+            this.prevCycleBtn.Size = new System.Drawing.Size(57, 44);
+            this.prevCycleBtn.TabIndex = 18;
+            this.prevCycleBtn.Text = "<";
+            this.prevCycleBtn.UseVisualStyleBackColor = true;
+            this.prevCycleBtn.Visible = false;
+            this.prevCycleBtn.Click += new System.EventHandler(this.prevCycleBtn_Click);
+            // 
+            // lastCycleBtn
+            // 
+            this.lastCycleBtn.Location = new System.Drawing.Point(1082, 500);
+            this.lastCycleBtn.Name = "lastCycleBtn";
+            this.lastCycleBtn.Size = new System.Drawing.Size(57, 44);
+            this.lastCycleBtn.TabIndex = 19;
+            this.lastCycleBtn.Text = ">>";
+            this.lastCycleBtn.UseVisualStyleBackColor = true;
+            this.lastCycleBtn.Visible = false;
+            this.lastCycleBtn.Click += new System.EventHandler(this.lastCycleBtn_Click);
+            // 
+            // gotoCycleTB
+            // 
+            this.gotoCycleTB.Location = new System.Drawing.Point(960, 500);
+            this.gotoCycleTB.Name = "gotoCycleTB";
+            this.gotoCycleTB.Size = new System.Drawing.Size(58, 20);
+            this.gotoCycleTB.TabIndex = 20;
+            this.gotoCycleTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.gotoCycleTB.Visible = false;
+            this.gotoCycleTB.WordWrap = false;
+            // 
+            // firstCycleBtn
+            // 
+            this.firstCycleBtn.Location = new System.Drawing.Point(835, 500);
+            this.firstCycleBtn.Name = "firstCycleBtn";
+            this.firstCycleBtn.Size = new System.Drawing.Size(57, 44);
+            this.firstCycleBtn.TabIndex = 21;
+            this.firstCycleBtn.Text = "<<";
+            this.firstCycleBtn.UseVisualStyleBackColor = true;
+            this.firstCycleBtn.Visible = false;
+            this.firstCycleBtn.Click += new System.EventHandler(this.firstCycleBtn_Click);
+            // 
+            // gotoCycleBtn
+            // 
+            this.gotoCycleBtn.Location = new System.Drawing.Point(960, 521);
+            this.gotoCycleBtn.Name = "gotoCycleBtn";
+            this.gotoCycleBtn.Size = new System.Drawing.Size(58, 23);
+            this.gotoCycleBtn.TabIndex = 22;
+            this.gotoCycleBtn.Text = "Go To";
+            this.gotoCycleBtn.UseVisualStyleBackColor = true;
+            this.gotoCycleBtn.Visible = false;
+            this.gotoCycleBtn.Click += new System.EventHandler(this.gotoCycleBtn_Click);
+            // 
             // InputForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1150, 562);
+            this.ClientSize = new System.Drawing.Size(1480, 562);
+            this.Controls.Add(this.gotoCycleBtn);
+            this.Controls.Add(this.firstCycleBtn);
+            this.Controls.Add(this.gotoCycleTB);
+            this.Controls.Add(this.lastCycleBtn);
+            this.Controls.Add(this.prevCycleBtn);
+            this.Controls.Add(this.nextCycleBtn);
+            this.Controls.Add(this.internalPipelineRegistersPanel);
             this.Controls.Add(this.pipelineMapGridView);
             this.Controls.Add(this.dataTabs);
             this.Controls.Add(this.internalPipelineRegistersLbl);
             this.Controls.Add(this.pipelineMapLbl);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.opcodeLbl);
-            this.Controls.Add(this.skipButton);
-            this.Controls.Add(this.stepButton);
             this.Controls.Add(this.opcodePanel);
             this.Controls.Add(this.simulateBtn);
             this.Controls.Add(this.enterProgLbl);
@@ -987,6 +1458,8 @@
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.memoryGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pipelineMapGridView)).EndInit();
+            this.internalPipelineRegistersPanel.ResumeLayout(false);
+            this.internalPipelineRegistersPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -999,8 +1472,6 @@
         private System.Windows.Forms.Label enterProgLbl;
         private System.Windows.Forms.Button simulateBtn;
         private System.Windows.Forms.Panel opcodePanel;
-        private System.Windows.Forms.Button stepButton;
-        private System.Windows.Forms.Button skipButton;
         private System.IO.FileSystemWatcher fileSystemWatcher1;
         private System.Windows.Forms.Label opcodeLbl;
         private System.Windows.Forms.Panel panel1;
@@ -1080,6 +1551,51 @@
         private System.Windows.Forms.DataGridView memoryGridView;
         private System.Windows.Forms.Label internalPipeRegLbl;
         private System.Windows.Forms.DataGridView pipelineMapGridView;
+        private System.Windows.Forms.Panel internalPipelineRegistersPanel;
+        private System.Windows.Forms.Label IFID_IR;
+        private System.Windows.Forms.Label cycleLbl;
+        private System.Windows.Forms.Label writeBackLbl;
+        private System.Windows.Forms.Label memoryAccessLbl;
+        private System.Windows.Forms.Label instructionDecodeLbl;
+        private System.Windows.Forms.Label executionLbl;
+        private System.Windows.Forms.Label instructionFetchLbl;
+        private System.Windows.Forms.Label Rn;
+        private System.Windows.Forms.Label MEMWB_IR;
+        private System.Windows.Forms.Label MEMWB_ALUOutput;
+        private System.Windows.Forms.Label MEMWB_LMD;
+        private System.Windows.Forms.Label EXMEM_Cond;
+        private System.Windows.Forms.Label EXMEM_IR;
+        private System.Windows.Forms.Label EXMEM_B;
+        private System.Windows.Forms.Label EXMEM_ALUOutput;
+        private System.Windows.Forms.Label IDEX_B;
+        private System.Windows.Forms.Label IDEX_IMM;
+        private System.Windows.Forms.Label IDEX_IR;
+        private System.Windows.Forms.Label IDEX_NPC;
+        private System.Windows.Forms.Label IDEX_A;
+        private System.Windows.Forms.Label IFID_NPC;
+        private System.Windows.Forms.Label IFID_PC;
+        private System.Windows.Forms.Label IDEX_NPC_Lbl;
+        private System.Windows.Forms.Label IDEX_IR_Lbl;
+        private System.Windows.Forms.Label IDEX_IMM_Lbl;
+        private System.Windows.Forms.Label IDEX_B_Lbl;
+        private System.Windows.Forms.Label IDEX_A_Lbl;
+        private System.Windows.Forms.Label IFID_PC_Lbl;
+        private System.Windows.Forms.Label IFID_NPC_Lbl;
+        private System.Windows.Forms.Label IFID_IR_Lbl;
+        private System.Windows.Forms.Label EXMEM_B_Lbl;
+        private System.Windows.Forms.Label EXMEM_IR_Lbl;
+        private System.Windows.Forms.Label EXMEM_Cond_Lbl;
+        private System.Windows.Forms.Label EXMEM_ALUOutput_Lbl;
+        private System.Windows.Forms.Button prevCycleBtn;
+        private System.Windows.Forms.Button nextCycleBtn;
+        private System.Windows.Forms.Label Rn_Lbl;
+        private System.Windows.Forms.Label MEMWB_ALUOutput_Lbl;
+        private System.Windows.Forms.Label MEMWB_IR_Lbl;
+        private System.Windows.Forms.Label MEMWB_LMD_Lbl;
+        private System.Windows.Forms.Button gotoCycleBtn;
+        private System.Windows.Forms.Button firstCycleBtn;
+        private System.Windows.Forms.TextBox gotoCycleTB;
+        private System.Windows.Forms.Button lastCycleBtn;
         
     }
 }

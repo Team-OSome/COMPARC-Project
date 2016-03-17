@@ -98,11 +98,11 @@ namespace COMPARC_Project_2
             this.IDEX_IMM = text;
             if (signextend == '1')
             {
-                this.IDEX_IMM = "FFFF FFFF FFFF " + this.IDEX_IMM;
+                this.IDEX_IMM = "FFFFFFFFFFFF" + this.IDEX_IMM;
             }
             else
             {
-                this.IDEX_IMM = "0000 0000 0000 " + this.IDEX_IMM;
+                this.IDEX_IMM = "000000000000" + this.IDEX_IMM;
             }
 
             this.IDEX_IR = IFID_IR;
@@ -141,10 +141,22 @@ namespace COMPARC_Project_2
                         this.EXMEM_ALUOutput = "0" + this.EXMEM_ALUOutput;
                     }
                     this.EXMEM_Cond = "0";
-                }
-               
+                }               
                 //SLT
                 //SELNEZ
+            }
+            
+            else if (instructionType == "Register-Immediate ALU Instruction")
+            {
+                if (instruction == "DADDIU")
+                {
+                    this.EXMEM_ALUOutput = (Convert.ToInt64(IDEX_A, 16) + Convert.ToInt64(IDEX_IMM, 16)).ToString("X");
+                    while (this.EXMEM_ALUOutput.Length < 16)
+                    {
+                        this.EXMEM_ALUOutput = "0" + this.EXMEM_ALUOutput;
+                    }
+                    this.EXMEM_Cond = "0";
+                }
             }
             
             this.EXMEM_B = IDEX_B;

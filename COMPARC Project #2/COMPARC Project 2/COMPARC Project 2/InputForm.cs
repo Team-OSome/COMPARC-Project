@@ -13,6 +13,7 @@ namespace COMPARC_Project_2
     public partial class InputForm : Form
     {
         private Program program;
+        private int viewCycle;
 
         public InputForm()
         {
@@ -29,7 +30,11 @@ namespace COMPARC_Project_2
             memoryGridView.Columns.Add("Value", "Value");
             initializeMemory();
 
+            this.viewCycle = 0;
+
         }
+
+        #region Button Controls
 
         private void simulateBtn_Click(object sender, EventArgs e)
         {
@@ -39,13 +44,124 @@ namespace COMPARC_Project_2
             if(this.program.getInstructionsValid())
                 setOpCodeGridView();
 
-            this.displayInternalPipelineRegisters();
+            this.displayInternalPipelineRegistersInOneLabel();
             this.displayPipelineMap();
             this.refreshRegisters();
+            this.displayInternalPipelineRegisters(this.viewCycle);
+
+            gotoCycleTB.Text = (viewCycle + 1).ToString();
+            gotoCycleBtn.Visible = true;
+            gotoCycleTB.Visible = true;
+            nextCycleBtn.Visible = true;
+            lastCycleBtn.Visible = true;
+            prevCycleBtn.Visible = false;
+            firstCycleBtn.Visible = false;
+        }
+
+        private void nextCycleBtn_Click(object sender, EventArgs e)
+        {
+            this.viewCycle++;
+            gotoCycleTB.Text = (viewCycle + 1).ToString();
+            this.displayInternalPipelineRegisters(this.viewCycle);
+
+            if (this.viewCycle < (this.program.getNumCycles() - 1))
+            {
+                nextCycleBtn.Visible = true;
+                lastCycleBtn.Visible = true;
+            }
+            else
+            {
+                nextCycleBtn.Visible = false;
+                lastCycleBtn.Visible = false;
+            }
+            if (this.viewCycle > 0)
+            {
+                prevCycleBtn.Visible = true;
+                firstCycleBtn.Visible = true;
+            }
+        }
+
+        private void prevCycleBtn_Click(object sender, EventArgs e)
+        {
+            this.viewCycle--;
+            gotoCycleTB.Text = (viewCycle + 1).ToString();
+            this.displayInternalPipelineRegisters(this.viewCycle);
+
+            if (this.viewCycle > 0)
+            {
+                prevCycleBtn.Visible = true;
+                firstCycleBtn.Visible = true;
+            }
+            else
+            {
+                prevCycleBtn.Visible = false;
+                firstCycleBtn.Visible = false;
+            }
+            if (this.viewCycle < (this.program.getNumCycles() - 1))
+            {
+                nextCycleBtn.Visible = true;
+                lastCycleBtn.Visible = true;
+            }
+        }
+
+        private void lastCycleBtn_Click(object sender, EventArgs e)
+        {
+            this.viewCycle = this.program.getNumCycles() - 1;
+            gotoCycleTB.Text = (viewCycle + 1).ToString();
+            this.displayInternalPipelineRegisters(this.viewCycle);
+            nextCycleBtn.Visible = false;
+            lastCycleBtn.Visible = false;
+            prevCycleBtn.Visible = true;
+            firstCycleBtn.Visible = true;
+        }
+
+        private void firstCycleBtn_Click(object sender, EventArgs e)
+        {
+            this.viewCycle = 0;
+            gotoCycleTB.Text = (viewCycle + 1).ToString();
+            this.displayInternalPipelineRegisters(this.viewCycle);
+            nextCycleBtn.Visible = true;
+            lastCycleBtn.Visible = true;
+            prevCycleBtn.Visible = false;
+            firstCycleBtn.Visible = false;
+        }
+
+        private void gotoCycleBtn_Click(object sender, EventArgs e)
+        {
+            if (Convert.ToInt32(gotoCycleTB.Text) > 0 && Convert.ToInt32(gotoCycleTB.Text) <= this.program.getNumCycles())
+            {
+                this.viewCycle = Convert.ToInt32(gotoCycleTB.Text) - 1;
+                this.displayInternalPipelineRegisters(this.viewCycle);
+                if (this.viewCycle  == 0)
+                {
+                    prevCycleBtn.Visible = false;
+                    firstCycleBtn.Visible = false;
+                    lastCycleBtn.Visible = true;
+                    nextCycleBtn.Visible = true;
+                }
+                else if (this.viewCycle == (this.program.getNumCycles() - 1))
+                {
+                    prevCycleBtn.Visible = true;
+                    firstCycleBtn.Visible = true;
+                    lastCycleBtn.Visible = false;
+                    nextCycleBtn.Visible = false;
+                }
+                else
+                {
+                    prevCycleBtn.Visible = true;
+                    firstCycleBtn.Visible = true;
+                    lastCycleBtn.Visible = true;
+                    nextCycleBtn.Visible = true;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Cycle Out of Bounds");
+            }
             
         }
 
-
+        #endregion
 
         #region text box getters
 
@@ -141,7 +257,7 @@ namespace COMPARC_Project_2
             }
         }
 
-        private void displayInternalPipelineRegisters()
+        private void displayInternalPipelineRegistersInOneLabel()
         {
             internalPipeRegLbl.Text = "";
             for (int i = 0; i < program.getNumCycles(); i++)
@@ -173,6 +289,14 @@ namespace COMPARC_Project_2
             }
         }
 
+        private void displayInternalPipelineRegisters(int i)
+        {
+            cycleLbl.Text = "Cycle " + (i + 1).ToString();
+            IFID_IR_Lbl.Text = program.getIFID_IR(i);
+            IFID_NPC_Lbl.Text = program.getIFID_NPC(i);
+            IFID_PC_Lbl.Text = program.getIFID_PC(i);
+        }
+
         private void displayPipelineMap()
         {
             pipelineMapGridView.Columns.Clear();
@@ -184,6 +308,11 @@ namespace COMPARC_Project_2
         }
 
         #endregion
+
+        
+
+
+
 
     }
 }

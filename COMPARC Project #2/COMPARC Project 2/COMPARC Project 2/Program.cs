@@ -473,7 +473,10 @@ namespace COMPARC_Project_2
             }
             else if (this.cycle[i - 1].MEMWB_instructionType == "Register-Immediate ALU Instruction")
             {
-
+                if (this.cycle[i-1].MEMWB_instruction == "DADDIU")
+                {
+                    this.registers[Convert.ToInt32(this.cycle[i - 1].MEMWB_IR.Substring(13, 5), 2)].setRegisterValue(this.cycle[i - 1].MEMWB_ALUOutput);
+                }
             }
             else if (this.cycle[i - 1].MEMWB_instructionType == "Load Instruction")
             {
