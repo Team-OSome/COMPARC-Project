@@ -386,8 +386,7 @@ namespace COMPARC_Project_2
         private void pipeline()
         {
             int i = 0;
-            int totalCycles = this.instruction.Count;
-            Boolean noMoreIF = false;
+            int totalCycles = this.instruction.Count + 4;
             //int completedCycles = 0;
             this.numCycles = 0;
             do
@@ -403,6 +402,42 @@ namespace COMPARC_Project_2
                         this.instruction[i].getInstruction(),
                         this.instruction[i].getInstructionType()
                         );             
+                }
+                else if (i == this.instruction.Count)
+                {
+                    this.cycle[i].setInstructionFetch(
+                        "", 
+                        "",
+                        "",
+                        ""
+                        );
+                    this.cycle[i].setInstructionDecode(
+                        this.registers[Convert.ToInt32(this.cycle[i - 1].IFID_IR.Substring(7, 5), 2)].getValue(),   //get data in the A ([IF/ID.IR 21..25])
+                        this.registers[Convert.ToInt32(this.cycle[i - 1].IFID_IR.Substring(13, 5), 2)].getValue(),  //get data in the B ([IF/ID.IR 16..20])
+                        this.instruction[i - 1].getOpcode().getOpcodeString().Substring(18),
+                        this.cycle[i - 1].IFID_IR,
+                        this.cycle[i - 1].IFID_NPC,
+                        this.cycle[i - 1].IFID_instruction,
+                        this.cycle[i - 1].IFID_instructionType
+                        );
+                }
+                else if (i >= this.instruction.Count + 1)
+                {
+                    this.cycle[i].setInstructionFetch(
+                        "",
+                        "",
+                        "",
+                        ""
+                        );
+                    this.cycle[i].setInstructionDecode(
+                         "",   //get data in the A ([IF/ID.IR 21..25])
+                         "",  //get data in the B ([IF/ID.IR 16..20])
+                         "",
+                         "",
+                         "",
+                         "",
+                         ""
+                         );
                 }
                 else
                 {
@@ -421,6 +456,10 @@ namespace COMPARC_Project_2
                         this.cycle[i - 1].IFID_instruction,
                         this.cycle[i - 1].IFID_instructionType
                         );
+
+                }
+                if (i != 0)
+                {
                     this.cycle[i].setExecution(
                         this.cycle[i - 1].IDEX_A,
                         this.cycle[i - 1].IDEX_B,
@@ -435,31 +474,9 @@ namespace COMPARC_Project_2
                         this.cycle[i - 1].EXMEM_instruction,
                         this.cycle[i - 1].EXMEM_instructionType
                         );
-
-                    //  Write Back
                     this.pipelineWriteBack(i);
-                    /*
-                    if (this.checkDataHazard(this.instruction[i], this.instruction[i - 1]))
-                    {
-                        for (int k = i; k < 3+i; k++)
-                        {
-                            this.cycle.Add(new Cycle());
-                            this.numCycles++;
-                            this.cycle[k].stall = true;
-
-                            this.cycle[k].setExecution(
-                                this.instruction[k - 1].getInstruction(),
-                                this.instruction[k - 1].getInstructionType(),
-                                this.cycle[k - 1].IDEX_A,
-                                this.cycle[k - 1].IDEX_B,
-                                this.cycle[k - 1].IDEX_IMM,
-                                this.cycle[k - 1].IDEX_IR);
-                        }
-                        i += 3;
-                    }
-                     */
-
                 }
+                
                 i++;
             } while (i < totalCycles);
             
@@ -487,12 +504,49 @@ namespace COMPARC_Project_2
 
             }
         }
-        /*
+        
         public String getWriteBackRegister(int i)
         {
-            return "R" + Convert.ToInt32(this.cycle[i - 1].MEMWB_IR.Substring(19, 5), 2);
+            if (i > 0)
+            {
+                if (this.cycle[i - 1].MEMWB_instructionType == "Register-Register ALU Instruction")
+                {
+                    return "R" + Convert.ToInt32(this.cycle[i - 1].MEMWB_IR.Substring(19, 5), 2).ToString() + " = " + this.cycle[i - 1].MEMWB_ALUOutput;
+                }
+                else
+                {
+                    return "";
+                }
+            }
+            
+            else
+            {
+                return "";
+            }
+                
         }
-         */
+         
 
     }
 }
+
+/*
+if (this.checkDataHazard(this.instruction[i], this.instruction[i - 1]))
+{
+    for (int k = i; k < 3+i; k++)
+    {
+        this.cycle.Add(new Cycle());
+        this.numCycles++;
+        this.cycle[k].stall = true;
+
+        this.cycle[k].setExecution(
+            this.instruction[k - 1].getInstruction(),
+            this.instruction[k - 1].getInstructionType(),
+            this.cycle[k - 1].IDEX_A,
+            this.cycle[k - 1].IDEX_B,
+            this.cycle[k - 1].IDEX_IMM,
+            this.cycle[k - 1].IDEX_IR);
+    }
+    i += 3;
+}
+ */

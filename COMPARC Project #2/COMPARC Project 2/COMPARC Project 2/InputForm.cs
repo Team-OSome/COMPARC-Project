@@ -312,6 +312,8 @@ namespace COMPARC_Project_2
             MEMWB_ALUOutput_Lbl.Text = this.program.getMEMWB_ALUOutput(i);
             MEMWB_IR_Lbl.Text = this.program.getMEMWB_IR(i);
 
+            Rn_Lbl.Text = this.program.getWriteBackRegister(i);
+
         }
 
         private void displayPipelineMap()

@@ -84,25 +84,27 @@ namespace COMPARC_Project_2
             char signextend;
             this.IDEX_A = A;   // [IF/ID.IR 21..25]
             this.IDEX_B = B;   // [IF/ID.IR 16..20]
-
-            this.IDEX_IMM = IMM.Replace(" ", "");       //  remove white spaces
-            signextend = this.IDEX_IMM[0];              //  get sign extend value
-            String text = this.IDEX_IMM;                // convert to hex
-            String val = Convert.ToInt32(text, 2).ToString("X").ToUpper();
-            text = "";
-            for (int i = val.Length; i < 4; i++)
+            if (IMM != "")
             {
-                text += "0";
-            }
-            text += val;
-            this.IDEX_IMM = text;
-            if (signextend == '1')
-            {
-                this.IDEX_IMM = "FFFFFFFFFFFF" + this.IDEX_IMM;
-            }
-            else
-            {
-                this.IDEX_IMM = "000000000000" + this.IDEX_IMM;
+                this.IDEX_IMM = IMM.Replace(" ", "");       //  remove white spaces
+                signextend = this.IDEX_IMM[0];              //  get sign extend value
+                String text = this.IDEX_IMM;                // convert to hex
+                String val = Convert.ToInt32(text, 2).ToString("X").ToUpper();
+                text = "";
+                for (int i = val.Length; i < 4; i++)
+                {
+                    text += "0";
+                }
+                text += val;
+                this.IDEX_IMM = text;
+                if (signextend == '1')
+                {
+                    this.IDEX_IMM = "FFFFFFFFFFFF" + this.IDEX_IMM;
+                }
+                else
+                {
+                    this.IDEX_IMM = "000000000000" + this.IDEX_IMM;
+                }
             }
 
             this.IDEX_IR = IFID_IR;
