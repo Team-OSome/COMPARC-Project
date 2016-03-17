@@ -250,9 +250,9 @@
             this.panel1.AutoScroll = true;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.internalPipeRegLbl);
-            this.panel1.Location = new System.Drawing.Point(1164, 47);
+            this.panel1.Location = new System.Drawing.Point(1193, 47);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(304, 438);
+            this.panel1.Size = new System.Drawing.Size(275, 438);
             this.panel1.TabIndex = 11;
             // 
             // internalPipeRegLbl
@@ -1020,7 +1020,7 @@
             this.internalPipelineRegistersPanel.Controls.Add(this.instructionFetchLbl);
             this.internalPipelineRegistersPanel.Location = new System.Drawing.Point(835, 26);
             this.internalPipelineRegistersPanel.Name = "internalPipelineRegistersPanel";
-            this.internalPipelineRegistersPanel.Size = new System.Drawing.Size(304, 463);
+            this.internalPipelineRegistersPanel.Size = new System.Drawing.Size(352, 463);
             this.internalPipelineRegistersPanel.TabIndex = 16;
             // 
             // Rn_Lbl
@@ -1357,7 +1357,7 @@
             // 
             // nextCycleBtn
             // 
-            this.nextCycleBtn.Location = new System.Drawing.Point(1024, 500);
+            this.nextCycleBtn.Location = new System.Drawing.Point(1070, 500);
             this.nextCycleBtn.Name = "nextCycleBtn";
             this.nextCycleBtn.Size = new System.Drawing.Size(54, 44);
             this.nextCycleBtn.TabIndex = 17;
@@ -1379,7 +1379,7 @@
             // 
             // lastCycleBtn
             // 
-            this.lastCycleBtn.Location = new System.Drawing.Point(1082, 500);
+            this.lastCycleBtn.Location = new System.Drawing.Point(1130, 500);
             this.lastCycleBtn.Name = "lastCycleBtn";
             this.lastCycleBtn.Size = new System.Drawing.Size(57, 44);
             this.lastCycleBtn.TabIndex = 19;
@@ -1390,7 +1390,7 @@
             // 
             // gotoCycleTB
             // 
-            this.gotoCycleTB.Location = new System.Drawing.Point(960, 500);
+            this.gotoCycleTB.Location = new System.Drawing.Point(985, 500);
             this.gotoCycleTB.Name = "gotoCycleTB";
             this.gotoCycleTB.Size = new System.Drawing.Size(58, 20);
             this.gotoCycleTB.TabIndex = 20;
@@ -1411,7 +1411,7 @@
             // 
             // gotoCycleBtn
             // 
-            this.gotoCycleBtn.Location = new System.Drawing.Point(960, 521);
+            this.gotoCycleBtn.Location = new System.Drawing.Point(985, 521);
             this.gotoCycleBtn.Name = "gotoCycleBtn";
             this.gotoCycleBtn.Size = new System.Drawing.Size(58, 23);
             this.gotoCycleBtn.TabIndex = 22;

@@ -292,9 +292,26 @@ namespace COMPARC_Project_2
         private void displayInternalPipelineRegisters(int i)
         {
             cycleLbl.Text = "Cycle " + (i + 1).ToString();
-            IFID_IR_Lbl.Text = program.getIFID_IR(i);
-            IFID_NPC_Lbl.Text = program.getIFID_NPC(i);
-            IFID_PC_Lbl.Text = program.getIFID_PC(i);
+
+            IFID_IR_Lbl.Text = this.program.getIFID_IR(i);
+            IFID_NPC_Lbl.Text = this.program.getIFID_NPC(i);
+            IFID_PC_Lbl.Text = this.program.getIFID_PC(i);
+
+            IDEX_A_Lbl.Text = this.program.getIDEX_A(i);
+            IDEX_B_Lbl.Text = this.program.getIDEX_B(i);
+            IDEX_IMM_Lbl.Text = this.program.getIDEX_IMM(i);
+            IDEX_IR_Lbl.Text = this.program.getIDEX_IR(i);
+            IDEX_NPC_Lbl.Text = this.program.getIDEX_NPC(i);
+
+            EXMEM_ALUOutput_Lbl.Text = this.program.getEXMEM_ALUOutput(i);
+            EXMEM_Cond_Lbl.Text = this.program.getEXMEM_Cond(i);
+            EXMEM_IR_Lbl.Text = this.program.getEXMEM_IR(i);
+            EXMEM_B_Lbl.Text = this.program.getEXMEM_B(i);
+
+            MEMWB_LMD_Lbl.Text = this.program.getMEMWB_LMD(i);
+            MEMWB_ALUOutput_Lbl.Text = this.program.getMEMWB_ALUOutput(i);
+            MEMWB_IR_Lbl.Text = this.program.getMEMWB_IR(i);
+
         }
 
         private void displayPipelineMap()
