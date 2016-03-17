@@ -170,6 +170,17 @@ namespace COMPARC_Project_2
         {
             return this.registers[i].getValue();
         }
+
+        public Boolean getRegisterValid()
+        {
+            return this.registersValid;
+        }
+
+        public Boolean getMemoryValid()
+        {
+            return this.memoryValid;
+        }
+
         public String getIFID_IR(int i)
         {
             return this.cycle[i].IFID_IR;

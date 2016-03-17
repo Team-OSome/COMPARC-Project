@@ -156,6 +156,8 @@
             this.gotoCycleTB = new System.Windows.Forms.TextBox();
             this.firstCycleBtn = new System.Windows.Forms.Button();
             this.gotoCycleBtn = new System.Windows.Forms.Button();
+            this.goToTextBox = new System.Windows.Forms.TextBox();
+            this.goToBtn = new System.Windows.Forms.Button();
             this.opcodePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.opCodeGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
@@ -1399,11 +1401,30 @@
             this.gotoCycleBtn.Visible = false;
             this.gotoCycleBtn.Click += new System.EventHandler(this.gotoCycleBtn_Click);
             // 
+            // goToTextBox
+            // 
+            this.goToTextBox.Location = new System.Drawing.Point(678, 298);
+            this.goToTextBox.Name = "goToTextBox";
+            this.goToTextBox.Size = new System.Drawing.Size(128, 20);
+            this.goToTextBox.TabIndex = 23;
+            // 
+            // goToBtn
+            // 
+            this.goToBtn.Location = new System.Drawing.Point(613, 298);
+            this.goToBtn.Name = "goToBtn";
+            this.goToBtn.Size = new System.Drawing.Size(59, 20);
+            this.goToBtn.TabIndex = 24;
+            this.goToBtn.Text = "Go to";
+            this.goToBtn.UseVisualStyleBackColor = true;
+            this.goToBtn.Click += new System.EventHandler(this.goToBtn_Click);
+            // 
             // InputForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1201, 562);
+            this.Controls.Add(this.goToBtn);
+            this.Controls.Add(this.goToTextBox);
             this.Controls.Add(this.gotoCycleBtn);
             this.Controls.Add(this.firstCycleBtn);
             this.Controls.Add(this.gotoCycleTB);
@@ -1523,7 +1544,6 @@
         private System.Windows.Forms.Label labelR1;
         private System.Windows.Forms.Label r0Label;
         private System.Windows.Forms.DataGridView opCodeGridView;
-        private System.Windows.Forms.DataGridView memoryGridView;
         private System.Windows.Forms.DataGridView pipelineMapGridView;
         private System.Windows.Forms.Panel internalPipelineRegistersPanel;
         private System.Windows.Forms.Label IFID_IR;
@@ -1570,6 +1590,9 @@
         private System.Windows.Forms.Button firstCycleBtn;
         private System.Windows.Forms.TextBox gotoCycleTB;
         private System.Windows.Forms.Button lastCycleBtn;
+        private System.Windows.Forms.TextBox goToTextBox;
+        private System.Windows.Forms.DataGridView memoryGridView;
+        private System.Windows.Forms.Button goToBtn;
         
     }
 }

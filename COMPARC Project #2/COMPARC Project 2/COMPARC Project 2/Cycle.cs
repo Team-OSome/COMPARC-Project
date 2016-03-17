@@ -89,7 +89,7 @@ namespace COMPARC_Project_2
                 this.IDEX_IMM = IMM.Replace(" ", "");       //  remove white spaces
                 signextend = this.IDEX_IMM[0];              //  get sign extend value
                 String text = this.IDEX_IMM;                // convert to hex
-                String val = Convert.ToInt32(text, 2).ToString("X").ToUpper();
+                String val = Convert.ToInt64(text, 2).ToString("X").ToUpper();
                 text = "";
                 for (int i = val.Length; i < 4; i++)
                 {
@@ -119,7 +119,7 @@ namespace COMPARC_Project_2
             {
                 if (instruction == "DSUBU")
                 {
-                    this.EXMEM_ALUOutput = (Convert.ToInt32(IDEX_A, 16) - Convert.ToInt32(IDEX_B, 16)).ToString("X");
+                    this.EXMEM_ALUOutput = (Convert.ToInt64(IDEX_A, 16) - Convert.ToInt64(IDEX_B, 16)).ToString("X");
                     while (this.EXMEM_ALUOutput.Length < 16)
                     {
                         this.EXMEM_ALUOutput = "0" + this.EXMEM_ALUOutput;
@@ -128,7 +128,7 @@ namespace COMPARC_Project_2
                 }
                 else if (instruction == "DDIVU")
                 {
-                    this.EXMEM_ALUOutput = (Convert.ToInt32(IDEX_A, 16) / Convert.ToInt32(IDEX_B, 16)).ToString("X");
+                    this.EXMEM_ALUOutput = (Convert.ToInt64(IDEX_A, 16) / Convert.ToInt64(IDEX_B, 16)).ToString("X");
                     while (this.EXMEM_ALUOutput.Length < 16)
                     {
                         this.EXMEM_ALUOutput = "0" + this.EXMEM_ALUOutput;
@@ -137,7 +137,7 @@ namespace COMPARC_Project_2
                 }
                 else if (instruction == "DMODU")
                 {
-                    this.EXMEM_ALUOutput = (Convert.ToInt32(IDEX_A, 16) % Convert.ToInt32(IDEX_B, 16)).ToString("X");
+                    this.EXMEM_ALUOutput = (Convert.ToInt64(IDEX_A, 16) % Convert.ToInt64(IDEX_B, 16)).ToString("X");
                     while (this.EXMEM_ALUOutput.Length < 16)
                     {
                         this.EXMEM_ALUOutput = "0" + this.EXMEM_ALUOutput;

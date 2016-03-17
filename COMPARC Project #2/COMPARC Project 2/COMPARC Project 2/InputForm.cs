@@ -27,6 +27,7 @@ namespace COMPARC_Project_2
             opCodeGridView.Columns.Add("Op Code", "Op Code");
 
             memoryGridView.Columns.Add("Memory Location", "Memory Location");
+            memoryGridView.Columns["Memory Location"].ReadOnly = true;
             memoryGridView.Columns.Add("Value", "Value");
             initializeMemory();
 
@@ -36,25 +37,42 @@ namespace COMPARC_Project_2
 
         #region Button Controls
 
+        private void goToBtn_Click(object sender, EventArgs e)
+        {
+            String value;
+
+            value = goToTextBox.Text.ToUpper().Replace(" ", String.Empty);
+
+            if (value.All(c => "0123456789ABCDEF".Contains(c)) && value.Length == 4 && Convert.ToInt32(value, 16) >= 0x2000 && Convert.ToInt32(value, 16) <= 0x3FFF)
+                searchMemory(value); 
+            else
+                MessageBox.Show("ERROR: Entered address is invalid");
+        }
+
         private void simulateBtn_Click(object sender, EventArgs e)
         {
            
             this.program = new Program(programTB.Lines, getRegisterTextBox(), getMemoryTextBox());
 
-            if(this.program.getInstructionsValid())
+            if (this.program.getInstructionsValid() && this.program.getRegisterValid() && this.program.getMemoryValid())
+            {
                 setOpCodeGridView();
 
-            this.displayPipelineMap();
-            this.refreshRegisters();
-            this.displayInternalPipelineRegisters(this.viewCycle);
+                this.displayPipelineMap();
+                this.refreshRegisters();
+                this.displayInternalPipelineRegisters(this.viewCycle);
 
-            gotoCycleTB.Text = (viewCycle + 1).ToString();
-            gotoCycleBtn.Visible = true;
-            gotoCycleTB.Visible = true;
-            nextCycleBtn.Visible = true;
-            lastCycleBtn.Visible = true;
-            prevCycleBtn.Visible = false;
-            firstCycleBtn.Visible = false;
+                gotoCycleTB.Text = (viewCycle + 1).ToString();
+                gotoCycleBtn.Visible = true;
+                gotoCycleTB.Visible = true;
+                nextCycleBtn.Visible = true;
+                lastCycleBtn.Visible = true;
+                prevCycleBtn.Visible = false;
+                firstCycleBtn.Visible = false;
+            }
+            else
+                MessageBox.Show("ERROR: Something is not valid");
+
         }
 
         private void nextCycleBtn_Click(object sender, EventArgs e)
@@ -182,9 +200,8 @@ namespace COMPARC_Project_2
             String[] memory = new String[8192];
 
             for (int i = 0; i < 8192; i++)
-            {
                 memory[i] = memoryGridView.Rows[i].Cells["Value"].Value.ToString().ToUpper().Replace(" ", String.Empty);
-            }
+            
 
             return memory;
         }
@@ -211,6 +228,21 @@ namespace COMPARC_Project_2
             {
                 return text;
             }
+        }
+
+        private void searchMemory(String location)
+        {
+            bool check = true;
+
+            memoryGridView.ClearSelection();
+
+            for (int i = 0; i < 8192 && check; i++)
+                if (memoryGridView.Rows[i].Cells["Memory Location"].Value.ToString() == location)
+                {
+                    memoryGridView.FirstDisplayedScrollingRowIndex = i;
+                    memoryGridView.Rows[i].Selected = true;
+                    check = false;
+                }   
         }
 
         private void refreshRegisters()
