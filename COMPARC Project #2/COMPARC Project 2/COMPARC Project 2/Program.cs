@@ -48,8 +48,6 @@ namespace COMPARC_Project_2
 
             this.program = programList.ToArray();
 
-
-
             this.initializeInstructionArray(this.program);
             this.intializeRegisterArray(registers);
             this.intializeMemoryArray(memory);
@@ -251,6 +249,33 @@ namespace COMPARC_Project_2
             return this.cycle[i].MEMWB_IR;
         }
 
+        public String getWriteBackRegister(int i)
+        {
+            if (i > 0)
+            {
+                if (this.cycle[i - 1].MEMWB_instructionType == "Register-Register ALU Instruction")
+                {
+                    return "R" + Convert.ToInt32(this.cycle[i - 1].MEMWB_IR.Substring(19, 5), 2).ToString() + " = "
+                        + this.cycle[i - 1].MEMWB_ALUOutput.Substring(0, 4) + " "
+                        + this.cycle[i - 1].MEMWB_ALUOutput.Substring(4, 4) + " "
+                        + this.cycle[i - 1].MEMWB_ALUOutput.Substring(8, 4) + " "
+                        + this.cycle[i - 1].MEMWB_ALUOutput.Substring(12, 4);
+                }
+                else
+                {
+                    return "";
+                }
+            }
+
+            else
+            {
+                return "";
+            }
+
+        }
+         
+
+
         public int getNumCycles()
         {
             return this.numCycles;
@@ -383,6 +408,8 @@ namespace COMPARC_Project_2
 
         }
 
+        #region Pipeline Control
+
         private void pipeline()
         {
             int i = 0;
@@ -504,29 +531,8 @@ namespace COMPARC_Project_2
 
             }
         }
-        
-        public String getWriteBackRegister(int i)
-        {
-            if (i > 0)
-            {
-                if (this.cycle[i - 1].MEMWB_instructionType == "Register-Register ALU Instruction")
-                {
-                    return "R" + Convert.ToInt32(this.cycle[i - 1].MEMWB_IR.Substring(19, 5), 2).ToString() + " = " + this.cycle[i - 1].MEMWB_ALUOutput;
-                }
-                else
-                {
-                    return "";
-                }
-            }
-            
-            else
-            {
-                return "";
-            }
-                
-        }
-         
 
+        #endregion
     }
 }
 

@@ -37,8 +37,6 @@
             this.opCodeGridView = new System.Windows.Forms.DataGridView();
             this.fileSystemWatcher1 = new System.IO.FileSystemWatcher();
             this.opcodeLbl = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.internalPipeRegLbl = new System.Windows.Forms.Label();
             this.pipelineMapLbl = new System.Windows.Forms.Label();
             this.internalPipelineRegistersLbl = new System.Windows.Forms.Label();
             this.dataTabs = new System.Windows.Forms.TabControl();
@@ -161,7 +159,6 @@
             this.opcodePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.opCodeGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
-            this.panel1.SuspendLayout();
             this.dataTabs.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -244,24 +241,6 @@
             this.opcodeLbl.Size = new System.Drawing.Size(45, 13);
             this.opcodeLbl.TabIndex = 10;
             this.opcodeLbl.Text = "Opcode";
-            // 
-            // panel1
-            // 
-            this.panel1.AutoScroll = true;
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.internalPipeRegLbl);
-            this.panel1.Location = new System.Drawing.Point(1193, 47);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(275, 438);
-            this.panel1.TabIndex = 11;
-            // 
-            // internalPipeRegLbl
-            // 
-            this.internalPipeRegLbl.AutoSize = true;
-            this.internalPipeRegLbl.Location = new System.Drawing.Point(4, 4);
-            this.internalPipeRegLbl.Name = "internalPipeRegLbl";
-            this.internalPipeRegLbl.Size = new System.Drawing.Size(0, 13);
-            this.internalPipeRegLbl.TabIndex = 0;
             // 
             // pipelineMapLbl
             // 
@@ -1424,7 +1403,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1480, 562);
+            this.ClientSize = new System.Drawing.Size(1201, 562);
             this.Controls.Add(this.gotoCycleBtn);
             this.Controls.Add(this.firstCycleBtn);
             this.Controls.Add(this.gotoCycleTB);
@@ -1436,7 +1415,6 @@
             this.Controls.Add(this.dataTabs);
             this.Controls.Add(this.internalPipelineRegistersLbl);
             this.Controls.Add(this.pipelineMapLbl);
-            this.Controls.Add(this.panel1);
             this.Controls.Add(this.opcodeLbl);
             this.Controls.Add(this.opcodePanel);
             this.Controls.Add(this.simulateBtn);
@@ -1450,8 +1428,6 @@
             this.opcodePanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.opCodeGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
             this.dataTabs.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -1474,7 +1450,6 @@
         private System.Windows.Forms.Panel opcodePanel;
         private System.IO.FileSystemWatcher fileSystemWatcher1;
         private System.Windows.Forms.Label opcodeLbl;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label pipelineMapLbl;
         private System.Windows.Forms.Label internalPipelineRegistersLbl;
         private System.Windows.Forms.TabControl dataTabs;
@@ -1549,7 +1524,6 @@
         private System.Windows.Forms.Label r0Label;
         private System.Windows.Forms.DataGridView opCodeGridView;
         private System.Windows.Forms.DataGridView memoryGridView;
-        private System.Windows.Forms.Label internalPipeRegLbl;
         private System.Windows.Forms.DataGridView pipelineMapGridView;
         private System.Windows.Forms.Panel internalPipelineRegistersPanel;
         private System.Windows.Forms.Label IFID_IR;
