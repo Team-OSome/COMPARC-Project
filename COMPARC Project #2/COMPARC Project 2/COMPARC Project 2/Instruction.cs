@@ -205,6 +205,11 @@ namespace COMPARC_Project_2
             return this.branchLocation;
         }
 
+        public int getLineNumber()
+        {
+            return this.lineNum;
+        }
+
         #endregion 
 
         public Boolean checkExistingInstructions(string instruction)

@@ -484,7 +484,7 @@ namespace COMPARC_Project_2
                 {
                    this.cycle[c].setInstructionFetch(
                         this.instruction[i].getOpcode().getOpcodeString(),
-                        this.cycle[c - 1].IFID_NPC,
+                        this.instruction[i].getLineNumber().ToString(),
                         this.instruction[i].getInstruction(),
                         this.instruction[i].getInstructionType()
                         );
@@ -527,7 +527,7 @@ namespace COMPARC_Project_2
                                this.numCycles++;
                                this.cycle[c].setInstructionFetch(
                                     this.instruction[i].getOpcode().getOpcodeString(),
-                                    this.cycle[c - 1].IFID_NPC,
+                                    this.instruction[i].getLineNumber().ToString(),
                                     this.instruction[i].getInstruction(),
                                     this.instruction[i].getInstructionType()
                                     );
@@ -554,7 +554,7 @@ namespace COMPARC_Project_2
                                this.numCycles++;
                                this.cycle[c].setInstructionFetch(
                                     this.instruction[i].getOpcode().getOpcodeString(),
-                                    this.cycle[c - 1].IFID_NPC,
+                                    this.instruction[i].getLineNumber().ToString(),
                                     this.instruction[i].getInstruction(),
                                     this.instruction[i].getInstructionType()
                                     );
@@ -573,7 +573,7 @@ namespace COMPARC_Project_2
                                this.numCycles++;
                                this.cycle[c].setInstructionFetch(
                                     this.instruction[i].getOpcode().getOpcodeString(),
-                                    this.cycle[c - 1].IFID_NPC,
+                                    this.instruction[i].getLineNumber().ToString(),
                                     this.instruction[i].getInstruction(),
                                     this.instruction[i].getInstructionType()
                                     );

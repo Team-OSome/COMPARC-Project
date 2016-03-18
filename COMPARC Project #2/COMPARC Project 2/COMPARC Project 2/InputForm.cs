@@ -58,6 +58,7 @@ namespace COMPARC_Project_2
             {
                 setOpCodeGridView();
 
+                this.viewCycle = 0;
                 this.displayPipelineMap();
                 this.refreshRegisters();
                 this.displayInternalPipelineRegisters(this.viewCycle);
