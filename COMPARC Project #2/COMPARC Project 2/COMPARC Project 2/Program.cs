@@ -424,50 +424,53 @@ namespace COMPARC_Project_2
         private void pipeline()
         {
             int i = 0;
+            int c = 0;
+            Boolean datahazard = false;
             int totalCycles = this.instruction.Count + 4;
             //int completedCycles = 0;
             this.numCycles = 0;
             do
             {
+                datahazard = false;
                 this.cycle.Add(new Cycle());
                 this.numCycles++;
 
-                if (i == 0)     //  if first cycle, NPC & PC = 4
+                if (i == 0)     //  if first isntruction, NPC & PC = 4
                 {
-                    this.cycle[i].setInstructionFetch(
+                    this.cycle[c].setInstructionFetch(
                         this.instruction[i].getOpcode().getOpcodeString(), 
                         "0",
                         this.instruction[i].getInstruction(),
                         this.instruction[i].getInstructionType()
                         );             
                 }
-                else if (i == this.instruction.Count)
+                else if (i == this.instruction.Count)       // last instruction - no more IF
                 {
-                    this.cycle[i].setInstructionFetch(
+                    this.cycle[c].setInstructionFetch(
                         "", 
                         "",
                         "",
                         ""
                         );
-                    this.cycle[i].setInstructionDecode(
-                        this.registers[Convert.ToInt32(this.cycle[i - 1].IFID_IR.Substring(7, 5), 2)].getValue(),   //get data in the A ([IF/ID.IR 21..25])
-                        this.registers[Convert.ToInt32(this.cycle[i - 1].IFID_IR.Substring(13, 5), 2)].getValue(),  //get data in the B ([IF/ID.IR 16..20])
+                    this.cycle[c].setInstructionDecode(
+                        this.registers[Convert.ToInt32(this.cycle[c - 1].IFID_IR.Substring(7, 5), 2)].getValue(),   //get data in the A ([IF/ID.IR 21..25])
+                        this.registers[Convert.ToInt32(this.cycle[c - 1].IFID_IR.Substring(13, 5), 2)].getValue(),  //get data in the B ([IF/ID.IR 16..20])
                         this.instruction[i - 1].getOpcode().getOpcodeString().Substring(18),
-                        this.cycle[i - 1].IFID_IR,
-                        this.cycle[i - 1].IFID_NPC,
-                        this.cycle[i - 1].IFID_instruction,
-                        this.cycle[i - 1].IFID_instructionType
+                        this.cycle[c - 1].IFID_IR,
+                        this.cycle[c - 1].IFID_NPC,
+                        this.cycle[c - 1].IFID_instruction,
+                        this.cycle[c - 1].IFID_instructionType
                         );
                 }
-                else if (i >= this.instruction.Count + 1)
+                else if (i >= this.instruction.Count + 1)       // last instruction - no more IF and ID
                 {
-                    this.cycle[i].setInstructionFetch(
+                    this.cycle[c].setInstructionFetch(
                         "",
                         "",
                         "",
                         ""
                         );
-                    this.cycle[i].setInstructionDecode(
+                    this.cycle[c].setInstructionDecode(
                          "",   //get data in the A ([IF/ID.IR 21..25])
                          "",  //get data in the B ([IF/ID.IR 16..20])
                          "",
@@ -477,45 +480,128 @@ namespace COMPARC_Project_2
                          ""
                          );
                 }
-                else
+                else                // normal cycle
                 {
-                   this.cycle[i].setInstructionFetch(
+                   this.cycle[c].setInstructionFetch(
                         this.instruction[i].getOpcode().getOpcodeString(),
-                        this.cycle[i - 1].IFID_NPC,
+                        this.cycle[c - 1].IFID_NPC,
                         this.instruction[i].getInstruction(),
                         this.instruction[i].getInstructionType()
-                        );     
-		           this.cycle[i].setInstructionDecode(
-                        this.registers[Convert.ToInt32(this.cycle[i - 1].IFID_IR.Substring(7, 5), 2)].getValue(),   //get data in the A ([IF/ID.IR 21..25])
-                        this.registers[Convert.ToInt32(this.cycle[i - 1].IFID_IR.Substring(13, 5), 2)].getValue(),  //get data in the B ([IF/ID.IR 16..20])
+                        );
+		           this.cycle[c].setInstructionDecode(
+                        this.registers[Convert.ToInt32(this.cycle[c - 1].IFID_IR.Substring(7, 5), 2)].getValue(),   //get data in the A ([IF/ID.IR 21..25])
+                        this.registers[Convert.ToInt32(this.cycle[c - 1].IFID_IR.Substring(13, 5), 2)].getValue(),  //get data in the B ([IF/ID.IR 16..20])
                         this.instruction[i - 1].getOpcode().getOpcodeString().Substring(18),
-                        this.cycle[i - 1].IFID_IR,
-                        this.cycle[i - 1].IFID_NPC,
-                        this.cycle[i - 1].IFID_instruction,
-                        this.cycle[i - 1].IFID_instructionType
+                        this.cycle[c - 1].IFID_IR,
+                        this.cycle[c - 1].IFID_NPC,
+                        this.cycle[c - 1].IFID_instruction,
+                        this.cycle[c - 1].IFID_instructionType
                         );
-
+                   if (this.checkDataHazard(this.instruction[i], this.instruction[i - 1]))      // data hazard 
+                   {
+                       datahazard = true;
+                       for (int j = 0; j < 4; j++)
+                       {
+                           if (j == 0)      // first cycle of data hazard - dont add new cycle, finish current cycle
+                           {
+                               this.cycle[c].setExecution(
+                                    this.cycle[c - 1].IDEX_A,
+                                    this.cycle[c - 1].IDEX_B,
+                                    this.cycle[c - 1].IDEX_IMM,
+                                    this.cycle[c - 1].IDEX_IR,
+                                    this.cycle[c - 1].IDEX_instruction,
+                                    this.cycle[c - 1].IDEX_instructionType
+                                    );
+                               this.cycle[c].setMemoryAccess(
+                                   this.cycle[c - 1].EXMEM_IR,
+                                   this.cycle[c - 1].EXMEM_ALUOutput,
+                                   this.cycle[c - 1].EXMEM_instruction,
+                                   this.cycle[c - 1].EXMEM_instructionType
+                                   );
+                               this.pipelineWriteBack(c);
+                               c++;
+                           }
+                           else if (j == 1)     // second cycle of data hazard - no more ID keep IF
+                           {
+                               this.cycle.Add(new Cycle());
+                               this.numCycles++;
+                               this.cycle[c].setInstructionFetch(
+                                    this.instruction[i].getOpcode().getOpcodeString(),
+                                    this.cycle[c - 1].IFID_NPC,
+                                    this.instruction[i].getInstruction(),
+                                    this.instruction[i].getInstructionType()
+                                    );
+                               this.cycle[c].setExecution(
+                                    this.cycle[c - 1].IDEX_A,
+                                    this.cycle[c - 1].IDEX_B,
+                                    this.cycle[c - 1].IDEX_IMM,
+                                    this.cycle[c - 1].IDEX_IR,
+                                    this.cycle[c - 1].IDEX_instruction,
+                                    this.cycle[c - 1].IDEX_instructionType
+                                    );
+                                this.cycle[c].setMemoryAccess(
+                                   this.cycle[c - 1].EXMEM_IR,
+                                   this.cycle[c - 1].EXMEM_ALUOutput,
+                                   this.cycle[c - 1].EXMEM_instruction,
+                                   this.cycle[c - 1].EXMEM_instructionType
+                                   );
+                               this.pipelineWriteBack(c);
+                               c++;
+                           }
+                           else if (j == 2)
+                           {
+                               this.cycle.Add(new Cycle());
+                               this.numCycles++;
+                               this.cycle[c].setInstructionFetch(
+                                    this.instruction[i].getOpcode().getOpcodeString(),
+                                    this.cycle[c - 1].IFID_NPC,
+                                    this.instruction[i].getInstruction(),
+                                    this.instruction[i].getInstructionType()
+                                    );
+                               this.cycle[c].setMemoryAccess(
+                                   this.cycle[c - 1].EXMEM_IR,
+                                   this.cycle[c - 1].EXMEM_ALUOutput,
+                                   this.cycle[c - 1].EXMEM_instruction,
+                                   this.cycle[c - 1].EXMEM_instructionType
+                                   );
+                               this.pipelineWriteBack(c);
+                               c++;
+                           }
+                           else if (j == 3)
+                           {
+                               this.cycle.Add(new Cycle());
+                               this.numCycles++;
+                               this.cycle[c].setInstructionFetch(
+                                    this.instruction[i].getOpcode().getOpcodeString(),
+                                    this.cycle[c - 1].IFID_NPC,
+                                    this.instruction[i].getInstruction(),
+                                    this.instruction[i].getInstructionType()
+                                    );
+                               this.pipelineWriteBack(c);
+                           }
+                       }
+                   }
                 }
-                if (i != 0)
+                if (c != 0 && !datahazard)
                 {
-                    this.cycle[i].setExecution(
-                        this.cycle[i - 1].IDEX_A,
-                        this.cycle[i - 1].IDEX_B,
-                        this.cycle[i - 1].IDEX_IMM,
-                        this.cycle[i - 1].IDEX_IR,
-                        this.cycle[i - 1].IDEX_instruction,
-                        this.cycle[i - 1].IDEX_instructionType
+                    this.cycle[c].setExecution(
+                        this.cycle[c - 1].IDEX_A,
+                        this.cycle[c - 1].IDEX_B,
+                        this.cycle[c - 1].IDEX_IMM,
+                        this.cycle[c - 1].IDEX_IR,
+                        this.cycle[c - 1].IDEX_instruction,
+                        this.cycle[c - 1].IDEX_instructionType
                         );
-                    this.cycle[i].setMemoryAccess(
-                        this.cycle[i - 1].EXMEM_IR,
-                        this.cycle[i - 1].EXMEM_ALUOutput,
-                        this.cycle[i - 1].EXMEM_instruction,
-                        this.cycle[i - 1].EXMEM_instructionType
+                    this.cycle[c].setMemoryAccess(
+                        this.cycle[c - 1].EXMEM_IR,
+                        this.cycle[c - 1].EXMEM_ALUOutput,
+                        this.cycle[c - 1].EXMEM_instruction,
+                        this.cycle[c - 1].EXMEM_instructionType
                         );
-                    this.pipelineWriteBack(i);
+                    this.pipelineWriteBack(c);
                 }
-                
                 i++;
+                c++;
             } while (i < totalCycles);
             
         }
