@@ -57,7 +57,7 @@ namespace COMPARC_Project_2
             this.lineNum = lineNum;
 
             this.opcodeType= getInstructionType(this.instruction);
-            Console.WriteLine("Type:"+this.opcodeType);
+            //Console.WriteLine("Type:"+this.opcodeType);
             this.instructionO = getInstructionOpcode(this.instruction);
 
         }
@@ -301,14 +301,14 @@ namespace COMPARC_Project_2
         public void setOffset(String offset) 
         {   
             this.offset = offset;
-            Console.WriteLine("offset=" + offset);
+            //Console.WriteLine("offset=" + offset);
 
             this.offsetDec = Int32.Parse(this.offset);
-            Console.WriteLine("offsetDec=" + offsetDec);
+            //Console.WriteLine("offsetDec=" + offsetDec);
 
            
             this.offsetO = Convert.ToString(offsetDec, 2);
-            Console.WriteLine("offsetO=" + offsetO);
+            //Console.WriteLine("offsetO=" + offsetO);
 
             //Console.WriteLine("OffsetO is: " + offsetO);
             
@@ -319,7 +319,7 @@ namespace COMPARC_Project_2
             if (this.opcodeType.Equals('I'))                //BNEC
                 this.offsetO = offsetO.PadLeft(16, '0');
 
-            Console.WriteLine("offsetO="+this.offsetO);
+            //Console.WriteLine("offsetO="+this.offsetO);
         }
 
         public void addOpcodeString(String addition)
@@ -329,7 +329,7 @@ namespace COMPARC_Project_2
 
         public void printOpcodeBinary()
         {
-            Console.WriteLine(opcodeString);
+            //Console.WriteLine(opcodeString);
         }
 
         public char getOpcodeType()

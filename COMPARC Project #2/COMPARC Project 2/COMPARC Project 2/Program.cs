@@ -297,6 +297,14 @@ namespace COMPARC_Project_2
                         + this.cycle[i - 1].MEMWB_ALUOutput.Substring(8, 4) + " "
                         + this.cycle[i - 1].MEMWB_ALUOutput.Substring(12, 4);
                 }
+                else if (this.cycle[i - 1].MEMWB_instructionType == "Register-Immediate ALU Instruction" || this.cycle[i - 1].MEMWB_instructionType == "Load Instruction")
+                {
+                        return "R" + Convert.ToInt32(this.cycle[i - 1].MEMWB_IR.Substring(13, 5), 2).ToString() + " = "
+                        + this.cycle[i - 1].MEMWB_LMD.Substring(0, 4) + " "
+                        + this.cycle[i - 1].MEMWB_LMD.Substring(4, 4) + " "
+                        + this.cycle[i - 1].MEMWB_LMD.Substring(8, 4) + " "
+                        + this.cycle[i - 1].MEMWB_LMD.Substring(12, 4);
+                }
                 else
                 {
                     return "";
@@ -449,6 +457,7 @@ namespace COMPARC_Project_2
             int i = 0;
             int c = 0;
             Boolean datahazard = false;
+            string lmd = "";
             int totalCycles = this.instruction.Count + 4;
             this.numCycles = 0;
             do
@@ -485,19 +494,6 @@ namespace COMPARC_Project_2
                         this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rtO, 2)].getValue(),
                         this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rdO, 2)].getValue(),
                         this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().bseO, 2)].getValue(),
-                        this.instruction[i - 1].getOpcode().immediateO,
-                        this.cycle[c - 1].IFID_IR,
-                        this.cycle[c - 1].IFID_NPC,
-                        this.cycle[c - 1].IFID_instruction,
-                        this.cycle[c - 1].IFID_instructionType
-                        );
-                    #endregion
-
-                    /*
-                    #region Instruction Decode
-                    this.cycle[c].setInstructionDecode(
-                        this.registers[Convert.ToInt32(this.cycle[c - 1].IFID_IR.Substring(7, 5), 2)].getValue(),   //get data in the A ([IF/ID.IR 21..25])
-                        this.registers[Convert.ToInt32(this.cycle[c - 1].IFID_IR.Substring(13, 5), 2)].getValue(),  //get data in the B ([IF/ID.IR 16..20])
                         this.instruction[i - 1].getOpcode().getOpcodeString().Substring(18),
                         this.cycle[c - 1].IFID_IR,
                         this.cycle[c - 1].IFID_NPC,
@@ -505,7 +501,7 @@ namespace COMPARC_Project_2
                         this.cycle[c - 1].IFID_instructionType
                         );
                     #endregion
-                     */
+
                 }
                 else if (i >= this.instruction.Count + 1)       // last instruction - no more IF and ID
                 {
@@ -518,6 +514,7 @@ namespace COMPARC_Project_2
                         );
                     #endregion
 
+                    #region Instruction Decode
                     this.cycle[c].setInstructionDecode(
                         "",
                         "",
@@ -529,20 +526,8 @@ namespace COMPARC_Project_2
                         "",
                         ""
                         );
-
-                    /*
-                    #region Instruction Decode
-                    this.cycle[c].setInstructionDecode(
-                         "",   //get data in the A ([IF/ID.IR 21..25])
-                         "",  //get data in the B ([IF/ID.IR 16..20])
-                         "",
-                         "",
-                         "",
-                         "",
-                         ""
-                         );
                     #endregion
-                     */
+
                 }
                 else                // normal cycle
                 {
@@ -561,19 +546,6 @@ namespace COMPARC_Project_2
                         this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rtO, 2)].getValue(),
                         this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rdO, 2)].getValue(),
                         this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().bseO, 2)].getValue(),
-                        this.instruction[i - 1].getOpcode().immediateO,
-                        this.cycle[c - 1].IFID_IR,
-                        this.cycle[c - 1].IFID_NPC,
-                        this.cycle[c - 1].IFID_instruction,
-                        this.cycle[c - 1].IFID_instructionType
-                        );
-                    #endregion
-
-                    /*
-                    #region Instruction Decode
-                    this.cycle[c].setInstructionDecode(
-                        this.registers[Convert.ToInt32(this.cycle[c - 1].IFID_IR.Substring(7, 5), 2)].getValue(),   //get data in the A ([IF/ID.IR 21..25])
-                        this.registers[Convert.ToInt32(this.cycle[c - 1].IFID_IR.Substring(13, 5), 2)].getValue(),  //get data in the B ([IF/ID.IR 16..20])
                         this.instruction[i - 1].getOpcode().getOpcodeString().Substring(18),
                         this.cycle[c - 1].IFID_IR,
                         this.cycle[c - 1].IFID_NPC,
@@ -581,7 +553,6 @@ namespace COMPARC_Project_2
                         this.cycle[c - 1].IFID_instructionType
                         );
                     #endregion
-                     */
              
                     if (this.checkDataHazard(this.instruction[i], this.instruction[i - 1]))      // data hazard 
                    {
@@ -601,9 +572,15 @@ namespace COMPARC_Project_2
                                     );
                                #endregion
                                #region Memory Access
+                               lmd = this.loadDouble(this.cycle[c - 1].EXMEM_ALUOutput, c);
+                               if (lmd == "error")
+                               {
+                                   break;
+                               }
                                this.cycle[c].setMemoryAccess(
                                    this.cycle[c - 1].EXMEM_IR,
                                    this.cycle[c - 1].EXMEM_ALUOutput,
+                                   lmd,
                                    this.cycle[c - 1].EXMEM_instruction,
                                    this.cycle[c - 1].EXMEM_instructionType
                                    );
@@ -634,9 +611,15 @@ namespace COMPARC_Project_2
                                     );
                                #endregion
                                #region Memory Access
+                               lmd = this.loadDouble(this.cycle[c - 1].EXMEM_ALUOutput, c);
+                               if (lmd == "error")
+                               {
+                                   break;
+                               }
                                this.cycle[c].setMemoryAccess(
                                    this.cycle[c - 1].EXMEM_IR,
                                    this.cycle[c - 1].EXMEM_ALUOutput,
+                                   lmd,
                                    this.cycle[c - 1].EXMEM_instruction,
                                    this.cycle[c - 1].EXMEM_instructionType
                                    );
@@ -657,9 +640,15 @@ namespace COMPARC_Project_2
                                     );
                                #endregion
                                #region Memory Access
+                               lmd = this.loadDouble(this.cycle[c - 1].EXMEM_ALUOutput, c);
+                               if (lmd == "error")
+                               {
+                                   break;
+                               }
                                this.cycle[c].setMemoryAccess(
                                    this.cycle[c - 1].EXMEM_IR,
                                    this.cycle[c - 1].EXMEM_ALUOutput,
+                                   lmd,
                                    this.cycle[c - 1].EXMEM_instruction,
                                    this.cycle[c - 1].EXMEM_instructionType
                                    );
@@ -697,9 +686,15 @@ namespace COMPARC_Project_2
                         );
                     #endregion
                     #region Memory Access
+                    lmd = this.loadDouble(this.cycle[c - 1].EXMEM_ALUOutput, c);
+                    if (lmd == "error")
+                    {
+                        break;
+                    }
                     this.cycle[c].setMemoryAccess(
                         this.cycle[c - 1].EXMEM_IR,
                         this.cycle[c - 1].EXMEM_ALUOutput,
+                        lmd,
                         this.cycle[c - 1].EXMEM_instruction,
                         this.cycle[c - 1].EXMEM_instructionType
                         );
@@ -709,7 +704,12 @@ namespace COMPARC_Project_2
                 i++;
                 c++;
             } while (i < totalCycles);
-            
+
+            if (lmd == "error")
+            {
+                this.cycle = null;
+                this.numCycles = 0;
+            }
         }
 
         private void pipelineWriteBack(int i)
@@ -730,6 +730,10 @@ namespace COMPARC_Project_2
                     this.registers[Convert.ToInt32(this.cycle[i - 1].MEMWB_IR.Substring(13, 5), 2)].setRegisterValue(this.cycle[i - 1].MEMWB_ALUOutput);
                 }
             }
+            else if (this.cycle[i - 1].MEMWB_instructionType == "Load Instruction")
+            {
+                this.registers[Convert.ToInt32(this.cycle[i - 1].MEMWB_IR.Substring(13, 5), 2)].setRegisterValue(this.cycle[i - 1].MEMWB_LMD);
+            }
             else
             {
 
@@ -738,13 +742,77 @@ namespace COMPARC_Project_2
 
         #endregion
 
-        private String loadDouble(string address)
+        private String loadDouble(string startAddress, int i)
         {
-            if (address != "")
+            /*
+            try
             {
-                return this.memory[Convert.ToInt32(address, 16)].getValue();
+                int temp = Convert.ToInt32(startAddress, 16);
+            }
+            catch (Exception)
+            {
+                return "error";
+            }      
+            /*
+            if (!(Convert.ToInt32(startAddress,16) >= 8192 && Convert.ToInt32(startAddress,16) <= 16375))
+            {
+                Console.WriteLine(Convert.ToInt32(startAddress, 16).ToString() + " " + Convert.ToInt32(startAddress, 16).ToString());
+                return "error";
+            }
+             */
+            
+            
+            string loadedValue = "";
+            if (this.cycle[i - 1].EXMEM_instructionType == "Load Instruction")
+            {
+                if (startAddress != "")
+                {
+                    int address = Convert.ToInt32(startAddress, 16) - 8192;
+                    Console.WriteLine("HELPPPPPP --- " + address.ToString());
+                    if (address >= 0 && address <= 8192)
+                    {
+                        for (int k = address + 7; k >=  address; k--)
+                        {
+                            loadedValue += this.memory[k].getValue();
+                        }
+                        return loadedValue;
+                    }
+                    else
+                    {
+                        return "error";
+                    }
+                }
             }
             return "";
         }
+
+        private String storeDouble(string startAddress, int i)
+        {
+            int j = 0;
+            int address = Convert.ToInt32(startAddress, 16) - 8192;
+
+            if (this.cycle[i - 1].EXMEM_instructionType == "Store Instruction")
+            {
+                if (startAddress != "")
+                {
+                    if (address >= 0 && address <= 8192)
+                    {
+                        for (int k = address + 7; k >= address; k--)
+                        {
+                            this.memory[k].setValue(this.cycle[i - 1].EXMEM_B.Substring(j, 2));
+                            j += 2;
+                        }
+                        return "stored";
+                    }
+                    else
+                    {
+                        return "error";
+                    }
+                }
+                return "";
+            }
+            return "";
+        }
+
     }
 }

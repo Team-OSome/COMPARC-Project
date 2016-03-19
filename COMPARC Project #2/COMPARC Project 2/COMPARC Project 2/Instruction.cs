@@ -49,19 +49,19 @@ namespace COMPARC_Project_2
             {
                 if (this.instructionValid == false)
                 {
-                    Console.WriteLine("instructionValid is false");
+                    //Console.WriteLine("instructionValid is false");
                 }
                 if (this.opcode.getValid() == false)
                 {
-                    Console.WriteLine("opcode is false");
+                    //Console.WriteLine("opcode is false");
                 }
                 this.valid = false;
-                Console.WriteLine("INVALID!!!");
+                //Console.WriteLine("INVALID!!!");
             }
 
             else if(this.opcode.getValid()){ //through the opcode class, this statement checks if the instruction is valid.
                 this.valid = true;
-                Console.WriteLine("VALID!!!");
+               // Console.WriteLine("VALID!!!");
             }
             
         }
@@ -74,19 +74,19 @@ namespace COMPARC_Project_2
 
             if (splitIns[0].Contains(':'))
             {
-                Console.WriteLine("This instruction is a branch Location!");
+                //Console.WriteLine("This instruction is a branch Location!");
                 this.branchLocation = splitIns[0].TrimEnd(':');
                 this.instruction = splitIns[1];
                 if(checkExistingInstructions(this.instruction.ToUpper()))
                 {
-                    Console.WriteLine("This branch instruction exists!");
+                    //Console.WriteLine("This branch instruction exists!");
                     this.instructionValid = true;
                 }
             }
             //  first word should contain the instruction
             else if (checkExistingInstructions(splitIns[0].ToUpper()))   //if the 1st word in the line is an instruction, this.instruction gets the instruction
             {
-                Console.WriteLine("This instruction exists!");
+                //Console.WriteLine("This instruction exists!");
                 this.instruction = splitIns[0].ToUpper();
                 this.instructionValid = true;
             }
@@ -95,7 +95,7 @@ namespace COMPARC_Project_2
             {
                 this.instructionValid = false;
                 this.valid = false;
-                Console.WriteLine("This instruction does not exist!");
+                //Console.WriteLine("This instruction does not exist!");
             }
         }
 
@@ -108,10 +108,10 @@ namespace COMPARC_Project_2
             //if there is a branch location, remove it first... it is already saved as offset.
             if (words[0].Contains(':'))
             {
-                Console.WriteLine("Contains ':'");
+                //Console.WriteLine("Contains ':'");
                 words=words.Skip(1).ToArray();
-                Console.WriteLine("words now start with: " + words[0]);
-                Console.WriteLine("This instruction has offset: " + this.offset);
+               // Console.WriteLine("words now start with: " + words[0]);
+                //Console.WriteLine("This instruction has offset: " + this.offset);
             }
 
             switch (this.instruction)

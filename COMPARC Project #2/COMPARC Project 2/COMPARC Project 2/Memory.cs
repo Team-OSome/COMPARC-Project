@@ -27,5 +27,10 @@ namespace COMPARC_Project_2
             return this.memoryLocation;
         }
 
+        public void setValue(string value)
+        {
+            this.Value = value;
+        }
+
     }
 }
