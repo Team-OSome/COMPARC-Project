@@ -459,21 +459,39 @@ namespace COMPARC_Project_2
 
                 if (i == 0)     //  if first isntruction, NPC & PC = 4
                 {
+                    #region Instruction Fetch
                     this.cycle[c].setInstructionFetch(
                         this.instruction[i].getOpcode().getOpcodeString(), 
                         "0",
                         this.instruction[i].getInstruction(),
                         this.instruction[i].getInstructionType()
-                        );             
+                        );
+                    #endregion
                 }
                 else if (i == this.instruction.Count)       // last instruction - no more IF
                 {
+                    #region Instruction Fetch
                     this.cycle[c].setInstructionFetch(
                         "", 
                         "",
                         "",
                         ""
                         );
+                    #endregion
+
+                    this.cycle[c].setInstructionDecode(
+                        this.instruction[i - 1].getOpcode().rsO,
+                        this.instruction[i - 1].getOpcode().rtO,
+                        this.instruction[i - 1].getOpcode().rdO,
+                        this.instruction[i - 1].getOpcode().bseO,
+                        this.instruction[i - 1].getOpcode().getOpcodeString().Substring(18),
+                        this.cycle[c - 1].IFID_IR,
+                        this.cycle[c - 1].IFID_NPC,
+                        this.cycle[c - 1].IFID_instruction,
+                        this.cycle[c - 1].IFID_instructionType,
+                        );
+
+                    #region Instruction Decode
                     this.cycle[c].setInstructionDecode(
                         this.registers[Convert.ToInt32(this.cycle[c - 1].IFID_IR.Substring(7, 5), 2)].getValue(),   //get data in the A ([IF/ID.IR 21..25])
                         this.registers[Convert.ToInt32(this.cycle[c - 1].IFID_IR.Substring(13, 5), 2)].getValue(),  //get data in the B ([IF/ID.IR 16..20])
@@ -483,15 +501,19 @@ namespace COMPARC_Project_2
                         this.cycle[c - 1].IFID_instruction,
                         this.cycle[c - 1].IFID_instructionType
                         );
+                    #endregion
                 }
                 else if (i >= this.instruction.Count + 1)       // last instruction - no more IF and ID
                 {
+                    #region Instruction Fetch
                     this.cycle[c].setInstructionFetch(
                         "",
                         "",
                         "",
                         ""
                         );
+                    #endregion
+                    #region Instruction Decode
                     this.cycle[c].setInstructionDecode(
                          "",   //get data in the A ([IF/ID.IR 21..25])
                          "",  //get data in the B ([IF/ID.IR 16..20])
@@ -501,16 +523,20 @@ namespace COMPARC_Project_2
                          "",
                          ""
                          );
+                    #endregion
                 }
                 else                // normal cycle
                 {
-                   this.cycle[c].setInstructionFetch(
+                    #region Instruction Fetch
+                    this.cycle[c].setInstructionFetch(
                         this.instruction[i].getOpcode().getOpcodeString(),
                         this.instruction[i].getLineNumber().ToString(),
                         this.instruction[i].getInstruction(),
                         this.instruction[i].getInstructionType()
                         );
-		           this.cycle[c].setInstructionDecode(
+                    #endregion
+                    #region Instruction Decode
+                    this.cycle[c].setInstructionDecode(
                         this.registers[Convert.ToInt32(this.cycle[c - 1].IFID_IR.Substring(7, 5), 2)].getValue(),   //get data in the A ([IF/ID.IR 21..25])
                         this.registers[Convert.ToInt32(this.cycle[c - 1].IFID_IR.Substring(13, 5), 2)].getValue(),  //get data in the B ([IF/ID.IR 16..20])
                         this.instruction[i - 1].getOpcode().getOpcodeString().Substring(18),
@@ -519,13 +545,15 @@ namespace COMPARC_Project_2
                         this.cycle[c - 1].IFID_instruction,
                         this.cycle[c - 1].IFID_instructionType
                         );
-                   if (this.checkDataHazard(this.instruction[i], this.instruction[i - 1]))      // data hazard 
+                    #endregion
+                    if (this.checkDataHazard(this.instruction[i], this.instruction[i - 1]))      // data hazard 
                    {
                        datahazard = true;
                        for (int j = 0; j < 4; j++)
                        {
                            if (j == 0)      // first cycle of data hazard - dont add new cycle, finish current cycle
                            {
+                               #region Execution
                                this.cycle[c].setExecution(
                                     this.cycle[c - 1].IDEX_A,
                                     this.cycle[c - 1].IDEX_B,
@@ -534,12 +562,15 @@ namespace COMPARC_Project_2
                                     this.cycle[c - 1].IDEX_instruction,
                                     this.cycle[c - 1].IDEX_instructionType
                                     );
+                               #endregion
+                               #region Memory Access
                                this.cycle[c].setMemoryAccess(
                                    this.cycle[c - 1].EXMEM_IR,
                                    this.cycle[c - 1].EXMEM_ALUOutput,
                                    this.cycle[c - 1].EXMEM_instruction,
                                    this.cycle[c - 1].EXMEM_instructionType
                                    );
+                               #endregion
                                this.pipelineWriteBack(c);
                                c++;
                            }
@@ -547,12 +578,15 @@ namespace COMPARC_Project_2
                            {
                                this.cycle.Add(new Cycle());
                                this.numCycles++;
+                               #region Instruction Fetch
                                this.cycle[c].setInstructionFetch(
                                     this.instruction[i].getOpcode().getOpcodeString(),
                                     this.instruction[i].getLineNumber().ToString(),
                                     this.instruction[i].getInstruction(),
                                     this.instruction[i].getInstructionType()
                                     );
+                               #endregion
+                               #region Execution
                                this.cycle[c].setExecution(
                                     this.cycle[c - 1].IDEX_A,
                                     this.cycle[c - 1].IDEX_B,
@@ -561,12 +595,15 @@ namespace COMPARC_Project_2
                                     this.cycle[c - 1].IDEX_instruction,
                                     this.cycle[c - 1].IDEX_instructionType
                                     );
-                                this.cycle[c].setMemoryAccess(
+                               #endregion
+                               #region Memory Access
+                               this.cycle[c].setMemoryAccess(
                                    this.cycle[c - 1].EXMEM_IR,
                                    this.cycle[c - 1].EXMEM_ALUOutput,
                                    this.cycle[c - 1].EXMEM_instruction,
                                    this.cycle[c - 1].EXMEM_instructionType
                                    );
+                               #endregion
                                this.pipelineWriteBack(c);
                                c++;
                            }
@@ -574,18 +611,22 @@ namespace COMPARC_Project_2
                            {
                                this.cycle.Add(new Cycle());
                                this.numCycles++;
+                               #region Instruction Fetch
                                this.cycle[c].setInstructionFetch(
                                     this.instruction[i].getOpcode().getOpcodeString(),
                                     this.instruction[i].getLineNumber().ToString(),
                                     this.instruction[i].getInstruction(),
                                     this.instruction[i].getInstructionType()
                                     );
+                               #endregion
+                               #region Memory Access
                                this.cycle[c].setMemoryAccess(
                                    this.cycle[c - 1].EXMEM_IR,
                                    this.cycle[c - 1].EXMEM_ALUOutput,
                                    this.cycle[c - 1].EXMEM_instruction,
                                    this.cycle[c - 1].EXMEM_instructionType
                                    );
+                               #endregion
                                this.pipelineWriteBack(c);
                                c++;
                            }
@@ -593,12 +634,14 @@ namespace COMPARC_Project_2
                            {
                                this.cycle.Add(new Cycle());
                                this.numCycles++;
+                               #region Instruction Fetch
                                this.cycle[c].setInstructionFetch(
                                     this.instruction[i].getOpcode().getOpcodeString(),
                                     this.instruction[i].getLineNumber().ToString(),
                                     this.instruction[i].getInstruction(),
                                     this.instruction[i].getInstructionType()
                                     );
+                               #endregion
                                this.pipelineWriteBack(c);
                            }
                        }
@@ -606,6 +649,7 @@ namespace COMPARC_Project_2
                 }
                 if (c != 0 && !datahazard)
                 {
+                    #region Execution
                     this.cycle[c].setExecution(
                         this.cycle[c - 1].IDEX_A,
                         this.cycle[c - 1].IDEX_B,
@@ -614,12 +658,15 @@ namespace COMPARC_Project_2
                         this.cycle[c - 1].IDEX_instruction,
                         this.cycle[c - 1].IDEX_instructionType
                         );
+                    #endregion
+                    #region Memory Access
                     this.cycle[c].setMemoryAccess(
                         this.cycle[c - 1].EXMEM_IR,
                         this.cycle[c - 1].EXMEM_ALUOutput,
                         this.cycle[c - 1].EXMEM_instruction,
                         this.cycle[c - 1].EXMEM_instructionType
                         );
+                    #endregion
                     this.pipelineWriteBack(c);
                 }
                 i++;
@@ -646,10 +693,6 @@ namespace COMPARC_Project_2
                     this.registers[Convert.ToInt32(this.cycle[i - 1].MEMWB_IR.Substring(13, 5), 2)].setRegisterValue(this.cycle[i - 1].MEMWB_ALUOutput);
                 }
             }
-            else if (this.cycle[i - 1].MEMWB_instructionType == "Load Instruction")
-            {
-
-            }
             else
             {
 
@@ -657,26 +700,14 @@ namespace COMPARC_Project_2
         }
 
         #endregion
+
+        private String loadDouble(string address)
+        {
+            if (address != "")
+            {
+                return this.memory[Convert.ToInt32(address, 16)].getValue();
+            }
+            return "";
+        }
     }
 }
-
-/*
-if (this.checkDataHazard(this.instruction[i], this.instruction[i - 1]))
-{
-    for (int k = i; k < 3+i; k++)
-    {
-        this.cycle.Add(new Cycle());
-        this.numCycles++;
-        this.cycle[k].stall = true;
-
-        this.cycle[k].setExecution(
-            this.instruction[k - 1].getInstruction(),
-            this.instruction[k - 1].getInstructionType(),
-            this.cycle[k - 1].IDEX_A,
-            this.cycle[k - 1].IDEX_B,
-            this.cycle[k - 1].IDEX_IMM,
-            this.cycle[k - 1].IDEX_IR);
-    }
-    i += 3;
-}
- */

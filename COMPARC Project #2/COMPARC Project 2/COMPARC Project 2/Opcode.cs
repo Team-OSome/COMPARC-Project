@@ -26,15 +26,15 @@ namespace COMPARC_Project_2
 
         //these are the Opcode versions
         private String instructionO;
-        public String rsO { get; private set; }
+        public String rsO { get; private set; } 
         public String rdO { get; private set; }
         public String rtO { get; private set; }
         private int rsDec;
         private int rdDec;
         private int rtDec;
-        private String offsetO;
+        public String offsetO { get; private set; }
         private int offsetDecO;
-        private String immediateO;
+        public String immediateO { get; private set; }
         private int immediateDec;
         public String bseO { get; private set; }
         private int bseDec;

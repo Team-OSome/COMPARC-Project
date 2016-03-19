@@ -86,7 +86,7 @@ namespace COMPARC_Project_2
             this.IFID_IR = opcode;
             if (programCtr != "")
             {
-                this.IFID_NPC = ((Convert.ToInt32(programCtr) + 1) * 4).ToString("X"); //(Convert.ToInt32(programCtr) + 4).ToString("X");
+                this.IFID_NPC = ((Convert.ToInt32(programCtr) + 1) * 4).ToString("X");
             }
             else
             {
@@ -95,6 +95,47 @@ namespace COMPARC_Project_2
             this.IFID_PC = this.IFID_NPC;
             this.IFID_instruction = instruction;
             this.IFID_instructionType = instructionType;
+        }
+
+        public void setInstructionDecode(string rs, string rt, string rd, string bse, string IMM, string IFID_IR, string IFID_NPC, string instruction, string instructionType)
+        {
+            char signextend;
+
+            if (instructionType == "Register-Register ALU Instruction")
+            {
+                if (instruction == "DSUBU")
+                {
+                    this.IDEX_A = rs;
+                    this.IDEX_B = rt;
+                    if (IMM != "")
+                    {
+                        this.IDEX_IMM = IMM.Replace(" ", "");       //  remove white spaces
+                        signextend = this.IDEX_IMM[0];              //  get sign extend value
+                        String text = this.IDEX_IMM;                // convert to hex
+                        String val = Convert.ToInt64(text, 2).ToString("X").ToUpper();
+                        text = "";
+                        for (int i = val.Length; i < 4; i++)
+                        {
+                            text += "0";
+                        }
+                        text += val;
+                        this.IDEX_IMM = text;
+                        if (signextend == '1')
+                        {
+                            this.IDEX_IMM = "FFFFFFFFFFFF" + this.IDEX_IMM;
+                        }
+                        else
+                        {
+                            this.IDEX_IMM = "000000000000" + this.IDEX_IMM;
+                        }
+                    }
+                }
+            }
+
+            this.IDEX_IR = IFID_IR;
+            this.IDEX_NPC = IFID_NPC;
+            this.IDEX_instruction = instruction;
+            this.IDEX_instructionType = instructionType;
         }
 
         public void setInstructionDecode(string A, string B, string IMM, string IFID_IR, string IFID_NPC, string instruction, string instructionType)
@@ -172,22 +213,49 @@ namespace COMPARC_Project_2
                         this.EXMEM_ALUOutput = "0" + this.EXMEM_ALUOutput;
                     }
                     this.EXMEM_Cond = "0";
-                }               
-                //SLT
-                //SELNEZ
-            }
-            
-            else if (instructionType == "Register-Immediate ALU Instruction")
-            {
-                if (instruction == "DADDIU")
+                }
+                else if (instruction == "SLT")
                 {
+                    if (Convert.ToInt64(IDEX_A, 16) < Convert.ToInt64(IDEX_B, 16))
+                    {
+                        this.EXMEM_ALUOutput = "0000000000000001";
+                    }
+                    else
+	                {
+                        this.EXMEM_ALUOutput = "0000000000000000";
+	                }
+                    this.EXMEM_Cond = "0";
+                }
+                else if (instruction == "SELNEZ")
+	            {
+		            if (Convert.ToInt64(IDEX_B, 16) != 0)
+                    {
+                        this.EXMEM_ALUOutput = Convert.ToInt64(IDEX_A, 16).ToString("X");
+                        while (this.EXMEM_ALUOutput.Length < 16)
+                        {
+                            this.EXMEM_ALUOutput = "0" + this.EXMEM_ALUOutput;
+                        }
+                    }
+                    else
+                    {
+                        this.EXMEM_ALUOutput = "0000000000000000";
+                    }
+                    this.EXMEM_Cond = "0";
+	            }
+            }
+
+            else if (instructionType == "Register-Immediate ALU Instruction" )
+            {
                     this.EXMEM_ALUOutput = (Convert.ToInt64(IDEX_A, 16) + Convert.ToInt64(IDEX_IMM, 16)).ToString("X");
                     while (this.EXMEM_ALUOutput.Length < 16)
                     {
                         this.EXMEM_ALUOutput = "0" + this.EXMEM_ALUOutput;
                     }
                     this.EXMEM_Cond = "0";
-                }
+            }
+            else if (instructionType == "Load Instruction" || instructionType == "Store Instruction")
+            {
+                
             }
             
             this.EXMEM_B = IDEX_B;
