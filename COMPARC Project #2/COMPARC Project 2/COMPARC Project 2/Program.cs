@@ -479,18 +479,21 @@ namespace COMPARC_Project_2
                         );
                     #endregion
 
+                    #region Instruction Decode
                     this.cycle[c].setInstructionDecode(
-                        this.instruction[i - 1].getOpcode().rsO,
-                        this.instruction[i - 1].getOpcode().rtO,
-                        this.instruction[i - 1].getOpcode().rdO,
-                        this.instruction[i - 1].getOpcode().bseO,
-                        this.instruction[i - 1].getOpcode().getOpcodeString().Substring(18),
+                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rsO, 2)].getValue(),
+                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rtO, 2)].getValue(),
+                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rdO, 2)].getValue(),
+                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().bseO, 2)].getValue(),
+                        this.instruction[i - 1].getOpcode().immediateO,
                         this.cycle[c - 1].IFID_IR,
                         this.cycle[c - 1].IFID_NPC,
                         this.cycle[c - 1].IFID_instruction,
-                        this.cycle[c - 1].IFID_instructionType,
+                        this.cycle[c - 1].IFID_instructionType
                         );
+                    #endregion
 
+                    /*
                     #region Instruction Decode
                     this.cycle[c].setInstructionDecode(
                         this.registers[Convert.ToInt32(this.cycle[c - 1].IFID_IR.Substring(7, 5), 2)].getValue(),   //get data in the A ([IF/ID.IR 21..25])
@@ -502,6 +505,7 @@ namespace COMPARC_Project_2
                         this.cycle[c - 1].IFID_instructionType
                         );
                     #endregion
+                     */
                 }
                 else if (i >= this.instruction.Count + 1)       // last instruction - no more IF and ID
                 {
@@ -513,6 +517,20 @@ namespace COMPARC_Project_2
                         ""
                         );
                     #endregion
+
+                    this.cycle[c].setInstructionDecode(
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""
+                        );
+
+                    /*
                     #region Instruction Decode
                     this.cycle[c].setInstructionDecode(
                          "",   //get data in the A ([IF/ID.IR 21..25])
@@ -524,6 +542,7 @@ namespace COMPARC_Project_2
                          ""
                          );
                     #endregion
+                     */
                 }
                 else                // normal cycle
                 {
@@ -535,6 +554,22 @@ namespace COMPARC_Project_2
                         this.instruction[i].getInstructionType()
                         );
                     #endregion
+
+                    #region Instruction Decode
+                    this.cycle[c].setInstructionDecode(
+                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rsO, 2)].getValue(),
+                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rtO, 2)].getValue(),
+                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rdO, 2)].getValue(),
+                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().bseO, 2)].getValue(),
+                        this.instruction[i - 1].getOpcode().immediateO,
+                        this.cycle[c - 1].IFID_IR,
+                        this.cycle[c - 1].IFID_NPC,
+                        this.cycle[c - 1].IFID_instruction,
+                        this.cycle[c - 1].IFID_instructionType
+                        );
+                    #endregion
+
+                    /*
                     #region Instruction Decode
                     this.cycle[c].setInstructionDecode(
                         this.registers[Convert.ToInt32(this.cycle[c - 1].IFID_IR.Substring(7, 5), 2)].getValue(),   //get data in the A ([IF/ID.IR 21..25])
@@ -546,6 +581,8 @@ namespace COMPARC_Project_2
                         this.cycle[c - 1].IFID_instructionType
                         );
                     #endregion
+                     */
+             
                     if (this.checkDataHazard(this.instruction[i], this.instruction[i - 1]))      // data hazard 
                    {
                        datahazard = true;

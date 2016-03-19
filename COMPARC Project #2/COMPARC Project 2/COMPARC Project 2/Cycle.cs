@@ -99,45 +99,24 @@ namespace COMPARC_Project_2
 
         public void setInstructionDecode(string rs, string rt, string rd, string bse, string IMM, string IFID_IR, string IFID_NPC, string instruction, string instructionType)
         {
-            char signextend;
-
-            if (instructionType == "Register-Register ALU Instruction")
+            if (IFID_IR != "")  //  if Instruction Fetched is not null -> pipeline map IF is true
             {
-                if (instruction == "DSUBU")
-                {
-                    this.IDEX_A = rs;
-                    this.IDEX_B = rt;
-                    if (IMM != "")
-                    {
-                        this.IDEX_IMM = IMM.Replace(" ", "");       //  remove white spaces
-                        signextend = this.IDEX_IMM[0];              //  get sign extend value
-                        String text = this.IDEX_IMM;                // convert to hex
-                        String val = Convert.ToInt64(text, 2).ToString("X").ToUpper();
-                        text = "";
-                        for (int i = val.Length; i < 4; i++)
-                        {
-                            text += "0";
-                        }
-                        text += val;
-                        this.IDEX_IMM = text;
-                        if (signextend == '1')
-                        {
-                            this.IDEX_IMM = "FFFFFFFFFFFF" + this.IDEX_IMM;
-                        }
-                        else
-                        {
-                            this.IDEX_IMM = "000000000000" + this.IDEX_IMM;
-                        }
-                    }
-                }
+                this.IDEX = true;
             }
 
+            if (instructionType == "Register-Register ALU Instruction" || instructionType == "Register-Immediate ALU Instruction")
+            {
+                this.IDEX_A = rs;
+                this.IDEX_B = rt;
+                this.IDEX_IMM = IMM;
+                this.EXMEM_Cond = "0";
+            }
             this.IDEX_IR = IFID_IR;
             this.IDEX_NPC = IFID_NPC;
             this.IDEX_instruction = instruction;
             this.IDEX_instructionType = instructionType;
         }
-
+        
         public void setInstructionDecode(string A, string B, string IMM, string IFID_IR, string IFID_NPC, string instruction, string instructionType)
         {
             char signextend;
@@ -177,7 +156,7 @@ namespace COMPARC_Project_2
             this.IDEX_instruction = instruction;
             this.IDEX_instructionType = instructionType;
         }
-
+        
         public void setExecution(string IDEX_A, string IDEX_B, string IDEX_IMM, string IDEX_IR, string instruction, string instructionType )
         {
             if (IDEX_IR != "")  //  if Instruction Fetched is not null -> pipeline map IF is true
