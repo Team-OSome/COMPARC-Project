@@ -260,6 +260,31 @@ namespace COMPARC_Project_2
             return this.cycle[i].MEMWB_IR;
         }
 
+        public Boolean getIFID(int i)
+        {
+            return this.cycle[i].IFID;
+        }
+
+        public Boolean getIDEX(int i)
+        {
+            return this.cycle[i].IDEX;
+        }
+
+        public Boolean getEXMEM(int i)
+        {
+            return this.cycle[i].EXMEM;
+        }
+
+        public Boolean getMEMWB(int i)
+        {
+            return this.cycle[i].MEMWB;
+        }
+
+        public Boolean getWB(int i)
+        {
+            return this.cycle[i].WB;
+        }
+
         public String getWriteBackRegister(int i)
         {
             if (i > 0)
@@ -284,8 +309,6 @@ namespace COMPARC_Project_2
             }
 
         }
-         
-
 
         public int getNumCycles()
         {
@@ -427,7 +450,6 @@ namespace COMPARC_Project_2
             int c = 0;
             Boolean datahazard = false;
             int totalCycles = this.instruction.Count + 4;
-            //int completedCycles = 0;
             this.numCycles = 0;
             do
             {
@@ -608,6 +630,11 @@ namespace COMPARC_Project_2
 
         private void pipelineWriteBack(int i)
         {
+            if (this.cycle[i - 1].MEMWB_IR != "")  //  if Instruction Fetched is not null -> pipeline map IF is true
+            {
+                this.cycle[i].WB = true;
+            }
+
             if (this.cycle[i - 1].MEMWB_instructionType == "Register-Register ALU Instruction")
             {
                 this.registers[Convert.ToInt32(this.cycle[i - 1].MEMWB_IR.Substring(19, 5), 2)].setRegisterValue(this.cycle[i - 1].MEMWB_ALUOutput);

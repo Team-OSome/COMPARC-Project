@@ -10,13 +10,14 @@ namespace COMPARC_Project_2
     {
         #region variables
 
-        public Boolean stall { get; set; }
+        public Boolean IFID { get; private set; }
         public String IFID_IR { get; private set; }
         public String IFID_NPC { get; private set; }
         public String IFID_PC { get; private set; }
         public String IFID_instruction { get; private set; }
         public String IFID_instructionType { get; private set; }
 
+        public Boolean IDEX { get; private set; }
         public String IDEX_A { get; private set; }
         public String IDEX_B { get; private set; }
         public String IDEX_IMM { get; private set; }
@@ -25,6 +26,7 @@ namespace COMPARC_Project_2
         public String IDEX_instruction { get; private set; }
         public String IDEX_instructionType { get; private set; }
 
+        public Boolean EXMEM { get; private set; }
         public String EXMEM_ALUOutput { get; private set; }
         public String EXMEM_Cond { get; private set; }
         public String EXMEM_B { get; private set; }
@@ -32,46 +34,55 @@ namespace COMPARC_Project_2
         public String EXMEM_instruction { get; private set; }
         public String EXMEM_instructionType { get; private set; }
 
+        public Boolean MEMWB { get; private set; }
         public String MEMWB_LMD { get; private set; }
         public String MEMWB_Range { get; private set; }
         public String MEMWB_IR { get; private set; }
         public String MEMWB_ALUOutput { get; private set; }
         public String MEMWB_instruction { get; private set; }
-        public String MEMWB_instructionType { get; private set; } 
+        public String MEMWB_instructionType { get; private set; }
 
+        public Boolean WB { get; set; }
         public String WB_Rn { get; private set; }
 
         #endregion
 
         public Cycle()
         {
-            this.stall = false;
-
-            this.IFID_IR = null;
+            this.IFID = false;
+            this.IFID_IR = "";
             this.IFID_NPC = null;
             this.IFID_PC = null;
 
+            this.IDEX = false;
             this.IDEX_A = null;
             this.IDEX_B = null;
             this.IDEX_IMM = null;
             this.IDEX_NPC = null;
-            this.IDEX_IR = null;
+            this.IDEX_IR = "";
 
+            this.EXMEM = false;
             this.EXMEM_ALUOutput = null;
             this.EXMEM_Cond = null;
             this.EXMEM_B = null;
-            this.EXMEM_IR = null;
+            this.EXMEM_IR = "";
 
+            this.MEMWB = false;
             this.MEMWB_LMD = null;
             this.MEMWB_Range = null;
-            this.MEMWB_IR = null;
+            this.MEMWB_IR = "";
             this.MEMWB_ALUOutput = null;
 
+            this.WB = false;
             this.WB_Rn = null;        
         }
 
         public void setInstructionFetch(string opcode, string programCtr, string instruction, string instructionType)
         {
+            if (instruction != "")  //  if Instruction Fetched is not null -> pipeline map IF is true
+            {
+                this.IFID = true;
+            }
             this.IFID_IR = opcode;
             this.IFID_NPC = programCtr; //(Convert.ToInt32(programCtr) + 4).ToString("X");
             this.IFID_PC = this.IFID_NPC;
@@ -84,6 +95,12 @@ namespace COMPARC_Project_2
             char signextend;
             this.IDEX_A = A;   // [IF/ID.IR 21..25]
             this.IDEX_B = B;   // [IF/ID.IR 16..20]
+
+            if (IFID_IR != "")  //  if Instruction Fetched is not null -> pipeline map IF is true
+            {
+                this.IDEX = true;
+            }
+
             if (IMM != "")
             {
                 this.IDEX_IMM = IMM.Replace(" ", "");       //  remove white spaces
@@ -115,6 +132,11 @@ namespace COMPARC_Project_2
 
         public void setExecution(string IDEX_A, string IDEX_B, string IDEX_IMM, string IDEX_IR, string instruction, string instructionType )
         {
+            if (IDEX_IR != "")  //  if Instruction Fetched is not null -> pipeline map IF is true
+            {
+                this.EXMEM = true;
+            }
+
             if (instructionType == "Register-Register ALU Instruction")
             {
                 if (instruction == "DSUBU")
@@ -169,6 +191,11 @@ namespace COMPARC_Project_2
 
         public void setMemoryAccess(string EXMEM_IR, string EXMEM_ALUOutput, string instruction, string instructionType)
         {
+            if (EXMEM_IR != "")  //  if Instruction Fetched is not null -> pipeline map IF is true
+            {
+                this.MEMWB = true;
+            }
+
             if (instructionType == "Register-Register ALU Instruction" || instructionType == "Register-Immediate ALU Instruction")
             {
                 this.MEMWB_LMD = "0";

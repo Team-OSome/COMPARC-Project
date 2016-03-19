@@ -339,6 +339,55 @@ namespace COMPARC_Project_2
             {
                 pipelineMapGridView.Columns.Add("Cycle " + (i + 1), "Cycle " + (i + 1));
             }
+
+            for (int i = 0; i < program.getNumCycles(); i++)
+            {
+                Console.WriteLine("");
+                Console.WriteLine("Cycle " + (i + 1).ToString());
+
+                if (this.program.getIFID(i))
+                {
+                    Console.Write("IF ");
+                }
+                else
+                {
+                    Console.Write("   ");
+                }
+                if (this.program.getIDEX(i))
+                {
+                    Console.Write("ID ");
+                }
+                else
+                {
+                    Console.Write("   ");
+                }
+                if (this.program.getEXMEM(i))
+                {
+                    Console.Write("EX ");
+                }
+                else
+                {
+                    Console.Write("   ");
+                }
+                if (this.program.getMEMWB(i))
+                {
+                    Console.Write("ME ");
+                }
+                else
+                {
+                    Console.Write("   ");
+                }
+                if (this.program.getWB(i))
+                {
+                    Console.Write("WB ");
+                }
+                else
+                {
+                    Console.Write("   ");
+                }
+                
+            }
+
         }
 
         #endregion
