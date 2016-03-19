@@ -744,31 +744,13 @@ namespace COMPARC_Project_2
 
         private String loadDouble(string startAddress, int i)
         {
-            /*
-            try
-            {
-                int temp = Convert.ToInt32(startAddress, 16);
-            }
-            catch (Exception)
-            {
-                return "error";
-            }      
-            /*
-            if (!(Convert.ToInt32(startAddress,16) >= 8192 && Convert.ToInt32(startAddress,16) <= 16375))
-            {
-                Console.WriteLine(Convert.ToInt32(startAddress, 16).ToString() + " " + Convert.ToInt32(startAddress, 16).ToString());
-                return "error";
-            }
-             */
-            
-            
             string loadedValue = "";
             if (this.cycle[i - 1].EXMEM_instructionType == "Load Instruction")
             {
                 if (startAddress != "")
                 {
+                    
                     int address = Convert.ToInt32(startAddress, 16) - 8192;
-                    Console.WriteLine("HELPPPPPP --- " + address.ToString());
                     if (address >= 0 && address <= 8192)
                     {
                         for (int k = address + 7; k >=  address; k--)
