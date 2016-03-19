@@ -84,7 +84,14 @@ namespace COMPARC_Project_2
                 this.IFID = true;
             }
             this.IFID_IR = opcode;
-            this.IFID_NPC = programCtr; //(Convert.ToInt32(programCtr) + 4).ToString("X");
+            if (programCtr != "")
+            {
+                this.IFID_NPC = ((Convert.ToInt32(programCtr) + 1) * 4).ToString("X"); //(Convert.ToInt32(programCtr) + 4).ToString("X");
+            }
+            else
+            {
+                this.IFID_NPC = "";
+            }
             this.IFID_PC = this.IFID_NPC;
             this.IFID_instruction = instruction;
             this.IFID_instructionType = instructionType;
