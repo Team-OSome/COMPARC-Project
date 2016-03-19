@@ -182,7 +182,14 @@ namespace COMPARC_Project_2
                                 this.immediateO = this.immediate.TrimStart('#');
                                 this.immediateDec = Int32.Parse(immediateO, System.Globalization.NumberStyles.HexNumber);
                                 this.immediateO = Convert.ToString(immediateDec, 2);
-                                this.immediateO = immediateO.PadLeft(16, '0');
+                                if (immediateDec > 32768) 
+                                {
+                                    this.immediateO = immediateO.PadLeft(16, '1');
+                                }
+                                else
+                                {
+                                    this.immediateO = immediateO.PadLeft(16, '0');
+                                }
                             }
                             catch (Exception e)
                             {
