@@ -29,6 +29,10 @@ namespace COMPARC_Project_2
             memoryGridView.Columns.Add("Memory Location", "Memory Location");
             memoryGridView.Columns["Memory Location"].ReadOnly = true;
             memoryGridView.Columns.Add("Value", "Value");
+            foreach (DataGridViewColumn column in memoryGridView.Columns)
+            {
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
             initializeMemory();
 
             this.viewCycle = 0;

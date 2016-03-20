@@ -40,7 +40,7 @@ namespace COMPARC_Project_2
                 //Console.WriteLine(i + ":" + programList.ElementAt(i));
                 if (programList.ElementAt(i).Equals("") || programList.ElementAt(i).Equals(" ") || programList.ElementAt(i).Equals(13) || programList.ElementAt(i).Equals(0))
                 {
-                    Console.WriteLine("Removed line i=" + i);
+                    //Console.WriteLine("Removed line i=" + i);
                     programList.RemoveAt(i);
                     i--;
                 }
@@ -65,7 +65,7 @@ namespace COMPARC_Project_2
             {
                 this.instruction[i].getOpcode().setHexOpcodeString();
             }
-                showAllOpcodes();
+                //showAllOpcodes();
                 showAllHexOpcodes();
             if(this.instructionsValid)
                 this.pipeline();
@@ -105,7 +105,7 @@ namespace COMPARC_Project_2
             this.memory.Capacity = 8192;
             int num = 0x3FFF;
 
-            for (int i = 0; i < this.memory.Capacity; i++)
+            for (int i = (this.memory.Capacity - 1); i >= 0; i--)
             {
                 this.memory.Add(new Memory(num.ToString("x").ToUpper(), memory[i]));
                 num--;
@@ -118,19 +118,19 @@ namespace COMPARC_Project_2
             {
                 if (this.instruction[i].getInstruction().Equals("BNEC") || this.instruction[i].getInstruction().Equals("BC"))
                 {
-                    Console.WriteLine("Found: " + this.instruction[i].getInstruction() + ", i=" + i);
-                    Console.WriteLine(this.instruction[i].getInstruction() + " branches to" + this.instruction[i].getOffset());
+                    //Console.WriteLine("Found: " + this.instruction[i].getInstruction() + ", i=" + i);
+                    //Console.WriteLine(this.instruction[i].getInstruction() + " branches to" + this.instruction[i].getOffset());
                     this.hasBranch = true;
 
                     for (int j = 0; j < this.instruction.Count(); j++)
                     {
-                        Console.WriteLine("branch location of line " + j + ": " + this.instruction[j].getBranchLocation());
+                        //Console.WriteLine("branch location of line " + j + ": " + this.instruction[j].getBranchLocation());
                         if (this.instruction[i].getOffset().Equals(this.instruction[j].getBranchLocation()))
                         {
-                            Console.WriteLine("i= " + i);
-                            Console.WriteLine("j= " + j);
+                           // Console.WriteLine("i= " + i);
+                           // Console.WriteLine("j= " + j);
                             tempOffset = j - i - 1;
-                            Console.WriteLine("tempOffset= " + tempOffset);
+                            //Console.WriteLine("tempOffset= " + tempOffset);
                             this.instruction[i].setOffset(tempOffset.ToString());
                             this.instruction[i].getOpcode().setOffset(tempOffset.ToString());
                             this.instruction[i].getOpcode().addOpcodeString(this.instruction[i].getOpcode().getOffsetO());
@@ -445,7 +445,7 @@ namespace COMPARC_Project_2
 
             for (int i = 0; i < instruction.Count; i++)
             {
-                Console.WriteLine(this.instruction[i].getOpcode().getHexOpcodeString());
+                Console.WriteLine(i.ToString() + ": " + this.instruction[i].getOpcode().getHexOpcodeString());
             }
 
         }
@@ -572,15 +572,14 @@ namespace COMPARC_Project_2
                                     );
                                #endregion
                                #region Memory Access
-                               lmd = this.loadDouble(this.cycle[c - 1].EXMEM_ALUOutput, c);
-                               if (lmd == "error")
+                               if (!checkLoadAddress(this.cycle[c - 1].EXMEM_ALUOutput, this.cycle[c - 1].EXMEM_instructionType))
                                {
                                    break;
                                }
                                this.cycle[c].setMemoryAccess(
                                    this.cycle[c - 1].EXMEM_IR,
                                    this.cycle[c - 1].EXMEM_ALUOutput,
-                                   lmd,
+                                   this.loadDouble(this.cycle[c - 1].EXMEM_ALUOutput, c),
                                    this.cycle[c - 1].EXMEM_instruction,
                                    this.cycle[c - 1].EXMEM_instructionType
                                    );
@@ -611,15 +610,14 @@ namespace COMPARC_Project_2
                                     );
                                #endregion
                                #region Memory Access
-                               lmd = this.loadDouble(this.cycle[c - 1].EXMEM_ALUOutput, c);
-                               if (lmd == "error")
+                               if (!checkLoadAddress(this.cycle[c - 1].EXMEM_ALUOutput, this.cycle[c - 1].EXMEM_instructionType))
                                {
                                    break;
                                }
                                this.cycle[c].setMemoryAccess(
                                    this.cycle[c - 1].EXMEM_IR,
                                    this.cycle[c - 1].EXMEM_ALUOutput,
-                                   lmd,
+                                   this.loadDouble(this.cycle[c - 1].EXMEM_ALUOutput, c),
                                    this.cycle[c - 1].EXMEM_instruction,
                                    this.cycle[c - 1].EXMEM_instructionType
                                    );
@@ -640,15 +638,14 @@ namespace COMPARC_Project_2
                                     );
                                #endregion
                                #region Memory Access
-                               lmd = this.loadDouble(this.cycle[c - 1].EXMEM_ALUOutput, c);
-                               if (lmd == "error")
+                               if (!checkLoadAddress(this.cycle[c - 1].EXMEM_ALUOutput, this.cycle[c - 1].EXMEM_instructionType))
                                {
                                    break;
                                }
                                this.cycle[c].setMemoryAccess(
                                    this.cycle[c - 1].EXMEM_IR,
                                    this.cycle[c - 1].EXMEM_ALUOutput,
-                                   lmd,
+                                   this.loadDouble(this.cycle[c - 1].EXMEM_ALUOutput, c),
                                    this.cycle[c - 1].EXMEM_instruction,
                                    this.cycle[c - 1].EXMEM_instructionType
                                    );
@@ -686,15 +683,15 @@ namespace COMPARC_Project_2
                         );
                     #endregion
                     #region Memory Access
-                    lmd = this.loadDouble(this.cycle[c - 1].EXMEM_ALUOutput, c);
-                    if (lmd == "error")
+                    if (!(checkLoadAddress(this.cycle[c - 1].EXMEM_ALUOutput, this.cycle[c - 1].EXMEM_instructionType)))
                     {
+                        MessageBox.Show("BREAK");
                         break;
                     }
                     this.cycle[c].setMemoryAccess(
                         this.cycle[c - 1].EXMEM_IR,
                         this.cycle[c - 1].EXMEM_ALUOutput,
-                        lmd,
+                        this.loadDouble(this.cycle[c - 1].EXMEM_ALUOutput, c),
                         this.cycle[c - 1].EXMEM_instruction,
                         this.cycle[c - 1].EXMEM_instructionType
                         );
@@ -766,6 +763,37 @@ namespace COMPARC_Project_2
                 }
             }
             return "";
+        }
+
+        private Boolean checkLoadAddress(string startAddress, string instructionType)
+        {
+            if (startAddress != "" && startAddress != null)
+            {
+                if (instructionType == "Load Instruction")
+                {
+                    MessageBox.Show("addess is:  " + startAddress);
+                    int x = Convert.ToInt32(startAddress,16);
+                    if (x >= 8192 && x <= 16376)
+                    {
+                        MessageBox.Show("Load is good");
+                        return true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Load address is out of range: " + x.ToString(""));
+                        return false;
+                    }
+                }
+                else
+                {
+                    return true;
+                }
+                
+            }
+            else
+            {
+                return true;
+            }
         }
 
         private String storeDouble(string startAddress, int i)

@@ -106,7 +106,7 @@ namespace COMPARC_Project_2
                 this.IDEX = true;
             }
 
-            if (instructionType == "Register-Register ALU Instruction" || instructionType == "Register-Immediate ALU Instruction")
+            if (instructionType == "Register-Register ALU Instruction" || instructionType == "Register-Immediate ALU Instruction" || instructionType == "Branch Instruction")
             {
                 this.IDEX_A = rs;
                 this.IDEX_B = rt;
@@ -166,6 +166,10 @@ namespace COMPARC_Project_2
                     }
                 }
             }
+            else
+            {
+
+            }
             this.IDEX_IR = IFID_IR;
             this.IDEX_NPC = IFID_NPC;
             this.IDEX_instruction = instruction;
@@ -223,6 +227,7 @@ namespace COMPARC_Project_2
 
             if (instructionType == "Register-Register ALU Instruction")
             {
+                Console.WriteLine("Register-Register ALU Instruction");
                 if (instruction == "DSUBU")
                 {
                     this.EXMEM_ALUOutput = (Convert.ToInt64(IDEX_A, 16) - Convert.ToInt64(IDEX_B, 16)).ToString("X");
@@ -282,13 +287,27 @@ namespace COMPARC_Project_2
 
             else if (instructionType == "Register-Immediate ALU Instruction" || instructionType == "Load Instruction" || instructionType == "Store Instruction")
             {
-                Console.WriteLine((Convert.ToInt64(IDEX_A, 16).ToString("X")) + " + " + (Convert.ToInt64(IDEX_IMM, 16)).ToString("X"));
+                Console.WriteLine("Register-Immediate ALU Instruction || instructionType == Load Instruction || instructionType == Store Instruction");
+                //Console.WriteLine((Convert.ToInt64(IDEX_A, 16).ToString("X")) + " + " + (Convert.ToInt64(IDEX_IMM, 16)).ToString("X"));
                     this.EXMEM_ALUOutput = (Convert.ToInt64(IDEX_A, 16) + Convert.ToInt64(IDEX_IMM, 16)).ToString("X");
                     while (this.EXMEM_ALUOutput.Length < 16)
                     {
                         this.EXMEM_ALUOutput = "0" + this.EXMEM_ALUOutput;
                     }
                     this.EXMEM_Cond = "0";
+            }
+            else if (instructionType == "Branch Instruction")
+            {
+                Console.WriteLine("Branch Instruction");
+                Console.WriteLine((Convert.ToInt64(IDEX_NPC, 16).ToString("X")) + " + " + (Convert.ToInt64(IDEX_IMM, 16) * 8).ToString("X"));
+                this.EXMEM_ALUOutput = ((Convert.ToInt64(IDEX_NPC, 16) + Convert.ToInt64(IDEX_IMM, 16) * 8)).ToString("X");
+                
+                //this.EXMEM_ALUOutput = (Convert.ToInt64(IDEX_A, 16) + Convert.ToInt64(IDEX_IMM, 16)).ToString("X");
+                while (this.EXMEM_ALUOutput.Length < 16)
+                {
+                    this.EXMEM_ALUOutput = "0" + this.EXMEM_ALUOutput;
+                }
+                this.EXMEM_Cond = "1";
             }
             
             this.EXMEM_B = IDEX_B;

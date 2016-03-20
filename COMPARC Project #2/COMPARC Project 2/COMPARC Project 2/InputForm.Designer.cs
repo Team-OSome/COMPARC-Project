@@ -937,15 +937,20 @@
             // 
             this.memoryGridView.AllowUserToAddRows = false;
             this.memoryGridView.AllowUserToDeleteRows = false;
+            this.memoryGridView.AllowUserToResizeColumns = false;
+            this.memoryGridView.AllowUserToResizeRows = false;
             this.memoryGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.memoryGridView.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.memoryGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.memoryGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.memoryGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.memoryGridView.Location = new System.Drawing.Point(3, 3);
+            this.memoryGridView.MultiSelect = false;
             this.memoryGridView.Name = "memoryGridView";
             this.memoryGridView.RowHeadersVisible = false;
+            this.memoryGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.memoryGridView.Size = new System.Drawing.Size(193, 239);
             this.memoryGridView.TabIndex = 0;
+            //this.memoryGridView.ColumnHeadersVisible = false;
             // 
             // pipelineMapGridView
             // 
