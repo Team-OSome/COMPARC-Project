@@ -394,7 +394,6 @@ namespace COMPARC_Project_2
         private void displayPipelineMap()       //displays pipeline map to console
         {
             int row, currRow = 0;
-            bool first;
             pipelineMapGridView.Rows.Clear();
             pipelineMapGridView.Columns.Clear();          
             pipelineMapGridView.Columns.Add("Instruction", "Instruction");
@@ -409,57 +408,36 @@ namespace COMPARC_Project_2
                 pipelineMapGridView.Columns.Add("Cycle " + (i + 1), "Cycle " + (i + 1));
 
                 row = currRow;
-                first = true;
 
                 if (this.program.getWB(i))
                 {
                     pipelineMapGridView.Rows[row].Cells[i + 1].Value = "WB";
-                    first = false;
-                    currRow++;
-                }
-
-                if (!first && row < this.program.getInstructionLength() - 1)
-                {
                     row++;
+                    currRow++;
                 }
 
                 if (this.program.getMEMWB(i))
                 {
                     pipelineMapGridView.Rows[row].Cells[i + 1].Value = "MEM";
-                    first = false;
-                }
-
-                if (!first && row < this.program.getInstructionLength() - 1)
-                {
                     row++;
                 }
 
                 if (this.program.getEXMEM(i))
                 {
                     pipelineMapGridView.Rows[row].Cells[i + 1].Value = "EX";
-                    first = false;
-                }
-
-                if (!first && row < this.program.getInstructionLength() - 1)
-                {
                     row++;
                 }
 
                 if (this.program.getIDEX(i) )
                 {
                     pipelineMapGridView.Rows[row].Cells[i + 1].Value = "ID";
-                    first = false;
-                }
-
-                if (!first && row < this.program.getInstructionLength() - 1)
-                {
                     row++;
                 }
 
                 if (this.program.getIFID(i))
                 {
                     pipelineMapGridView.Rows[row].Cells[i + 1].Value = "IF";
-                    first = false;
+                    row++;
                 }
 
             }
