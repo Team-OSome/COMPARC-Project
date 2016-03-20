@@ -233,19 +233,31 @@ namespace COMPARC_Project_2
                         this.bseO = bseO.PadLeft(5, '0');
                         this.rtO = rtO.PadLeft(5, '0');
 
-                        this.offsetO = this.offset.TrimStart('#');
-                        this.offsetDec = Int32.Parse(offsetO, System.Globalization.NumberStyles.HexNumber);
+                        this.offsetDec = Int32.Parse(offset, System.Globalization.NumberStyles.HexNumber);
 
-                        if (offsetDec >= 8192 && offsetDec <= 16383) //The value= base + immediate should not surpass memory locations: 2000h-3FFF
-                        {
+                        if (offsetDec >= 8192 && offsetDec <= 16376) //The value= base + immediate should not surpass memory locations: 2000h-3FFF
+                        {                                            //16376 because max offset should be 3FF8-3FFF. if offset is >3FF8, this.valid=false
+
                             this.offsetO = Convert.ToString(offsetDec, 2);
                             this.offsetO = offsetO.PadLeft(16, '0');
 
                             this.valid = true;
                         }
+                        /*
+                        if (offsetDec >= 8192 && offsetDec <= 16383) //The value= base + immediate should not surpass memory locations: 2000h-3FFF
+                        {
+
+                            this.offsetO = Convert.ToString(offsetDec, 2);
+                            this.offsetO = offsetO.PadLeft(16, '0');
+
+                            this.valid = true;
+                        }*/
 
                         else
+                        {
                             this.valid = false;
+                        }
+                            
                     }
                     catch (Exception e)
                     {
@@ -361,11 +373,17 @@ namespace COMPARC_Project_2
                 // pad to length multiple of 8
                 binary = binary.PadLeft(((binary.Length / 8) + 1) * 8, '0');
             }
-
-            for (int i = 0; i < binary.Length; i += 8)
+            try
             {
-                string eightBits = binary.Substring(i, 8);
-                result.AppendFormat("{0:X2}", Convert.ToByte(eightBits, 2));
+                for (int i = 0; i < binary.Length; i += 8)
+                {
+                    string eightBits = binary.Substring(i, 8);
+                    result.AppendFormat("{0:X2}", Convert.ToByte(eightBits, 2));
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Caught error at Binary to Hex String.");
             }
 
             return result.ToString();

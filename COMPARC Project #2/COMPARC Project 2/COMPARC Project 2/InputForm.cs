@@ -72,7 +72,7 @@ namespace COMPARC_Project_2
                 firstCycleBtn.Visible = false;
             }
             else
-                MessageBox.Show("ERROR: Something is not valid");
+                MessageBox.Show("ERROR: Something is not valid"); 
 
         }
 

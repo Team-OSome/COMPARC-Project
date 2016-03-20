@@ -67,8 +67,8 @@ namespace COMPARC_Project_2
             }
                 showAllOpcodes();
                 showAllHexOpcodes();
-
-            this.pipeline();
+            if(this.instructionsValid)
+                this.pipeline();
         }
 
         #region setters/intializers 

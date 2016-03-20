@@ -43,6 +43,7 @@ namespace COMPARC_Project_2
                 Console.WriteLine(this.instruction + "," + this.rd + "," + this.rs + "," + this.rt + "," + this.immediate + "," + this.offset + "," + this.bse);
                 this.opcode = new Opcode(this.instruction, this.rd, this.rs, this.rt, this.immediate, this.offset, this.bse, this.lineNum);
                 this.opcode.setParameters();
+                
             }
 
             if (this.instructionValid == false || !(this.opcode.getValid()))
@@ -61,7 +62,7 @@ namespace COMPARC_Project_2
 
             else if(this.opcode.getValid()){ //through the opcode class, this statement checks if the instruction is valid.
                 this.valid = true;
-               // Console.WriteLine("VALID!!!");
+                //Console.WriteLine("VALID!!!");
             }
             
         }
