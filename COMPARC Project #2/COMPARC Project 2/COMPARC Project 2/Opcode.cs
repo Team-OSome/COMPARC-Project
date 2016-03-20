@@ -292,6 +292,7 @@ namespace COMPARC_Project_2
             setOpcodeString(); //this is just a test, this should be called in the program.cs
             printOpcodeBinary();
         }
+
         public void setOpcodeString()
         {
             switch (instruction)
@@ -358,8 +359,6 @@ namespace COMPARC_Project_2
         {
             return this.hexOpcodeString;
         }
-
-
 
         public static String BinaryStringToHexString(String binary)
         {

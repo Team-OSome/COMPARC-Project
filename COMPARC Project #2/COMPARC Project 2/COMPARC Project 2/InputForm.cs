@@ -55,7 +55,6 @@ namespace COMPARC_Project_2
 
         private void simulateBtn_Click(object sender, EventArgs e)
         {
-           
             this.program = new Program(programTB.Lines, getRegisterTextBox(), getMemoryTextBox());
 
             if (this.program.getInstructionsValid() && this.program.getRegisterValid() && this.program.getMemoryValid())
@@ -68,8 +67,8 @@ namespace COMPARC_Project_2
                 this.displayPipelineMap();
 
                 this.refreshRegisters();
+                this.refreshMemory();
                 this.displayInternalPipelineRegisters(this.viewCycle);
-
                 gotoCycleTB.Text = (viewCycle + 1).ToString();
                 gotoCycleBtn.Visible = true;
                 gotoCycleTB.Visible = true;
@@ -77,6 +76,11 @@ namespace COMPARC_Project_2
                 lastCycleBtn.Visible = true;
                 prevCycleBtn.Visible = false;
                 firstCycleBtn.Visible = false;
+                if (this.program.getNumCycles()== 0)
+                {
+                    nextCycleBtn.Visible = false;
+                    lastCycleBtn.Visible = false;
+                }
             }
             else
                 MessageBox.Show("ERROR: Something is not valid"); 
@@ -312,6 +316,17 @@ namespace COMPARC_Project_2
             }
         }
 
+        private void refreshMemory()
+        {
+            int k = 0;
+            for (int i = 8191; i >= 0; i--)
+            {
+                memoryGridView.Rows[i].Cells[1].Value = this.program.getMemoryData(k);
+                k++;
+            }
+            
+        }
+
         private void displayInternalPipelineRegisters(int i)
         {
             cycleLbl.Text = "Cycle " + (i + 1).ToString();
@@ -339,7 +354,6 @@ namespace COMPARC_Project_2
 
         }
 
-        
         private void displayPipelineMapToConsole()       //displays pipeline map to console
         {         
             for (int i = 0; i < program.getNumCycles(); i++)

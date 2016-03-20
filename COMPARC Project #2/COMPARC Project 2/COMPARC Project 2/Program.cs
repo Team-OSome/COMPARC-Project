@@ -176,6 +176,11 @@ namespace COMPARC_Project_2
             return this.registersValid;
         }
 
+        public String getMemoryData(int i)
+        {
+            return this.memory[i].getValue();
+        }
+
         public Boolean getMemoryValid()
         {
             return this.memoryValid;
@@ -457,7 +462,7 @@ namespace COMPARC_Project_2
             int i = 0;
             int c = 0;
             Boolean datahazard = false;
-            string lmd = "";
+            Boolean memoryAccessError = false;
             int totalCycles = this.instruction.Count + 4;
             this.numCycles = 0;
             do
@@ -574,8 +579,10 @@ namespace COMPARC_Project_2
                                #region Memory Access
                                if (!checkLoadAddress(this.cycle[c - 1].EXMEM_ALUOutput, this.cycle[c - 1].EXMEM_instructionType))
                                {
+                                   memoryAccessError = true;
                                    break;
                                }
+                               this.storeDouble(this.cycle[c - 1].EXMEM_ALUOutput, c);
                                this.cycle[c].setMemoryAccess(
                                    this.cycle[c - 1].EXMEM_IR,
                                    this.cycle[c - 1].EXMEM_ALUOutput,
@@ -612,8 +619,10 @@ namespace COMPARC_Project_2
                                #region Memory Access
                                if (!checkLoadAddress(this.cycle[c - 1].EXMEM_ALUOutput, this.cycle[c - 1].EXMEM_instructionType))
                                {
+                                   memoryAccessError = true;
                                    break;
                                }
+                               this.storeDouble(this.cycle[c - 1].EXMEM_ALUOutput, c);
                                this.cycle[c].setMemoryAccess(
                                    this.cycle[c - 1].EXMEM_IR,
                                    this.cycle[c - 1].EXMEM_ALUOutput,
@@ -640,8 +649,10 @@ namespace COMPARC_Project_2
                                #region Memory Access
                                if (!checkLoadAddress(this.cycle[c - 1].EXMEM_ALUOutput, this.cycle[c - 1].EXMEM_instructionType))
                                {
+                                   memoryAccessError = true;
                                    break;
                                }
+                               this.storeDouble(this.cycle[c - 1].EXMEM_ALUOutput, c);
                                this.cycle[c].setMemoryAccess(
                                    this.cycle[c - 1].EXMEM_IR,
                                    this.cycle[c - 1].EXMEM_ALUOutput,
@@ -685,9 +696,10 @@ namespace COMPARC_Project_2
                     #region Memory Access
                     if (!(checkLoadAddress(this.cycle[c - 1].EXMEM_ALUOutput, this.cycle[c - 1].EXMEM_instructionType)))
                     {
-                        MessageBox.Show("BREAK");
+                        memoryAccessError = true;
                         break;
                     }
+                    this.storeDouble(this.cycle[c - 1].EXMEM_ALUOutput, c);
                     this.cycle[c].setMemoryAccess(
                         this.cycle[c - 1].EXMEM_IR,
                         this.cycle[c - 1].EXMEM_ALUOutput,
@@ -702,9 +714,11 @@ namespace COMPARC_Project_2
                 c++;
             } while (i < totalCycles);
 
-            if (lmd == "error")
+            if (memoryAccessError)
             {
                 this.cycle = null;
+                this.cycle = new List<Cycle>();
+                this.cycle.Add(new Cycle());
                 this.numCycles = 0;
             }
         }
@@ -739,6 +753,36 @@ namespace COMPARC_Project_2
 
         #endregion
 
+
+        private Boolean checkLoadAddress(string startAddress, string instructionType)
+        {
+            if (startAddress != "" && startAddress != null)
+            {
+                if (instructionType == "Load Instruction")
+                {
+                    int x = Convert.ToInt32(startAddress, 16);
+                    if (x >= 8192 && x <= 16376)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    return true;
+                }
+
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+
         private String loadDouble(string startAddress, int i)
         {
             string loadedValue = "";
@@ -765,38 +809,7 @@ namespace COMPARC_Project_2
             return "";
         }
 
-        private Boolean checkLoadAddress(string startAddress, string instructionType)
-        {
-            if (startAddress != "" && startAddress != null)
-            {
-                if (instructionType == "Load Instruction")
-                {
-                    MessageBox.Show("addess is:  " + startAddress);
-                    int x = Convert.ToInt32(startAddress,16);
-                    if (x >= 8192 && x <= 16376)
-                    {
-                        MessageBox.Show("Load is good");
-                        return true;
-                    }
-                    else
-                    {
-                        MessageBox.Show("Load address is out of range: " + x.ToString(""));
-                        return false;
-                    }
-                }
-                else
-                {
-                    return true;
-                }
-                
-            }
-            else
-            {
-                return true;
-            }
-        }
-
-        private String storeDouble(string startAddress, int i)
+        private void storeDouble(string startAddress, int i)
         {
             int j = 0;
             int address = Convert.ToInt32(startAddress, 16) - 8192;
@@ -812,16 +825,9 @@ namespace COMPARC_Project_2
                             this.memory[k].setValue(this.cycle[i - 1].EXMEM_B.Substring(j, 2));
                             j += 2;
                         }
-                        return "stored";
-                    }
-                    else
-                    {
-                        return "error";
                     }
                 }
-                return "";
             }
-            return "";
         }
 
     }

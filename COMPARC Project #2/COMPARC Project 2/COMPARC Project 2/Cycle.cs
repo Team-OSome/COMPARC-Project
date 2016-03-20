@@ -325,7 +325,7 @@ namespace COMPARC_Project_2
 
             if (instructionType == "Register-Register ALU Instruction" || instructionType == "Register-Immediate ALU Instruction")
             {
-                this.MEMWB_LMD = "0";
+                this.MEMWB_LMD = "";
             }
             else if (instructionType == "Load Instruction")
             {
@@ -333,7 +333,7 @@ namespace COMPARC_Project_2
             }
             else
             {
-                this.MEMWB_LMD = instructionType;
+                this.MEMWB_LMD = "";
             }
             this.MEMWB_IR =EXMEM_IR;
             this.MEMWB_ALUOutput = EXMEM_ALUOutput;
