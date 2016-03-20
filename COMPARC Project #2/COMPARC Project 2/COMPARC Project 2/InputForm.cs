@@ -59,7 +59,10 @@ namespace COMPARC_Project_2
                 setOpCodeGridView();
 
                 this.viewCycle = 0;
+
+                this.displayPipelineMapToConsole();
                 this.displayPipelineMap();
+
                 this.refreshRegisters();
                 this.displayInternalPipelineRegisters(this.viewCycle);
 
@@ -200,9 +203,10 @@ namespace COMPARC_Project_2
         {
             String[] memory = new String[8192];
 
-            for (int i = 0; i < 8192; i++)
+            for (int i = 8191; i >= 0; i--)
+            {        
                 memory[i] = memoryGridView.Rows[i].Cells["Value"].Value.ToString().ToUpper().Replace(" ", String.Empty);
-            
+            } 
 
             return memory;
         }
@@ -297,7 +301,7 @@ namespace COMPARC_Project_2
         {
             int hex = 0x3FFF;
 
-            for (int i = 0; i < 8192; i++)
+            for (int i = 8192; i > 0; i--)
             {
                 memoryGridView.Rows.Add(hex.ToString("x").ToUpper(), "00");
                 hex--;
@@ -331,20 +335,13 @@ namespace COMPARC_Project_2
 
         }
 
-        private void displayPipelineMap()
-        {
-            pipelineMapGridView.Columns.Clear();
-            pipelineMapGridView.Columns.Add("Instruction", "Instruction");
+        
+        private void displayPipelineMapToConsole()       //displays pipeline map to console
+        {         
             for (int i = 0; i < program.getNumCycles(); i++)
-            {
-                pipelineMapGridView.Columns.Add("Cycle " + (i + 1), "Cycle " + (i + 1));
-            }
-
-            for (int i = 0; i < program.getNumCycles(); i++)
-            {
-                Console.WriteLine("");
+            {             
                 Console.WriteLine("Cycle " + (i + 1).ToString());
-
+                
                 if (this.program.getIFID(i))
                 {
                     Console.Write("IF ");
@@ -353,6 +350,7 @@ namespace COMPARC_Project_2
                 {
                     Console.Write("   ");
                 }
+
                 if (this.program.getIDEX(i))
                 {
                     Console.Write("ID ");
@@ -361,6 +359,7 @@ namespace COMPARC_Project_2
                 {
                     Console.Write("   ");
                 }
+
                 if (this.program.getEXMEM(i))
                 {
                     Console.Write("EX ");
@@ -369,6 +368,7 @@ namespace COMPARC_Project_2
                 {
                     Console.Write("   ");
                 }
+
                 if (this.program.getMEMWB(i))
                 {
                     Console.Write("ME ");
@@ -377,6 +377,7 @@ namespace COMPARC_Project_2
                 {
                     Console.Write("   ");
                 }
+
                 if (this.program.getWB(i))
                 {
                     Console.Write("WB ");
@@ -385,13 +386,119 @@ namespace COMPARC_Project_2
                 {
                     Console.Write("   ");
                 }
-                
+
+                Console.WriteLine("");
+            }
+        }
+
+        private void displayPipelineMap()       //displays pipeline map to console
+        {
+            int row, currRow = 0;
+            bool first;
+            pipelineMapGridView.Rows.Clear();
+            pipelineMapGridView.Columns.Clear();          
+            pipelineMapGridView.Columns.Add("Instruction", "Instruction");
+
+            for (int i = 0; i < this.program.getInstructionLength(); i++)
+            {
+                pipelineMapGridView.Rows.Add(this.program.getInstructionLine(i));
+            }
+
+            for (int i = 0; i < program.getNumCycles(); i++)
+            {
+                pipelineMapGridView.Columns.Add("Cycle " + (i + 1), "Cycle " + (i + 1));
+
+                row = currRow;
+                first = true;
+
+                if (this.program.getWB(i))
+                {
+                    pipelineMapGridView.Rows[row].Cells[i + 1].Value = "WB";
+                    first = false;
+                    currRow++;
+                }
+
+                if (!first && row < this.program.getInstructionLength() - 1)
+                {
+                    row++;
+                }
+
+                if (this.program.getMEMWB(i))
+                {
+                    pipelineMapGridView.Rows[row].Cells[i + 1].Value = "MEM";
+                    first = false;
+                }
+
+                if (!first && row < this.program.getInstructionLength() - 1)
+                {
+                    row++;
+                }
+
+                if (this.program.getEXMEM(i))
+                {
+                    pipelineMapGridView.Rows[row].Cells[i + 1].Value = "EX";
+                    first = false;
+                }
+
+                if (!first && row < this.program.getInstructionLength() - 1)
+                {
+                    row++;
+                }
+
+                if (this.program.getIDEX(i) )
+                {
+                    pipelineMapGridView.Rows[row].Cells[i + 1].Value = "ID";
+                    first = false;
+                }
+
+                if (!first && row < this.program.getInstructionLength() - 1)
+                {
+                    row++;
+                }
+
+                if (this.program.getIFID(i))
+                {
+                    pipelineMapGridView.Rows[row].Cells[i + 1].Value = "IF";
+                    first = false;
+                }
+
             }
 
         }
 
-        #endregion
+        private String getCycleVaue(int cycle)
+        {
+            String value = "";
 
+            if (this.program.getIFID(cycle))
+            {
+                return "IF";
+            }
+
+            if (this.program.getIDEX(cycle))
+            {
+                return "ID";
+            }
+
+            if (this.program.getEXMEM(cycle))
+            {
+                return "EX";
+            }
+
+            if (this.program.getMEMWB(cycle))
+            {
+                return "MEM";
+            }
+
+            if (this.program.getWB(cycle))
+            {
+                return "WB";
+            }
+               
+            return value;
+        }
+
+        #endregion
 
     }
 }
