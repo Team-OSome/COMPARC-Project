@@ -16,6 +16,7 @@ namespace COMPARC_Project_2
         public String IFID_PC { get; private set; }
         public String IFID_instruction { get; private set; }
         public String IFID_instructionType { get; private set; }
+        public String IFID_instructionLine { get; private set; }
 
         public Boolean IDEX { get; private set; }
         public String IDEX_A { get; private set; }
@@ -25,6 +26,7 @@ namespace COMPARC_Project_2
         public String IDEX_IR { get; private set; }
         public String IDEX_instruction { get; private set; }
         public String IDEX_instructionType { get; private set; }
+        public String IDEX_instructionLine { get; private set; }
 
         public Boolean EXMEM { get; private set; }
         public String EXMEM_ALUOutput { get; private set; }
@@ -33,6 +35,7 @@ namespace COMPARC_Project_2
         public String EXMEM_IR { get; private set; }
         public String EXMEM_instruction { get; private set; }
         public String EXMEM_instructionType { get; private set; }
+        public String EXMEM_instructionLine { get; private set; }
 
         public Boolean MEMWB { get; private set; }
         public String MEMWB_LMD { get; private set; }
@@ -77,7 +80,7 @@ namespace COMPARC_Project_2
             this.WB_Rn = null;        
         }
 
-        public void setInstructionFetch(string opcode, string programCtr, string instruction, string instructionType)
+        public void setInstructionFetch(string opcode, string programCtr, string EXMEM_instructionType, string cond, string EXMEM_ALUOutput, string instruction, string instructionType, string instructionLine)
         {
             if (instruction != "")  //  if Instruction Fetched is not null -> pipeline map IF is true
             {
@@ -86,7 +89,14 @@ namespace COMPARC_Project_2
             this.IFID_IR = opcode;
             if (programCtr != "")
             {
-                this.IFID_NPC = ((Convert.ToInt32(programCtr) + 1) * 4).ToString("X");
+                if (EXMEM_instructionType == "Branch Instruction" && cond == "1")
+                {
+                    this.IFID_NPC = EXMEM_ALUOutput;
+                }
+                else
+                {
+                    this.IFID_NPC = ((Convert.ToInt32(programCtr) + 1) * 4).ToString("X");
+                } 
             }
             else
             {
@@ -95,9 +105,10 @@ namespace COMPARC_Project_2
             this.IFID_PC = this.IFID_NPC;
             this.IFID_instruction = instruction;
             this.IFID_instructionType = instructionType;
+            this.IFID_instructionLine = instructionLine;
         }
 
-        public void setInstructionDecode(string rs, string rt, string rd, string bse, string IMM, string IFID_IR, string IFID_NPC, string instruction, string instructionType)
+        public void setInstructionDecode(string rs, string rt, string rd, string bse, string IMM, string IFID_IR, string IFID_NPC, string instruction, string instructionType, string instructionLine)
         {
             char signextend;
 
@@ -174,6 +185,7 @@ namespace COMPARC_Project_2
             this.IDEX_NPC = IFID_NPC;
             this.IDEX_instruction = instruction;
             this.IDEX_instructionType = instructionType;
+            this.IDEX_instructionLine = instructionLine;
         }
         
         /*
@@ -217,14 +229,15 @@ namespace COMPARC_Project_2
             this.IDEX_instructionType = instructionType;
         }
         */
-         
-        public void setExecution(string IDEX_A, string IDEX_B, string IDEX_IMM, string IDEX_IR, string instruction, string instructionType )
+
+        public void setExecution(string IDEX_A, string IDEX_B, string IDEX_IMM, string IDEX_IR, string IDEX_NPC, string instruction, string instructionType, string instructionLine)
         {
             if (IDEX_IR != "")  //  if Instruction Fetched is not null -> pipeline map IF is true
             {
                 this.EXMEM = true;
             }
 
+            #region Register-Register ALU Instruction
             if (instructionType == "Register-Register ALU Instruction")
             {
                 Console.WriteLine("Register-Register ALU Instruction");
@@ -284,7 +297,8 @@ namespace COMPARC_Project_2
                     this.EXMEM_Cond = "0";
 	            }
             }
-
+            #endregion
+            #region Register-Immediate ALU Instruction
             else if (instructionType == "Register-Immediate ALU Instruction" || instructionType == "Load Instruction" || instructionType == "Store Instruction")
             {
                 Console.WriteLine("Register-Immediate ALU Instruction || instructionType == Load Instruction || instructionType == Store Instruction");
@@ -296,20 +310,46 @@ namespace COMPARC_Project_2
                     }
                     this.EXMEM_Cond = "0";
             }
+            #endregion
+            #region Branch Instruction
             else if (instructionType == "Branch Instruction")
             {
-                Console.WriteLine("Branch Instruction");
-                Console.WriteLine((Convert.ToInt64(IDEX_NPC, 16).ToString("X")) + " + " + (Convert.ToInt64(IDEX_IMM, 16) * 8).ToString("X"));
-                this.EXMEM_ALUOutput = ((Convert.ToInt64(IDEX_NPC, 16) + Convert.ToInt64(IDEX_IMM, 16) * 8)).ToString("X");
-                
-                //this.EXMEM_ALUOutput = (Convert.ToInt64(IDEX_A, 16) + Convert.ToInt64(IDEX_IMM, 16)).ToString("X");
-                while (this.EXMEM_ALUOutput.Length < 16)
+                if (instruction == "BC")
                 {
-                    this.EXMEM_ALUOutput = "0" + this.EXMEM_ALUOutput;
+                    Console.WriteLine("Branch Instruction");
+                    Console.WriteLine(IDEX_NPC + " + " + (Convert.ToInt64(IDEX_IMM, 16) * 4).ToString("X"));
+                    this.EXMEM_ALUOutput = ((Convert.ToInt64(IDEX_NPC, 16) + Convert.ToInt64(IDEX_IMM, 16) * 4)).ToString("X");
+
+                    while (this.EXMEM_ALUOutput.Length < 16)
+                    {
+                        this.EXMEM_ALUOutput = "0" + this.EXMEM_ALUOutput;
+                    }
+                    this.EXMEM_Cond = "1";
                 }
-                this.EXMEM_Cond = "1";
+                else if (instruction == "BNEC")
+                {
+                    Console.WriteLine("Branch Instruction");
+                    Console.WriteLine(IDEX_NPC + " + " + (Convert.ToInt64(IDEX_IMM, 16) * 4).ToString("X"));
+                    this.EXMEM_ALUOutput = ((Convert.ToInt64(IDEX_NPC, 16) + Convert.ToInt64(IDEX_IMM, 16) * 4)).ToString("X");
+
+                    while (this.EXMEM_ALUOutput.Length < 16)
+                    {
+                        this.EXMEM_ALUOutput = "0" + this.EXMEM_ALUOutput;
+                    }
+                    
+                    if (IDEX_A != IDEX_B)
+                    {
+                        this.EXMEM_Cond = "1";
+                    }
+                    else
+                    {
+                        this.EXMEM_Cond = "0";
+                    }
+                }
+
             }
-            
+            #endregion
+
             this.EXMEM_B = IDEX_B;
             this.EXMEM_IR = IDEX_IR;
             this.EXMEM_instruction = instruction;

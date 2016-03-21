@@ -377,7 +377,10 @@ namespace COMPARC_Project_2
 
         private Boolean checkDataHazard(Instruction currInstruction, Instruction prevInstruction)
         {
-
+            if (prevInstruction.getInstruction() == "BNEC")
+            {
+                return false;
+            }
             // I to I
             if (prevInstruction.getOpcode().getOpcodeType() == 'I' && currInstruction.getOpcode().getOpcodeType() == 'I')
             {
@@ -457,7 +460,7 @@ namespace COMPARC_Project_2
 
         #region Pipeline Control
 
-        private void pipeline()
+        private void pipelinePNT()
         {
             int i = 0;
             int c = 0;
@@ -477,8 +480,12 @@ namespace COMPARC_Project_2
                     this.cycle[c].setInstructionFetch(
                         this.instruction[i].getOpcode().getOpcodeString(), 
                         "0",
+                        "0",
+                        "0",
+                        "",
                         this.instruction[i].getInstruction(),
-                        this.instruction[i].getInstructionType()
+                        this.instruction[i].getInstructionType(),
+                        this.instruction[i].getLineNumber().ToString()
                         );
                     #endregion
                 }
@@ -489,10 +496,13 @@ namespace COMPARC_Project_2
                         "", 
                         "",
                         "",
+                        "0",
+                        "",
+                        "",
+                        "",
                         ""
                         );
                     #endregion
-
                     #region Instruction Decode
                     this.cycle[c].setInstructionDecode(
                         this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rsO, 2)].getValue(),
@@ -503,7 +513,8 @@ namespace COMPARC_Project_2
                         this.cycle[c - 1].IFID_IR,
                         this.cycle[c - 1].IFID_NPC,
                         this.cycle[c - 1].IFID_instruction,
-                        this.cycle[c - 1].IFID_instructionType
+                        this.cycle[c - 1].IFID_instructionType,
+                        this.cycle[c - 1].IFID_instructionLine
                         );
                     #endregion
 
@@ -515,12 +526,16 @@ namespace COMPARC_Project_2
                         "",
                         "",
                         "",
+                        "0",
+                        "",
+                        "",
+                        "",
                         ""
                         );
                     #endregion
-
                     #region Instruction Decode
                     this.cycle[c].setInstructionDecode(
+                        "",
                         "",
                         "",
                         "",
@@ -537,14 +552,25 @@ namespace COMPARC_Project_2
                 else                // normal cycle
                 {
                     #region Instruction Fetch
+                    for (int k = i; k < this.instruction.Count; k++)
+                    {
+                        if (instruction[k].getLineNumber()*4 == Convert.ToInt32(this.cycle[c - 1].IFID_NPC,16))
+                        {
+                            i = k;
+                            k = this.instruction.Count;
+                        }
+                    }
                     this.cycle[c].setInstructionFetch(
                         this.instruction[i].getOpcode().getOpcodeString(),
                         this.instruction[i].getLineNumber().ToString(),
+                        this.cycle[c - 1].EXMEM_instructionType,
+                        this.cycle[c - 1].EXMEM_Cond,
+                        this.cycle[c - 1].EXMEM_ALUOutput,
                         this.instruction[i].getInstruction(),
-                        this.instruction[i].getInstructionType()
+                        this.instruction[i].getInstructionType(),
+                        this.instruction[i].getInstructionLine()
                         );
                     #endregion
-
                     #region Instruction Decode
                     this.cycle[c].setInstructionDecode(
                         this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rsO, 2)].getValue(),
@@ -555,7 +581,8 @@ namespace COMPARC_Project_2
                         this.cycle[c - 1].IFID_IR,
                         this.cycle[c - 1].IFID_NPC,
                         this.cycle[c - 1].IFID_instruction,
-                        this.cycle[c - 1].IFID_instructionType
+                        this.cycle[c - 1].IFID_instructionType,
+                        this.cycle[c - 1].IFID_instructionLine
                         );
                     #endregion
              
@@ -572,8 +599,10 @@ namespace COMPARC_Project_2
                                     this.cycle[c - 1].IDEX_B,
                                     this.cycle[c - 1].IDEX_IMM,
                                     this.cycle[c - 1].IDEX_IR,
+                                    this.cycle[c - 1].IDEX_NPC,
                                     this.cycle[c - 1].IDEX_instruction,
-                                    this.cycle[c - 1].IDEX_instructionType
+                                    this.cycle[c - 1].IDEX_instructionType,
+                                    this.cycle[c - 1].IDEX_instructionLine
                                     );
                                #endregion
                                #region Memory Access
@@ -602,8 +631,12 @@ namespace COMPARC_Project_2
                                this.cycle[c].setInstructionFetch(
                                     this.instruction[i].getOpcode().getOpcodeString(),
                                     this.instruction[i].getLineNumber().ToString(),
+                                    this.cycle[c - 1].EXMEM_instructionType,
+                                    this.cycle[c - 1].EXMEM_Cond,
+                                    this.cycle[c - 1].EXMEM_ALUOutput,
                                     this.instruction[i].getInstruction(),
-                                    this.instruction[i].getInstructionType()
+                                    this.instruction[i].getInstructionType(),
+                                    this.instruction[i].getInstructionLine()
                                     );
                                #endregion
                                #region Execution
@@ -612,8 +645,10 @@ namespace COMPARC_Project_2
                                     this.cycle[c - 1].IDEX_B,
                                     this.cycle[c - 1].IDEX_IMM,
                                     this.cycle[c - 1].IDEX_IR,
+                                    this.cycle[c - 1].IDEX_NPC,
                                     this.cycle[c - 1].IDEX_instruction,
-                                    this.cycle[c - 1].IDEX_instructionType
+                                    this.cycle[c - 1].IDEX_instructionType,
+                                    this.cycle[c - 1].IDEX_instructionLine
                                     );
                                #endregion
                                #region Memory Access
@@ -639,11 +674,15 @@ namespace COMPARC_Project_2
                                this.cycle.Add(new Cycle());
                                this.numCycles++;
                                #region Instruction Fetch
-                               this.cycle[c].setInstructionFetch(
+                                    this.cycle[c].setInstructionFetch(
                                     this.instruction[i].getOpcode().getOpcodeString(),
                                     this.instruction[i].getLineNumber().ToString(),
+                                    this.cycle[c - 1].EXMEM_instructionType,
+                                    this.cycle[c - 1].EXMEM_Cond,
+                                    this.cycle[c - 1].EXMEM_ALUOutput,
                                     this.instruction[i].getInstruction(),
-                                    this.instruction[i].getInstructionType()
+                                    this.instruction[i].getInstructionType(),
+                                    this.instruction[i].getInstructionLine()
                                     );
                                #endregion
                                #region Memory Access
@@ -672,8 +711,12 @@ namespace COMPARC_Project_2
                                this.cycle[c].setInstructionFetch(
                                     this.instruction[i].getOpcode().getOpcodeString(),
                                     this.instruction[i].getLineNumber().ToString(),
+                                    this.cycle[c - 1].EXMEM_instructionType,
+                                    this.cycle[c - 1].EXMEM_Cond,
+                                    this.cycle[c - 1].EXMEM_ALUOutput,
                                     this.instruction[i].getInstruction(),
-                                    this.instruction[i].getInstructionType()
+                                    this.instruction[i].getInstructionType(),
+                                    this.instruction[i].getInstructionLine()
                                     );
                                #endregion
                                this.pipelineWriteBack(c);
@@ -685,13 +728,1054 @@ namespace COMPARC_Project_2
                 {
                     #region Execution
                     this.cycle[c].setExecution(
-                        this.cycle[c - 1].IDEX_A,
-                        this.cycle[c - 1].IDEX_B,
-                        this.cycle[c - 1].IDEX_IMM,
-                        this.cycle[c - 1].IDEX_IR,
-                        this.cycle[c - 1].IDEX_instruction,
-                        this.cycle[c - 1].IDEX_instructionType
+                                    this.cycle[c - 1].IDEX_A,
+                                    this.cycle[c - 1].IDEX_B,
+                                    this.cycle[c - 1].IDEX_IMM,
+                                    this.cycle[c - 1].IDEX_IR,
+                                    this.cycle[c - 1].IDEX_NPC,
+                                    this.cycle[c - 1].IDEX_instruction,
+                                    this.cycle[c - 1].IDEX_instructionType,
+                                    this.cycle[c - 1].IDEX_instructionLine
+                                    );
+                    #endregion
+                    #region Memory Access
+                    if (!(checkLoadAddress(this.cycle[c - 1].EXMEM_ALUOutput, this.cycle[c - 1].EXMEM_instructionType)))
+                    {
+                        memoryAccessError = true;
+                        break;
+                    }
+                    this.storeDouble(this.cycle[c - 1].EXMEM_ALUOutput, c);
+                    this.cycle[c].setMemoryAccess(
+                        this.cycle[c - 1].EXMEM_IR,
+                        this.cycle[c - 1].EXMEM_ALUOutput,
+                        this.loadDouble(this.cycle[c - 1].EXMEM_ALUOutput, c),
+                        this.cycle[c - 1].EXMEM_instruction,
+                        this.cycle[c - 1].EXMEM_instructionType
                         );
+                    #endregion
+                    this.pipelineWriteBack(c);
+                }
+                i++;
+                c++;
+            } while (i < totalCycles);
+
+            if (memoryAccessError)
+            {
+                this.cycle = null;
+                this.cycle = new List<Cycle>();
+                this.cycle.Add(new Cycle());
+                this.numCycles = 0;
+            }
+        }
+
+        private void pipeline()
+        {
+            int i = 0;
+            int c = 0;
+            int flush = 0;
+            Boolean datahazard = false;
+            Boolean memoryAccessError = false;
+            int totalCycles = this.instruction.Count + 4;
+            this.numCycles = 0;
+            do
+            {
+                datahazard = false;
+                this.cycle.Add(new Cycle());
+                this.numCycles++;
+
+                if (i == 0)     //  if first isntruction, NPC & PC = 4
+                {
+                    #region Instruction Fetch
+                    this.cycle[c].setInstructionFetch(
+                        this.instruction[i].getOpcode().getOpcodeString(),
+                        "0",
+                        "0",
+                        "0",
+                        "",
+                        this.instruction[i].getInstruction(),
+                        this.instruction[i].getInstructionType(),
+                        this.instruction[i].getLineNumber().ToString()
+                        );
+                    #endregion
+                    #region Flush
+                    if (this.instruction[i].getInstructionType() == "Branch Instruction")
+                    {
+                        i++;
+                        c++;
+                        this.cycle.Add(new Cycle());
+                        this.numCycles++;
+                        #region Instruction Fetch
+                        for (int k = i; k < this.instruction.Count; k++)
+                        {
+                            if (instruction[k].getLineNumber() * 4 == Convert.ToInt32(this.cycle[c - 1].IFID_NPC, 16))
+                            {
+                                i = k;
+                                k = this.instruction.Count;
+                            }
+                        }
+                        this.cycle[c].setInstructionFetch(
+                            this.instruction[i].getOpcode().getOpcodeString(),
+                            this.instruction[i].getLineNumber().ToString(),
+                            this.cycle[c - 1].EXMEM_instructionType,
+                            this.cycle[c - 1].EXMEM_Cond,
+                            this.cycle[c - 1].EXMEM_ALUOutput,
+                            this.instruction[i].getInstruction(),
+                            this.instruction[i].getInstructionType(),
+                            this.instruction[i].getInstructionLine()
+                            );
+                        #endregion
+                        #region Instruction Decode
+                        this.cycle[c].setInstructionDecode(
+                            this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rsO, 2)].getValue(),
+                            this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rtO, 2)].getValue(),
+                            this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rdO, 2)].getValue(),
+                            this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().bseO, 2)].getValue(),
+                            this.instruction[i - 1].getOpcode().getOpcodeString().Substring(18),
+                            this.cycle[c - 1].IFID_IR,
+                            this.cycle[c - 1].IFID_NPC,
+                            this.cycle[c - 1].IFID_instruction,
+                            this.cycle[c - 1].IFID_instructionType,
+                            this.cycle[c - 1].IFID_instructionLine
+                            );
+                        #endregion
+
+                        i++;
+                        c++;
+                        this.cycle.Add(new Cycle());
+                        this.numCycles++;
+                        #region Instruction Fetch
+                        for (int k = i; k < this.instruction.Count; k++)
+                        {
+                            if (instruction[k].getLineNumber() * 4 == Convert.ToInt32(this.cycle[c - 1].IFID_NPC, 16))
+                            {
+                                i = k;
+                                k = this.instruction.Count;
+                            }
+                        }
+                        this.cycle[c].setInstructionFetch(
+                            this.instruction[i].getOpcode().getOpcodeString(),
+                            this.instruction[i].getLineNumber().ToString(),
+                            this.cycle[c - 1].EXMEM_instructionType,
+                            this.cycle[c - 1].EXMEM_Cond,
+                            this.cycle[c - 1].EXMEM_ALUOutput,
+                            this.instruction[i].getInstruction(),
+                            this.instruction[i].getInstructionType(),
+                            this.instruction[i].getInstructionLine()
+                            );
+                        #endregion
+                        #region Execution
+                        this.cycle[c].setExecution(
+                             this.cycle[c - 1].IDEX_A,
+                             this.cycle[c - 1].IDEX_B,
+                             this.cycle[c - 1].IDEX_IMM,
+                             this.cycle[c - 1].IDEX_IR,
+                             this.cycle[c - 1].IDEX_NPC,
+                             this.cycle[c - 1].IDEX_instruction,
+                             this.cycle[c - 1].IDEX_instructionType,
+                             this.cycle[c - 1].IDEX_instructionLine
+                             );
+                        #endregion
+
+                        i++;
+                        c++;
+                        this.cycle.Add(new Cycle());
+                        this.numCycles++;
+                        #region Instruction Fetch
+                        for (int k = i; k < this.instruction.Count; k++)
+                        {
+                            if (instruction[k].getLineNumber() * 4 == Convert.ToInt32(this.cycle[c - 1].IFID_NPC, 16))
+                            {
+                                i = k;
+                                k = this.instruction.Count;
+                            }
+                        }
+                        this.cycle[c].setInstructionFetch(
+                            this.instruction[i].getOpcode().getOpcodeString(),
+                            this.instruction[i].getLineNumber().ToString(),
+                            this.cycle[c - 1].EXMEM_instructionType,
+                            this.cycle[c - 1].EXMEM_Cond,
+                            this.cycle[c - 1].EXMEM_ALUOutput,
+                            this.instruction[i].getInstruction(),
+                            this.instruction[i].getInstructionType(),
+                            this.instruction[i].getInstructionLine()
+                            );
+                        #endregion
+                        #region Memory Access
+                        if (!checkLoadAddress(this.cycle[c - 1].EXMEM_ALUOutput, this.cycle[c - 1].EXMEM_instructionType))
+                        {
+                            memoryAccessError = true;
+                            break;
+                        }
+                        this.storeDouble(this.cycle[c - 1].EXMEM_ALUOutput, c);
+                        this.cycle[c].setMemoryAccess(
+                            this.cycle[c - 1].EXMEM_IR,
+                            this.cycle[c - 1].EXMEM_ALUOutput,
+                            this.loadDouble(this.cycle[c - 1].EXMEM_ALUOutput, c),
+                            this.cycle[c - 1].EXMEM_instruction,
+                            this.cycle[c - 1].EXMEM_instructionType
+                            );
+                        #endregion
+
+                        i++;
+                        c++;
+                        this.cycle.Add(new Cycle());
+                        this.numCycles++;
+                        #region Instruction Fetch
+                        for (int k = i; k < this.instruction.Count; k++)
+                        {
+                            if (instruction[k].getLineNumber() * 4 == Convert.ToInt32(this.cycle[c - 1].IFID_NPC, 16))
+                            {
+                                i = k;
+                                k = this.instruction.Count;
+                            }
+                        }
+                        this.cycle[c].setInstructionFetch(
+                            this.instruction[i].getOpcode().getOpcodeString(),
+                            this.instruction[i].getLineNumber().ToString(),
+                            this.cycle[c - 1].EXMEM_instructionType,
+                            this.cycle[c - 1].EXMEM_Cond,
+                            this.cycle[c - 1].EXMEM_ALUOutput,
+                            this.instruction[i].getInstruction(),
+                            this.instruction[i].getInstructionType(),
+                            this.instruction[i].getInstructionLine()
+                            );
+                        #endregion
+                        this.pipelineWriteBack(c);
+                    }
+                    #endregion
+                }
+                else if (i == this.instruction.Count)       // last instruction - no more IF
+                {
+                    #region Instruction Fetch
+                    this.cycle[c].setInstructionFetch(
+                        "",
+                        "",
+                        "",
+                        "0",
+                        "",
+                        "",
+                        "",
+                        ""
+                        );
+                    #endregion
+                    #region Flush
+                    if (this.instruction[i].getInstructionType() == "Branch Instruction")
+                    {
+                        i++;
+                        c++;
+                        this.cycle.Add(new Cycle());
+                        this.numCycles++;
+                        #region Instruction Fetch
+                        for (int k = i; k < this.instruction.Count; k++)
+                        {
+                            if (instruction[k].getLineNumber() * 4 == Convert.ToInt32(this.cycle[c - 1].IFID_NPC, 16))
+                            {
+                                i = k;
+                                k = this.instruction.Count;
+                            }
+                        }
+                        this.cycle[c].setInstructionFetch(
+                            this.instruction[i].getOpcode().getOpcodeString(),
+                            this.instruction[i].getLineNumber().ToString(),
+                            this.cycle[c - 1].EXMEM_instructionType,
+                            this.cycle[c - 1].EXMEM_Cond,
+                            this.cycle[c - 1].EXMEM_ALUOutput,
+                            this.instruction[i].getInstruction(),
+                            this.instruction[i].getInstructionType(),
+                            this.instruction[i].getInstructionLine()
+                            );
+                        #endregion
+                        #region Instruction Decode
+                        this.cycle[c].setInstructionDecode(
+                            this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rsO, 2)].getValue(),
+                            this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rtO, 2)].getValue(),
+                            this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rdO, 2)].getValue(),
+                            this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().bseO, 2)].getValue(),
+                            this.instruction[i - 1].getOpcode().getOpcodeString().Substring(18),
+                            this.cycle[c - 1].IFID_IR,
+                            this.cycle[c - 1].IFID_NPC,
+                            this.cycle[c - 1].IFID_instruction,
+                            this.cycle[c - 1].IFID_instructionType,
+                            this.cycle[c - 1].IFID_instructionLine
+                            );
+                        #endregion
+
+                        i++;
+                        c++;
+                        this.cycle.Add(new Cycle());
+                        this.numCycles++;
+                        #region Instruction Fetch
+                        for (int k = i; k < this.instruction.Count; k++)
+                        {
+                            if (instruction[k].getLineNumber() * 4 == Convert.ToInt32(this.cycle[c - 1].IFID_NPC, 16))
+                            {
+                                i = k;
+                                k = this.instruction.Count;
+                            }
+                        }
+                        this.cycle[c].setInstructionFetch(
+                            this.instruction[i].getOpcode().getOpcodeString(),
+                            this.instruction[i].getLineNumber().ToString(),
+                            this.cycle[c - 1].EXMEM_instructionType,
+                            this.cycle[c - 1].EXMEM_Cond,
+                            this.cycle[c - 1].EXMEM_ALUOutput,
+                            this.instruction[i].getInstruction(),
+                            this.instruction[i].getInstructionType(),
+                            this.instruction[i].getInstructionLine()
+                            );
+                        #endregion
+                        #region Execution
+                        this.cycle[c].setExecution(
+                             this.cycle[c - 1].IDEX_A,
+                             this.cycle[c - 1].IDEX_B,
+                             this.cycle[c - 1].IDEX_IMM,
+                             this.cycle[c - 1].IDEX_IR,
+                             this.cycle[c - 1].IDEX_NPC,
+                             this.cycle[c - 1].IDEX_instruction,
+                             this.cycle[c - 1].IDEX_instructionType,
+                             this.cycle[c - 1].IDEX_instructionLine
+                             );
+                        #endregion
+
+                        i++;
+                        c++;
+                        this.cycle.Add(new Cycle());
+                        this.numCycles++;
+                        #region Instruction Fetch
+                        for (int k = i; k < this.instruction.Count; k++)
+                        {
+                            if (instruction[k].getLineNumber() * 4 == Convert.ToInt32(this.cycle[c - 1].IFID_NPC, 16))
+                            {
+                                i = k;
+                                k = this.instruction.Count;
+                            }
+                        }
+                        this.cycle[c].setInstructionFetch(
+                            this.instruction[i].getOpcode().getOpcodeString(),
+                            this.instruction[i].getLineNumber().ToString(),
+                            this.cycle[c - 1].EXMEM_instructionType,
+                            this.cycle[c - 1].EXMEM_Cond,
+                            this.cycle[c - 1].EXMEM_ALUOutput,
+                            this.instruction[i].getInstruction(),
+                            this.instruction[i].getInstructionType(),
+                            this.instruction[i].getInstructionLine()
+                            );
+                        #endregion
+                        #region Memory Access
+                        if (!checkLoadAddress(this.cycle[c - 1].EXMEM_ALUOutput, this.cycle[c - 1].EXMEM_instructionType))
+                        {
+                            memoryAccessError = true;
+                            break;
+                        }
+                        this.storeDouble(this.cycle[c - 1].EXMEM_ALUOutput, c);
+                        this.cycle[c].setMemoryAccess(
+                            this.cycle[c - 1].EXMEM_IR,
+                            this.cycle[c - 1].EXMEM_ALUOutput,
+                            this.loadDouble(this.cycle[c - 1].EXMEM_ALUOutput, c),
+                            this.cycle[c - 1].EXMEM_instruction,
+                            this.cycle[c - 1].EXMEM_instructionType
+                            );
+                        #endregion
+
+                        i++;
+                        c++;
+                        this.cycle.Add(new Cycle());
+                        this.numCycles++;
+                        #region Instruction Fetch
+                        for (int k = i; k < this.instruction.Count; k++)
+                        {
+                            if (instruction[k].getLineNumber() * 4 == Convert.ToInt32(this.cycle[c - 1].IFID_NPC, 16))
+                            {
+                                i = k;
+                                k = this.instruction.Count;
+                            }
+                        }
+                        this.cycle[c].setInstructionFetch(
+                            this.instruction[i].getOpcode().getOpcodeString(),
+                            this.instruction[i].getLineNumber().ToString(),
+                            this.cycle[c - 1].EXMEM_instructionType,
+                            this.cycle[c - 1].EXMEM_Cond,
+                            this.cycle[c - 1].EXMEM_ALUOutput,
+                            this.instruction[i].getInstruction(),
+                            this.instruction[i].getInstructionType(),
+                            this.instruction[i].getInstructionLine()
+                            );
+                        #endregion
+                        this.pipelineWriteBack(c);
+                    }
+                    #endregion
+                    #region Instruction Decode
+                    this.cycle[c].setInstructionDecode(
+                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rsO, 2)].getValue(),
+                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rtO, 2)].getValue(),
+                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rdO, 2)].getValue(),
+                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().bseO, 2)].getValue(),
+                        this.instruction[i - 1].getOpcode().getOpcodeString().Substring(18),
+                        this.cycle[c - 1].IFID_IR,
+                        this.cycle[c - 1].IFID_NPC,
+                        this.cycle[c - 1].IFID_instruction,
+                        this.cycle[c - 1].IFID_instructionType,
+                        this.cycle[c - 1].IFID_instructionLine
+                        );
+                    #endregion
+
+                }
+                else if (i >= this.instruction.Count + 1)       // last instruction - no more IF and ID
+                {
+                    #region Instruction Fetch
+                    this.cycle[c].setInstructionFetch(
+                        "",
+                        "",
+                        "",
+                        "0",
+                        "",
+                        "",
+                        "",
+                        ""
+                        );
+                    #endregion
+                    #region Flush
+                    if (this.instruction[i].getInstructionType() == "Branch Instruction")
+                    {
+                        i++;
+                        c++;
+                        this.cycle.Add(new Cycle());
+                        this.numCycles++;
+                        #region Instruction Fetch
+                        for (int k = i; k < this.instruction.Count; k++)
+                        {
+                            if (instruction[k].getLineNumber() * 4 == Convert.ToInt32(this.cycle[c - 1].IFID_NPC, 16))
+                            {
+                                i = k;
+                                k = this.instruction.Count;
+                            }
+                        }
+                        this.cycle[c].setInstructionFetch(
+                            this.instruction[i].getOpcode().getOpcodeString(),
+                            this.instruction[i].getLineNumber().ToString(),
+                            this.cycle[c - 1].EXMEM_instructionType,
+                            this.cycle[c - 1].EXMEM_Cond,
+                            this.cycle[c - 1].EXMEM_ALUOutput,
+                            this.instruction[i].getInstruction(),
+                            this.instruction[i].getInstructionType(),
+                            this.instruction[i].getInstructionLine()
+                            );
+                        #endregion
+                        #region Instruction Decode
+                        this.cycle[c].setInstructionDecode(
+                            this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rsO, 2)].getValue(),
+                            this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rtO, 2)].getValue(),
+                            this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rdO, 2)].getValue(),
+                            this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().bseO, 2)].getValue(),
+                            this.instruction[i - 1].getOpcode().getOpcodeString().Substring(18),
+                            this.cycle[c - 1].IFID_IR,
+                            this.cycle[c - 1].IFID_NPC,
+                            this.cycle[c - 1].IFID_instruction,
+                            this.cycle[c - 1].IFID_instructionType,
+                            this.cycle[c - 1].IFID_instructionLine
+                            );
+                        #endregion
+
+                        i++;
+                        c++;
+                        this.cycle.Add(new Cycle());
+                        this.numCycles++;
+                        #region Instruction Fetch
+                        for (int k = i; k < this.instruction.Count; k++)
+                        {
+                            if (instruction[k].getLineNumber() * 4 == Convert.ToInt32(this.cycle[c - 1].IFID_NPC, 16))
+                            {
+                                i = k;
+                                k = this.instruction.Count;
+                            }
+                        }
+                        this.cycle[c].setInstructionFetch(
+                            this.instruction[i].getOpcode().getOpcodeString(),
+                            this.instruction[i].getLineNumber().ToString(),
+                            this.cycle[c - 1].EXMEM_instructionType,
+                            this.cycle[c - 1].EXMEM_Cond,
+                            this.cycle[c - 1].EXMEM_ALUOutput,
+                            this.instruction[i].getInstruction(),
+                            this.instruction[i].getInstructionType(),
+                            this.instruction[i].getInstructionLine()
+                            );
+                        #endregion
+                        #region Execution
+                        this.cycle[c].setExecution(
+                             this.cycle[c - 1].IDEX_A,
+                             this.cycle[c - 1].IDEX_B,
+                             this.cycle[c - 1].IDEX_IMM,
+                             this.cycle[c - 1].IDEX_IR,
+                             this.cycle[c - 1].IDEX_NPC,
+                             this.cycle[c - 1].IDEX_instruction,
+                             this.cycle[c - 1].IDEX_instructionType,
+                             this.cycle[c - 1].IDEX_instructionLine
+                             );
+                        #endregion
+
+                        i++;
+                        c++;
+                        this.cycle.Add(new Cycle());
+                        this.numCycles++;
+                        #region Instruction Fetch
+                        for (int k = i; k < this.instruction.Count; k++)
+                        {
+                            if (instruction[k].getLineNumber() * 4 == Convert.ToInt32(this.cycle[c - 1].IFID_NPC, 16))
+                            {
+                                i = k;
+                                k = this.instruction.Count;
+                            }
+                        }
+                        this.cycle[c].setInstructionFetch(
+                            this.instruction[i].getOpcode().getOpcodeString(),
+                            this.instruction[i].getLineNumber().ToString(),
+                            this.cycle[c - 1].EXMEM_instructionType,
+                            this.cycle[c - 1].EXMEM_Cond,
+                            this.cycle[c - 1].EXMEM_ALUOutput,
+                            this.instruction[i].getInstruction(),
+                            this.instruction[i].getInstructionType(),
+                            this.instruction[i].getInstructionLine()
+                            );
+                        #endregion
+                        #region Memory Access
+                        if (!checkLoadAddress(this.cycle[c - 1].EXMEM_ALUOutput, this.cycle[c - 1].EXMEM_instructionType))
+                        {
+                            memoryAccessError = true;
+                            break;
+                        }
+                        this.storeDouble(this.cycle[c - 1].EXMEM_ALUOutput, c);
+                        this.cycle[c].setMemoryAccess(
+                            this.cycle[c - 1].EXMEM_IR,
+                            this.cycle[c - 1].EXMEM_ALUOutput,
+                            this.loadDouble(this.cycle[c - 1].EXMEM_ALUOutput, c),
+                            this.cycle[c - 1].EXMEM_instruction,
+                            this.cycle[c - 1].EXMEM_instructionType
+                            );
+                        #endregion
+
+                        i++;
+                        c++;
+                        this.cycle.Add(new Cycle());
+                        this.numCycles++;
+                        #region Instruction Fetch
+                        for (int k = i; k < this.instruction.Count; k++)
+                        {
+                            if (instruction[k].getLineNumber() * 4 == Convert.ToInt32(this.cycle[c - 1].IFID_NPC, 16))
+                            {
+                                i = k;
+                                k = this.instruction.Count;
+                            }
+                        }
+                        this.cycle[c].setInstructionFetch(
+                            this.instruction[i].getOpcode().getOpcodeString(),
+                            this.instruction[i].getLineNumber().ToString(),
+                            this.cycle[c - 1].EXMEM_instructionType,
+                            this.cycle[c - 1].EXMEM_Cond,
+                            this.cycle[c - 1].EXMEM_ALUOutput,
+                            this.instruction[i].getInstruction(),
+                            this.instruction[i].getInstructionType(),
+                            this.instruction[i].getInstructionLine()
+                            );
+                        #endregion
+                        this.pipelineWriteBack(c);
+                    }
+                    #endregion
+                    #region Instruction Decode
+                    this.cycle[c].setInstructionDecode(
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        ""
+                        );
+                    #endregion
+
+                }
+                else                // normal cycle
+                {
+                    #region Instruction Fetch
+                    for (int k = i; k < this.instruction.Count; k++)
+                    {
+                        if (instruction[k].getLineNumber() * 4 == Convert.ToInt32(this.cycle[c - 1].IFID_NPC, 16))
+                        {
+                            i = k;
+                            k = this.instruction.Count;
+                        }
+                    }
+                    this.cycle[c].setInstructionFetch(
+                        this.instruction[i].getOpcode().getOpcodeString(),
+                        this.instruction[i].getLineNumber().ToString(),
+                        this.cycle[c - 1].EXMEM_instructionType,
+                        this.cycle[c - 1].EXMEM_Cond,
+                        this.cycle[c - 1].EXMEM_ALUOutput,
+                        this.instruction[i].getInstruction(),
+                        this.instruction[i].getInstructionType(),
+                        this.instruction[i].getInstructionLine()
+                        );
+                    #endregion
+                    #region Flush
+                    if (this.instruction[i].getInstructionType() == "Branch Instruction")
+                    {
+                        i++;
+                        c++;
+                        this.cycle.Add(new Cycle());
+                        this.numCycles++;
+                        #region Instruction Fetch
+                        for (int k = i; k < this.instruction.Count; k++)
+                        {
+                            if (instruction[k].getLineNumber() * 4 == Convert.ToInt32(this.cycle[c - 1].IFID_NPC, 16))
+                            {
+                                i = k;
+                                k = this.instruction.Count;
+                            }
+                        }
+                        this.cycle[c].setInstructionFetch(
+                            this.instruction[i].getOpcode().getOpcodeString(),
+                            this.instruction[i].getLineNumber().ToString(),
+                            this.cycle[c - 1].EXMEM_instructionType,
+                            this.cycle[c - 1].EXMEM_Cond,
+                            this.cycle[c - 1].EXMEM_ALUOutput,
+                            this.instruction[i].getInstruction(),
+                            this.instruction[i].getInstructionType(),
+                            this.instruction[i].getInstructionLine()
+                            );
+                        #endregion
+                        #region Instruction Decode
+                        this.cycle[c].setInstructionDecode(
+                            this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rsO, 2)].getValue(),
+                            this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rtO, 2)].getValue(),
+                            this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rdO, 2)].getValue(),
+                            this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().bseO, 2)].getValue(),
+                            this.instruction[i - 1].getOpcode().getOpcodeString().Substring(18),
+                            this.cycle[c - 1].IFID_IR,
+                            this.cycle[c - 1].IFID_NPC,
+                            this.cycle[c - 1].IFID_instruction,
+                            this.cycle[c - 1].IFID_instructionType,
+                            this.cycle[c - 1].IFID_instructionLine
+                            );
+                        #endregion
+
+                        i++;
+                        c++;
+                        this.cycle.Add(new Cycle());
+                        this.numCycles++;
+                        #region Instruction Fetch
+                        for (int k = i; k < this.instruction.Count; k++)
+                        {
+                            if (instruction[k].getLineNumber() * 4 == Convert.ToInt32(this.cycle[c - 1].IFID_NPC, 16))
+                            {
+                                i = k;
+                                k = this.instruction.Count;
+                            }
+                        }
+                        this.cycle[c].setInstructionFetch(
+                            this.instruction[i].getOpcode().getOpcodeString(),
+                            this.instruction[i].getLineNumber().ToString(),
+                            this.cycle[c - 1].EXMEM_instructionType,
+                            this.cycle[c - 1].EXMEM_Cond,
+                            this.cycle[c - 1].EXMEM_ALUOutput,
+                            this.instruction[i].getInstruction(),
+                            this.instruction[i].getInstructionType(),
+                            this.instruction[i].getInstructionLine()
+                            );
+                        #endregion
+                        #region Execution
+                        this.cycle[c].setExecution(
+                             this.cycle[c - 1].IDEX_A,
+                             this.cycle[c - 1].IDEX_B,
+                             this.cycle[c - 1].IDEX_IMM,
+                             this.cycle[c - 1].IDEX_IR,
+                             this.cycle[c - 1].IDEX_NPC,
+                             this.cycle[c - 1].IDEX_instruction,
+                             this.cycle[c - 1].IDEX_instructionType,
+                             this.cycle[c - 1].IDEX_instructionLine
+                             );
+                        #endregion
+
+                        i++;
+                        c++;
+                        this.cycle.Add(new Cycle());
+                        this.numCycles++;
+                        #region Instruction Fetch
+                        for (int k = i; k < this.instruction.Count; k++)
+                        {
+                            if (instruction[k].getLineNumber() * 4 == Convert.ToInt32(this.cycle[c - 1].IFID_NPC, 16))
+                            {
+                                i = k;
+                                k = this.instruction.Count;
+                            }
+                        }
+                        this.cycle[c].setInstructionFetch(
+                            this.instruction[i].getOpcode().getOpcodeString(),
+                            this.instruction[i].getLineNumber().ToString(),
+                            this.cycle[c - 1].EXMEM_instructionType,
+                            this.cycle[c - 1].EXMEM_Cond,
+                            this.cycle[c - 1].EXMEM_ALUOutput,
+                            this.instruction[i].getInstruction(),
+                            this.instruction[i].getInstructionType(),
+                            this.instruction[i].getInstructionLine()
+                            );
+                        #endregion
+                        #region Memory Access
+                        if (!checkLoadAddress(this.cycle[c - 1].EXMEM_ALUOutput, this.cycle[c - 1].EXMEM_instructionType))
+                        {
+                            memoryAccessError = true;
+                            break;
+                        }
+                        this.storeDouble(this.cycle[c - 1].EXMEM_ALUOutput, c);
+                        this.cycle[c].setMemoryAccess(
+                            this.cycle[c - 1].EXMEM_IR,
+                            this.cycle[c - 1].EXMEM_ALUOutput,
+                            this.loadDouble(this.cycle[c - 1].EXMEM_ALUOutput, c),
+                            this.cycle[c - 1].EXMEM_instruction,
+                            this.cycle[c - 1].EXMEM_instructionType
+                            );
+                        #endregion
+
+                        i++;
+                        c++;
+                        this.cycle.Add(new Cycle());
+                        this.numCycles++;
+                        #region Instruction Fetch
+                        for (int k = i; k < this.instruction.Count; k++)
+                        {
+                            if (instruction[k].getLineNumber() * 4 == Convert.ToInt32(this.cycle[c - 1].IFID_NPC, 16))
+                            {
+                                i = k;
+                                k = this.instruction.Count;
+                            }
+                        }
+                        this.cycle[c].setInstructionFetch(
+                            this.instruction[i].getOpcode().getOpcodeString(),
+                            this.instruction[i].getLineNumber().ToString(),
+                            this.cycle[c - 1].EXMEM_instructionType,
+                            this.cycle[c - 1].EXMEM_Cond,
+                            this.cycle[c - 1].EXMEM_ALUOutput,
+                            this.instruction[i].getInstruction(),
+                            this.instruction[i].getInstructionType(),
+                            this.instruction[i].getInstructionLine()
+                            );
+                        #endregion
+                        this.pipelineWriteBack(c);
+                    }
+                    #endregion
+                    #region Instruction Decode
+                    this.cycle[c].setInstructionDecode(
+                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rsO, 2)].getValue(),
+                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rtO, 2)].getValue(),
+                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rdO, 2)].getValue(),
+                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().bseO, 2)].getValue(),
+                        this.instruction[i - 1].getOpcode().getOpcodeString().Substring(18),
+                        this.cycle[c - 1].IFID_IR,
+                        this.cycle[c - 1].IFID_NPC,
+                        this.cycle[c - 1].IFID_instruction,
+                        this.cycle[c - 1].IFID_instructionType,
+                        this.cycle[c - 1].IFID_instructionLine
+                        );
+                    #endregion
+
+                    if (this.checkDataHazard(this.instruction[i], this.instruction[i - 1]))      // data hazard 
+                    {
+                        datahazard = true;
+                        for (int j = 0; j < 4; j++)
+                        {
+                            if (j == 0)      // first cycle of data hazard - dont add new cycle, finish current cycle
+                            {
+                                #region Execution
+                                this.cycle[c].setExecution(
+                                     this.cycle[c - 1].IDEX_A,
+                                     this.cycle[c - 1].IDEX_B,
+                                     this.cycle[c - 1].IDEX_IMM,
+                                     this.cycle[c - 1].IDEX_IR,
+                                     this.cycle[c - 1].IDEX_NPC,
+                                     this.cycle[c - 1].IDEX_instruction,
+                                     this.cycle[c - 1].IDEX_instructionType,
+                                     this.cycle[c - 1].IDEX_instructionLine
+                                     );
+                                #endregion
+                                #region Memory Access
+                                if (!checkLoadAddress(this.cycle[c - 1].EXMEM_ALUOutput, this.cycle[c - 1].EXMEM_instructionType))
+                                {
+                                    memoryAccessError = true;
+                                    break;
+                                }
+                                this.storeDouble(this.cycle[c - 1].EXMEM_ALUOutput, c);
+                                this.cycle[c].setMemoryAccess(
+                                    this.cycle[c - 1].EXMEM_IR,
+                                    this.cycle[c - 1].EXMEM_ALUOutput,
+                                    this.loadDouble(this.cycle[c - 1].EXMEM_ALUOutput, c),
+                                    this.cycle[c - 1].EXMEM_instruction,
+                                    this.cycle[c - 1].EXMEM_instructionType
+                                    );
+                                #endregion
+                                this.pipelineWriteBack(c);
+                                c++;
+                            }
+                            else if (j == 1)     // second cycle of data hazard - no more ID keep IF
+                            {
+                                this.cycle.Add(new Cycle());
+                                this.numCycles++;
+                                #region Instruction Fetch
+                                this.cycle[c].setInstructionFetch(
+                                     this.instruction[i].getOpcode().getOpcodeString(),
+                                     this.instruction[i].getLineNumber().ToString(),
+                                     this.cycle[c - 1].EXMEM_instructionType,
+                                     this.cycle[c - 1].EXMEM_Cond,
+                                     this.cycle[c - 1].EXMEM_ALUOutput,
+                                     this.instruction[i].getInstruction(),
+                                     this.instruction[i].getInstructionType(),
+                                     this.instruction[i].getInstructionLine()
+                                     );
+                                #endregion
+                                #region Execution
+                                this.cycle[c].setExecution(
+                                     this.cycle[c - 1].IDEX_A,
+                                     this.cycle[c - 1].IDEX_B,
+                                     this.cycle[c - 1].IDEX_IMM,
+                                     this.cycle[c - 1].IDEX_IR,
+                                     this.cycle[c - 1].IDEX_NPC,
+                                     this.cycle[c - 1].IDEX_instruction,
+                                     this.cycle[c - 1].IDEX_instructionType,
+                                     this.cycle[c - 1].IDEX_instructionLine
+                                     );
+                                #endregion
+                                #region Memory Access
+                                if (!checkLoadAddress(this.cycle[c - 1].EXMEM_ALUOutput, this.cycle[c - 1].EXMEM_instructionType))
+                                {
+                                    memoryAccessError = true;
+                                    break;
+                                }
+                                this.storeDouble(this.cycle[c - 1].EXMEM_ALUOutput, c);
+                                this.cycle[c].setMemoryAccess(
+                                    this.cycle[c - 1].EXMEM_IR,
+                                    this.cycle[c - 1].EXMEM_ALUOutput,
+                                    this.loadDouble(this.cycle[c - 1].EXMEM_ALUOutput, c),
+                                    this.cycle[c - 1].EXMEM_instruction,
+                                    this.cycle[c - 1].EXMEM_instructionType
+                                    );
+                                #endregion
+                                this.pipelineWriteBack(c);
+                                c++;
+                            }
+                            else if (j == 2)
+                            {
+                                this.cycle.Add(new Cycle());
+                                this.numCycles++;
+                                #region Instruction Fetch
+                                this.cycle[c].setInstructionFetch(
+                                this.instruction[i].getOpcode().getOpcodeString(),
+                                this.instruction[i].getLineNumber().ToString(),
+                                this.cycle[c - 1].EXMEM_instructionType,
+                                this.cycle[c - 1].EXMEM_Cond,
+                                this.cycle[c - 1].EXMEM_ALUOutput,
+                                this.instruction[i].getInstruction(),
+                                this.instruction[i].getInstructionType(),
+                                this.instruction[i].getInstructionLine()
+                                );
+                                #endregion
+                                #region Memory Access
+                                if (!checkLoadAddress(this.cycle[c - 1].EXMEM_ALUOutput, this.cycle[c - 1].EXMEM_instructionType))
+                                {
+                                    memoryAccessError = true;
+                                    break;
+                                }
+                                this.storeDouble(this.cycle[c - 1].EXMEM_ALUOutput, c);
+                                this.cycle[c].setMemoryAccess(
+                                    this.cycle[c - 1].EXMEM_IR,
+                                    this.cycle[c - 1].EXMEM_ALUOutput,
+                                    this.loadDouble(this.cycle[c - 1].EXMEM_ALUOutput, c),
+                                    this.cycle[c - 1].EXMEM_instruction,
+                                    this.cycle[c - 1].EXMEM_instructionType
+                                    );
+                                #endregion
+                                this.pipelineWriteBack(c);
+                                c++;
+                            }
+                            else if (j == 3)
+                            {
+                                this.cycle.Add(new Cycle());
+                                this.numCycles++;
+                                #region Instruction Fetch
+                                this.cycle[c].setInstructionFetch(
+                                     this.instruction[i].getOpcode().getOpcodeString(),
+                                     this.instruction[i].getLineNumber().ToString(),
+                                     this.cycle[c - 1].EXMEM_instructionType,
+                                     this.cycle[c - 1].EXMEM_Cond,
+                                     this.cycle[c - 1].EXMEM_ALUOutput,
+                                     this.instruction[i].getInstruction(),
+                                     this.instruction[i].getInstructionType(),
+                                     this.instruction[i].getInstructionLine()
+                                     );
+                                #endregion
+                                #region Flush
+                                if (this.instruction[i].getInstructionType() == "Branch Instruction")
+                                {
+                                    i++;
+                                    c++;
+                                    this.cycle.Add(new Cycle());
+                                    this.numCycles++;
+                                    #region Instruction Fetch
+                                    for (int k = i; k < this.instruction.Count; k++)
+                                    {
+                                        if (instruction[k].getLineNumber() * 4 == Convert.ToInt32(this.cycle[c - 1].IFID_NPC, 16))
+                                        {
+                                            i = k;
+                                            k = this.instruction.Count;
+                                        }
+                                    }
+                                    this.cycle[c].setInstructionFetch(
+                                        this.instruction[i].getOpcode().getOpcodeString(),
+                                        this.instruction[i].getLineNumber().ToString(),
+                                        this.cycle[c - 1].EXMEM_instructionType,
+                                        this.cycle[c - 1].EXMEM_Cond,
+                                        this.cycle[c - 1].EXMEM_ALUOutput,
+                                        this.instruction[i].getInstruction(),
+                                        this.instruction[i].getInstructionType(),
+                                        this.instruction[i].getInstructionLine()
+                                        );
+                                    #endregion
+                                    #region Instruction Decode
+                                    this.cycle[c].setInstructionDecode(
+                                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rsO, 2)].getValue(),
+                                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rtO, 2)].getValue(),
+                                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rdO, 2)].getValue(),
+                                        this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().bseO, 2)].getValue(),
+                                        this.instruction[i - 1].getOpcode().getOpcodeString().Substring(18),
+                                        this.cycle[c - 1].IFID_IR,
+                                        this.cycle[c - 1].IFID_NPC,
+                                        this.cycle[c - 1].IFID_instruction,
+                                        this.cycle[c - 1].IFID_instructionType,
+                                        this.cycle[c - 1].IFID_instructionLine
+                                        );
+                                    #endregion
+
+                                    i++;
+                                    c++;
+                                    this.cycle.Add(new Cycle());
+                                    this.numCycles++;
+                                    #region Instruction Fetch
+                                    for (int k = i; k < this.instruction.Count; k++)
+                                    {
+                                        if (instruction[k].getLineNumber() * 4 == Convert.ToInt32(this.cycle[c - 1].IFID_NPC, 16))
+                                        {
+                                            i = k;
+                                            k = this.instruction.Count;
+                                        }
+                                    }
+                                    this.cycle[c].setInstructionFetch(
+                                        this.instruction[i].getOpcode().getOpcodeString(),
+                                        this.instruction[i].getLineNumber().ToString(),
+                                        this.cycle[c - 1].EXMEM_instructionType,
+                                        this.cycle[c - 1].EXMEM_Cond,
+                                        this.cycle[c - 1].EXMEM_ALUOutput,
+                                        this.instruction[i].getInstruction(),
+                                        this.instruction[i].getInstructionType(),
+                                        this.instruction[i].getInstructionLine()
+                                        );
+                                    #endregion
+                                    #region Execution
+                                    this.cycle[c].setExecution(
+                                         this.cycle[c - 1].IDEX_A,
+                                         this.cycle[c - 1].IDEX_B,
+                                         this.cycle[c - 1].IDEX_IMM,
+                                         this.cycle[c - 1].IDEX_IR,
+                                         this.cycle[c - 1].IDEX_NPC,
+                                         this.cycle[c - 1].IDEX_instruction,
+                                         this.cycle[c - 1].IDEX_instructionType,
+                                         this.cycle[c - 1].IDEX_instructionLine
+                                         );
+                                    #endregion
+
+                                    i++;
+                                    c++;
+                                    this.cycle.Add(new Cycle());
+                                    this.numCycles++;
+                                    #region Instruction Fetch
+                                    for (int k = i; k < this.instruction.Count; k++)
+                                    {
+                                        if (instruction[k].getLineNumber() * 4 == Convert.ToInt32(this.cycle[c - 1].IFID_NPC, 16))
+                                        {
+                                            i = k;
+                                            k = this.instruction.Count;
+                                        }
+                                    }
+                                    this.cycle[c].setInstructionFetch(
+                                        this.instruction[i].getOpcode().getOpcodeString(),
+                                        this.instruction[i].getLineNumber().ToString(),
+                                        this.cycle[c - 1].EXMEM_instructionType,
+                                        this.cycle[c - 1].EXMEM_Cond,
+                                        this.cycle[c - 1].EXMEM_ALUOutput,
+                                        this.instruction[i].getInstruction(),
+                                        this.instruction[i].getInstructionType(),
+                                        this.instruction[i].getInstructionLine()
+                                        );
+                                    #endregion
+                                    #region Memory Access
+                                    if (!checkLoadAddress(this.cycle[c - 1].EXMEM_ALUOutput, this.cycle[c - 1].EXMEM_instructionType))
+                                    {
+                                        memoryAccessError = true;
+                                        break;
+                                    }
+                                    this.storeDouble(this.cycle[c - 1].EXMEM_ALUOutput, c);
+                                    this.cycle[c].setMemoryAccess(
+                                        this.cycle[c - 1].EXMEM_IR,
+                                        this.cycle[c - 1].EXMEM_ALUOutput,
+                                        this.loadDouble(this.cycle[c - 1].EXMEM_ALUOutput, c),
+                                        this.cycle[c - 1].EXMEM_instruction,
+                                        this.cycle[c - 1].EXMEM_instructionType
+                                        );
+                                    #endregion
+
+                                    i++;
+                                    c++;
+                                    this.cycle.Add(new Cycle());
+                                    this.numCycles++;
+                                    #region Instruction Fetch
+                                    for (int k = i; k < this.instruction.Count; k++)
+                                    {
+                                        if (instruction[k].getLineNumber() * 4 == Convert.ToInt32(this.cycle[c - 1].IFID_NPC, 16))
+                                        {
+                                            i = k;
+                                            k = this.instruction.Count;
+                                        }
+                                    }
+                                    this.cycle[c].setInstructionFetch(
+                                        this.instruction[i].getOpcode().getOpcodeString(),
+                                        this.instruction[i].getLineNumber().ToString(),
+                                        this.cycle[c - 1].EXMEM_instructionType,
+                                        this.cycle[c - 1].EXMEM_Cond,
+                                        this.cycle[c - 1].EXMEM_ALUOutput,
+                                        this.instruction[i].getInstruction(),
+                                        this.instruction[i].getInstructionType(),
+                                        this.instruction[i].getInstructionLine()
+                                        );
+                                    #endregion
+                                    this.pipelineWriteBack(c);
+                                }
+                                #endregion
+                                this.pipelineWriteBack(c);
+                            }
+                        }
+                    }
+                }
+                if (c != 0 && !datahazard)
+                {
+                    #region Execution
+                    this.cycle[c].setExecution(
+                                    this.cycle[c - 1].IDEX_A,
+                                    this.cycle[c - 1].IDEX_B,
+                                    this.cycle[c - 1].IDEX_IMM,
+                                    this.cycle[c - 1].IDEX_IR,
+                                    this.cycle[c - 1].IDEX_NPC,
+                                    this.cycle[c - 1].IDEX_instruction,
+                                    this.cycle[c - 1].IDEX_instructionType,
+                                    this.cycle[c - 1].IDEX_instructionLine
+                                    );
                     #endregion
                     #region Memory Access
                     if (!(checkLoadAddress(this.cycle[c - 1].EXMEM_ALUOutput, this.cycle[c - 1].EXMEM_instructionType)))
@@ -753,6 +1837,7 @@ namespace COMPARC_Project_2
 
         #endregion
 
+        #region Load and Store Methods
 
         private Boolean checkLoadAddress(string startAddress, string instructionType)
         {
@@ -781,7 +1866,6 @@ namespace COMPARC_Project_2
                 return true;
             }
         }
-
 
         private String loadDouble(string startAddress, int i)
         {
@@ -830,5 +1914,6 @@ namespace COMPARC_Project_2
             }
         }
 
+        #endregion
     }
 }

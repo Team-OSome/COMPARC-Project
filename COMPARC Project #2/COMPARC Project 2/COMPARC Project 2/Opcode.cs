@@ -337,7 +337,7 @@ namespace COMPARC_Project_2
 
         public void addOpcodeString(String addition)
         {
-            this.opcodeString += addition;
+            this.opcodeString += " " + addition;
         }
 
         public void printOpcodeBinary()
