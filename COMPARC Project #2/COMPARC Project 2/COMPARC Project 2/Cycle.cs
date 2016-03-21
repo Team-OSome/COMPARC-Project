@@ -89,7 +89,7 @@ namespace COMPARC_Project_2
             this.IFID_IR = opcode;
             if (programCtr != "")
             {
-                if (EXMEM_instructionType == "Branch Instruction" && cond == "1")
+                if (EXMEM_instructionType == "Branch Instruction")
                 {
                     this.IFID_NPC = EXMEM_ALUOutput;
                 }
@@ -328,21 +328,27 @@ namespace COMPARC_Project_2
                 }
                 else if (instruction == "BNEC")
                 {
-                    Console.WriteLine("Branch Instruction");
-                    Console.WriteLine(IDEX_NPC + " + " + (Convert.ToInt64(IDEX_IMM, 16) * 4).ToString("X"));
-                    this.EXMEM_ALUOutput = ((Convert.ToInt64(IDEX_NPC, 16) + Convert.ToInt64(IDEX_IMM, 16) * 4)).ToString("X");
+                    Console.WriteLine("BNEC Instruction");
 
-                    while (this.EXMEM_ALUOutput.Length < 16)
-                    {
-                        this.EXMEM_ALUOutput = "0" + this.EXMEM_ALUOutput;
-                    }
+                    
                     
                     if (IDEX_A != IDEX_B)
                     {
+                        Console.WriteLine(IDEX_NPC + " + " + (Convert.ToInt64(IDEX_IMM, 16) * 4).ToString("X"));
+                        this.EXMEM_ALUOutput = ((Convert.ToInt64(IDEX_NPC, 16) + Convert.ToInt64(IDEX_IMM, 16) * 4)).ToString("X");
+                        while (this.EXMEM_ALUOutput.Length < 16)
+                        {
+                            this.EXMEM_ALUOutput = "0" + this.EXMEM_ALUOutput;
+                        }
                         this.EXMEM_Cond = "1";
                     }
                     else
                     {
+                        this.EXMEM_ALUOutput = Convert.ToInt64(IDEX_NPC, 16).ToString("X");
+                        while (this.EXMEM_ALUOutput.Length < 16)
+                        {
+                            this.EXMEM_ALUOutput = "0" + this.EXMEM_ALUOutput;
+                        }
                         this.EXMEM_Cond = "0";
                     }
                 }

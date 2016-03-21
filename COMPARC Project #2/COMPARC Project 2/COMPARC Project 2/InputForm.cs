@@ -64,7 +64,7 @@ namespace COMPARC_Project_2
                 this.viewCycle = 0;
 
                 this.displayPipelineMapToConsole();
-                this.displayPipelineMap();
+                //this.displayPipelineMap();
 
                 this.refreshRegisters();
                 this.refreshMemory();
@@ -408,7 +408,7 @@ namespace COMPARC_Project_2
                 Console.WriteLine("");
             }
         }
-
+        /*
         private void displayPipelineMap()       //displays pipeline map to console
         {
             int row, currRow = 0;
@@ -461,7 +461,7 @@ namespace COMPARC_Project_2
             }
 
         }
-
+        */
         private String getCycleVaue(int cycle)
         {
             String value = "";
