@@ -466,7 +466,6 @@ namespace COMPARC_Project_2
             int i = 0;
             int c = 0;
             int temp = 0;
-            int flush = 0;
             Boolean datahazard = false;
             Boolean memoryAccessError = false;
             int totalCycles = this.instruction.Count + 4;
@@ -939,7 +938,7 @@ namespace COMPARC_Project_2
                                 k = this.instruction.Count;
                             }
                         }
-                        this.cycle[c].setInstructionFetch(
+                            this.cycle[c].setInstructionFetch(
                             this.instruction[i].getOpcode().getOpcodeString(),
                             this.instruction[i].getLineNumber().ToString(),
                             this.cycle[c - 1].EXMEM_instructionType,
@@ -949,6 +948,7 @@ namespace COMPARC_Project_2
                             this.instruction[i].getInstructionType(),
                             this.instruction[i].getInstructionLine()
                             );
+ 
                         #endregion
                         this.pipelineWriteBack(c);
                         Console.WriteLine("hi" + (c + 1).ToString());
@@ -957,6 +957,7 @@ namespace COMPARC_Project_2
                     #endregion
                  
                     #region Instruction Decode
+
                     this.cycle[c].setInstructionDecode(
                         this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rsO, 2)].getValue(),
                         this.registers[Convert.ToInt32(this.instruction[i - 1].getOpcode().rtO, 2)].getValue(),

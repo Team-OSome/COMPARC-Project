@@ -232,6 +232,8 @@ namespace COMPARC_Project_2
 
         public void setExecution(string IDEX_A, string IDEX_B, string IDEX_IMM, string IDEX_IR, string IDEX_NPC, string instruction, string instructionType, string instructionLine)
         {
+            string temp;
+
             if (IDEX_IR != "")  //  if Instruction Fetched is not null -> pipeline map IF is true
             {
                 this.EXMEM = true;
@@ -329,13 +331,27 @@ namespace COMPARC_Project_2
                 else if (instruction == "BNEC")
                 {
                     Console.WriteLine("BNEC Instruction");
-
-                    
                     
                     if (IDEX_A != IDEX_B)
                     {
-                        Console.WriteLine(IDEX_NPC + " + " + (Convert.ToInt64(IDEX_IMM, 16) * 4).ToString("X"));
-                        this.EXMEM_ALUOutput = ((Convert.ToInt64(IDEX_NPC, 16) + Convert.ToInt64(IDEX_IMM, 16) * 4)).ToString("X");
+                        //temp = Convert.ToInt64(IDEX_IMM, 2).ToString();
+                        temp = IDEX_IMM;
+
+                        if (temp[0] == 'F')
+                        {
+                            Console.WriteLine("BNEC Instruction negative offset");
+                            Console.WriteLine(IDEX_NPC + " - " + (Convert.ToInt64(hextToDecSigned(IDEX_IMM), 2) * 4).ToString("X"));
+                            this.EXMEM_ALUOutput = ((Convert.ToInt64(IDEX_NPC, 16) - Convert.ToInt64(hextToDecSigned(IDEX_IMM), 2) * 4)).ToString("X");
+                            Console.WriteLine("OUTPUT= " + this.EXMEM_ALUOutput);
+                            Console.WriteLine(IDEX_A + "!=" + IDEX_B);
+                        }
+
+                        else
+                        {
+                            Console.WriteLine(IDEX_NPC + " + " + (Convert.ToInt64(IDEX_IMM, 16) * 4).ToString("X"));
+                            this.EXMEM_ALUOutput = ((Convert.ToInt64(IDEX_NPC, 16) + Convert.ToInt64(IDEX_IMM, 16) * 4)).ToString("X");
+                        }
+                        
                         while (this.EXMEM_ALUOutput.Length < 16)
                         {
                             this.EXMEM_ALUOutput = "0" + this.EXMEM_ALUOutput;
@@ -352,7 +368,6 @@ namespace COMPARC_Project_2
                         this.EXMEM_Cond = "0";
                     }
                 }
-
             }
             #endregion
 
@@ -385,6 +400,36 @@ namespace COMPARC_Project_2
             this.MEMWB_ALUOutput = EXMEM_ALUOutput;
             this.MEMWB_instruction = instruction;
             this.MEMWB_instructionType = instructionType;
+        }
+
+        private String hextToDecSigned(string inputStr)
+        {
+            int i;
+             inputStr = String.Join(String.Empty,inputStr.Select(c => Convert.ToString(Convert.ToInt32(c.ToString(), 16), 2).PadLeft(4, '0')));
+            //inputStr = Convert.ToString(Convert.ToInt64(inputStr, 16), 2);
+            System.Text.StringBuilder str = new System.Text.StringBuilder(inputStr);
+
+            for ( i = str.Length-1; i >= 0; i--)
+            {
+                if (str[i] == '1')
+                {
+                    break;
+                }
+            }
+            i--;
+            for (int k = i; k >= 0; k--)
+			{
+			    if (str[k] == '0')
+	            {
+		            str[k] = '1';
+	            }
+                else
+	            {
+                    str[k] = '0';
+	            }
+			}
+            Console.WriteLine("HEX: " + inputStr + "   TO:   " + str.ToString());
+            return str.ToString();
         }
 
     }
