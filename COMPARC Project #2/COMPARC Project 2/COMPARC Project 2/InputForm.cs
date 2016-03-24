@@ -68,7 +68,9 @@ namespace COMPARC_Project_2
 
                 this.refreshRegisters();
                 this.refreshMemory();
+
                 this.displayInternalPipelineRegisters(this.viewCycle);
+
                 gotoCycleTB.Text = (viewCycle + 1).ToString();
                 gotoCycleBtn.Visible = true;
                 gotoCycleTB.Visible = true;
