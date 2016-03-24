@@ -156,6 +156,18 @@ namespace COMPARC_Project_2
             return this.instruction[lineNum].getInstructionLine();
         }
 
+        public bool isInstructionBranch(int lineNum)
+        {
+            if (this.instruction[lineNum].getInstructionType() == "Branch Instruction")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }            
+        }
+
         public Boolean getInstructionsValid()
         {
             return this.instructionsValid;
