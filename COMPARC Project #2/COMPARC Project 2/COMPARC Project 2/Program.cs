@@ -559,78 +559,86 @@ namespace COMPARC_Project_2
             int c = 0;
             int temp = 0;
             Boolean addressRange = true ;
-            int totalCycles = this.instruction.Count + 4;
+            int totalCycles = this.instruction.Count + 3;
             do
             {
                 this.cycle.Add(new Cycle());
                 this.numCycles++;
 
+                i = getInstruction(i, c);
+
                 if (i < this.instruction.Count)
                 {
+                    #region FLUSH
                     if (this.instruction[i].getInstructionType() == "Branch Instruction")
                     {
-                        temp = i;
-
-                        i = this.InstructionFetch(i, c);
-                        this.InstructionDecode(i, c);
-                        this.Execution(i, c);
-                        addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
-                        this.WriteBack(c);
-          
-                        i++;
-                        c++;
-                        this.cycle.Add(new Cycle());
-                        this.numCycles++;
-                        i = this.InstructionFetch(i, c);
+                        this.InstructionFetch(i, c);
                         this.InstructionDecode(i, c);
                         this.Execution(i, c);
                         addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
                         this.WriteBack(c);
 
-                        i++;
                         c++;
+
+                        i = getInstruction(i, c);
                         this.cycle.Add(new Cycle());
                         this.numCycles++;
-                        i = this.InstructionFetch(i, c);
+                        this.InstructionFetch(i, c);
+                        this.InstructionDecode(i, c);
                         this.Execution(i, c);
                         addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
                         this.WriteBack(c);
-                        
-                        i++;
+
                         c++;
+
+                        i = getInstruction(i, c);
                         this.cycle.Add(new Cycle());
                         this.numCycles++;
-                        i = this.InstructionFetch(i, c);
+                        this.InstructionFetch(i, c);
+                        this.Execution(i, c);
                         addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
                         this.WriteBack(c);
-                        
-                        i++;
+
                         c++;
+
+                        i = getInstruction(i, c);
                         this.cycle.Add(new Cycle());
                         this.numCycles++;
-                        i = this.InstructionFetch(i, c);
+                        this.InstructionFetch(i, c);
+                        addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
                         this.WriteBack(c);
 
-                        //i = temp;
+                        c++;
+
+                        i = getInstruction(i, c);
+                        this.cycle.Add(new Cycle());
+                        this.numCycles++;
+                        this.InstructionFetch(i, c);
+                        this.WriteBack(c);
                     }
+                    #endregion
                     else
                     {
-                        i = this.InstructionFetch(i, c);                                 //i gets the instrucion array of the next instruction
+                        this.InstructionFetch(i, c);
+                        Console.WriteLine("NPC = " + this.cycle[c].IFID_NPC);
                         this.InstructionDecode(i, c);
                         this.Execution(i, c);
-                        addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;                //break if out of address range
+                        addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
                         this.WriteBack(c);
                     }
                 }
                 else
                 {
-                    i = this.InstructionFetch(i, c);                                 //i gets the instrucion array of the next instruction
+                    this.InstructionFetch(i, c);
+                    Console.WriteLine("NPC = " + this.cycle[c].IFID_NPC);
                     this.InstructionDecode(i, c);
                     this.Execution(i, c);
-                    addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;                //break if out of address range
+                    addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
                     this.WriteBack(c);
                 }
-                i++;
+
+                
+
                 c++;
             } while (i < totalCycles);
 
@@ -641,12 +649,32 @@ namespace COMPARC_Project_2
                 this.cycle.Add(new Cycle());
                 this.numCycles = 0;
             }    
-
         }
 
-     
+        private int getInstruction(int i, int c)
+        {
+            int temp = i;
 
-        private int InstructionFetch(int i, int c)      // Returns the instruction array number of the next instruction
+            if (c == 0)
+            {
+                return 0;
+            }
+
+            for (i = 0; i < this.instruction.Count; i++)
+            {
+                if (this.cycle[c - 1].IFID_NPC != "")
+                {
+                    if (instruction[i].getLineNumber() * 4 == Convert.ToInt32(this.cycle[c - 1].IFID_NPC, 16))
+                    {
+                        return i;
+                    }
+                }
+            }
+
+            return temp+1;
+        }
+
+        private void InstructionFetch(int i, int c)      // Returns the instruction array number of the next instruction
         {
             if (i == 0)     //If first instruction there is no previous cycle to get EXMEM_instructionType and EXMEM_ALUOutput
             {
@@ -654,7 +682,7 @@ namespace COMPARC_Project_2
                     this.instruction[i].getOpcode().getOpcodeString(),
                     this.instruction[i].getLineNumber().ToString(),
                     "",
-                    "",
+                    "4",
                     this.instruction[i].getInstruction(),
                     this.instruction[i].getInstructionType(),
                     this.instruction[i].getInstructionLine(),
@@ -665,49 +693,27 @@ namespace COMPARC_Project_2
                     this.instruction[i].getOpcode().getOpcodeString().Substring(18)
                     );
             }
-            else if (i >= this.instruction.Count)       //If last instruction there is no more instructions to fetch
+            else if (i >= this.instruction.Count)
             {
                 this.cycle[c].setInstructionFetch("", "", this.cycle[c - 1].EXMEM_instructionType, this.cycle[c - 1].EXMEM_ALUOutput, "", "", "", "", "", "", "", "");
             }
             else
             {
-                for (int k = 0; k < this.instruction.Count; k++)
-                {
-                    if (instruction[k].getLineNumber() * 4 == Convert.ToInt32(this.cycle[c - 1].IFID_NPC, 16))
-                    {
-                        i = k;
-                        k = this.instruction.Count;
-                    }
-                    else if (this.instruction[this.instruction.Count - 1].getLineNumber() * 4 < Convert.ToInt32(this.cycle[c - 1].IFID_NPC, 16))
-                    {
-                        k = this.instruction.Count;
-                        i = this.instruction.Count;
-                    }
-                }
-                    if (i >= this.instruction.Count)       //If last instruction there is no more instructions to fetch
-                    {
-                        this.cycle[c].setInstructionFetch("", "", "", "", "", "", "", "", "", "", "", "");
-                    }
-                    else
-                    {
-                        this.cycle[c].setInstructionFetch(
-                            this.instruction[i].getOpcode().getOpcodeString(),
-                            this.instruction[i].getLineNumber().ToString(),
-                            this.cycle[c - 1].EXMEM_instructionType,
-                            this.cycle[c - 1].EXMEM_ALUOutput,
-                            this.instruction[i].getInstruction(),
-                            this.instruction[i].getInstructionType(),
-                            this.instruction[i].getInstructionLine(),
-                            this.registers[Convert.ToInt32(this.instruction[i].getOpcode().rsO, 2)].getValue(),
-                            this.registers[Convert.ToInt32(this.instruction[i].getOpcode().rtO, 2)].getValue(),
-                            this.registers[Convert.ToInt32(this.instruction[i].getOpcode().rdO, 2)].getValue(),
-                            this.registers[Convert.ToInt32(this.instruction[i].getOpcode().bseO, 2)].getValue(),
-                            this.instruction[i].getOpcode().getOpcodeString().Substring(18)
-                            );
-                    }
-                
+                this.cycle[c].setInstructionFetch(
+                    this.instruction[i].getOpcode().getOpcodeString(),
+                    this.instruction[i].getLineNumber().ToString(),
+                    this.cycle[c - 1].EXMEM_instructionType,
+                    this.cycle[c - 1].EXMEM_ALUOutput,
+                    this.instruction[i].getInstruction(),
+                    this.instruction[i].getInstructionType(),
+                    this.instruction[i].getInstructionLine(),
+                    this.registers[Convert.ToInt32(this.instruction[i].getOpcode().rsO, 2)].getValue(),
+                    this.registers[Convert.ToInt32(this.instruction[i].getOpcode().rtO, 2)].getValue(),
+                    this.registers[Convert.ToInt32(this.instruction[i].getOpcode().rdO, 2)].getValue(),
+                    this.registers[Convert.ToInt32(this.instruction[i].getOpcode().bseO, 2)].getValue(),
+                    this.instruction[i].getOpcode().getOpcodeString().Substring(18)
+                    );
             }
-            return i;
         }
 
         private void InstructionDecode(int i, int c)
@@ -812,3 +818,72 @@ namespace COMPARC_Project_2
     }
 }
 
+/*                if (i < this.instruction.Count)
+                {
+                    if (this.instruction[i].getInstructionType() == "Branch Instruction")
+                    {
+                        temp = i;
+
+                        i = this.InstructionFetch(i, c);
+                        this.InstructionDecode(i, c);
+                        this.Execution(i, c);
+                        addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                        this.WriteBack(c);
+          
+                        i++;
+                        c++;
+                        this.cycle.Add(new Cycle());
+                        this.numCycles++;
+                        i = this.InstructionFetch(i, c);
+                        this.InstructionDecode(i, c);
+                        this.Execution(i, c);
+                        addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                        this.WriteBack(c);
+
+                        i++;
+                        c++;
+                        this.cycle.Add(new Cycle());
+                        this.numCycles++;
+                        i = this.InstructionFetch(i, c);
+                        this.Execution(i, c);
+                        addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                        this.WriteBack(c);
+                        
+                        i++;
+                        c++;
+                        this.cycle.Add(new Cycle());
+                        this.numCycles++;
+                        i = this.InstructionFetch(i, c);
+                        addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                        this.WriteBack(c);
+                        
+                        i++;
+                        c++;
+                        this.cycle.Add(new Cycle());
+                        this.numCycles++;
+                        i = this.InstructionFetch(i, c);
+                        this.WriteBack(c);
+
+                        //i = temp;
+                    }
+                    else
+                    {
+                        i = this.InstructionFetch(i, c);                                 //i gets the instrucion array of the next instruction
+                        this.InstructionDecode(i, c);
+                        this.Execution(i, c);
+                        addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;                //break if out of address range
+                        this.WriteBack(c);
+                    }
+                }
+                else
+                {
+                    i = this.InstructionFetch(i, c);                                 //i gets the instrucion array of the next instruction
+                    this.InstructionDecode(i, c);
+                    this.Execution(i, c);
+                    addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;                //break if out of address range
+                    this.WriteBack(c);
+                }
+                i++;
+                c++;
+            } while (i < totalCycles);
+*/
