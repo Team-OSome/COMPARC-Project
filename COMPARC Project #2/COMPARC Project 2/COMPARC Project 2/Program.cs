@@ -612,7 +612,6 @@ namespace COMPARC_Project_2
                         this.WriteBack(c);
 
                         i = temp;
-
                     }
                     else
                     {
@@ -631,7 +630,6 @@ namespace COMPARC_Project_2
                     addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;                //break if out of address range
                     this.WriteBack(c);
                 }
-                
                 i++;
                 c++;
             } while (i < totalCycles);
@@ -667,7 +665,7 @@ namespace COMPARC_Project_2
             }
             else if (i >= this.instruction.Count)       //If last instruction there is no more instructions to fetch
             {
-                this.cycle[c].setInstructionFetch("", "", this.cycle[c - 1].EXMEM_instructionType, this.cycle[c - 1].EXMEM_ALUOutput, "", "", "", "", "", "", "", "");
+                this.cycle[c].setInstructionFetch("","","","","","","","","","","","");
             }
             else
             {
@@ -686,7 +684,7 @@ namespace COMPARC_Project_2
                 }
                     if (i >= this.instruction.Count)       //If last instruction there is no more instructions to fetch
                     {
-                        this.cycle[c].setInstructionFetch("", "", this.cycle[c - 1].EXMEM_instructionType, this.cycle[c - 1].EXMEM_ALUOutput, "", "", "", "", "", "", "", "");
+                        this.cycle[c].setInstructionFetch("", "", "", "", "", "", "", "", "", "", "", "");
                     }
                     else
                     {
