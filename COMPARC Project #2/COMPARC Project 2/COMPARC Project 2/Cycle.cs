@@ -10,7 +10,6 @@ namespace COMPARC_Project_2
     {
         #region variables
 
-        
         public Boolean IFID { get; private set; }
         public String IFID_IR { get; private set; }
         public String IFID_NPC { get; private set; }
@@ -18,11 +17,6 @@ namespace COMPARC_Project_2
         public String IFID_instruction { get; private set; }
         public String IFID_instructionType { get; private set; }
         public String IFID_instructionLine { get; private set; }
-        public string IFID_rs { get; private set; }
-        public string IFID_rd { get; private set; }
-        public string IFID_rt { get; private set; }
-        public string IFID_bse { get; private set; }
-        public string IFID_imm { get; private set; }
 
         public Boolean IDEX { get; private set; }
         public String IDEX_A { get; private set; }
@@ -86,13 +80,13 @@ namespace COMPARC_Project_2
             this.WB_Rn = null;        
         }
 
-        public void setInstructionFetch(string opcodeString, string programCtr, string EXMEM_instructionType, string EXMEM_ALUOutput, string instruction, string instructionType, string instructionLine, string rs, string rt, string rd, string bse, string imm)
+        public void setInstructionFetch(string opcode, string programCtr, string EXMEM_instructionType, string cond, string EXMEM_ALUOutput, string instruction, string instructionType, string instructionLine)
         {
             if (instruction != "")  //  if Instruction Fetched is not null -> pipeline map IF is true
             {
                 this.IFID = true;
             }
-            this.IFID_IR = opcodeString;
+            this.IFID_IR = opcode;
             if (programCtr != "")
             {
                 if (EXMEM_instructionType == "Branch Instruction")
@@ -112,11 +106,6 @@ namespace COMPARC_Project_2
             this.IFID_instruction = instruction;
             this.IFID_instructionType = instructionType;
             this.IFID_instructionLine = instructionLine;
-            this.IFID_rs = rs;
-            this.IFID_rt = rt;
-            this.IFID_rd = rd;
-            this.IFID_bse = bse;
-            this.IFID_imm = imm;
         }
 
         public void setInstructionDecode(string rs, string rt, string rd, string bse, string IMM, string IFID_IR, string IFID_NPC, string instruction, string instructionType, string instructionLine)
@@ -198,6 +187,48 @@ namespace COMPARC_Project_2
             this.IDEX_instructionType = instructionType;
             this.IDEX_instructionLine = instructionLine;
         }
+        
+        /*
+        public void setInstructionDecode(string A, string B, string IMM, string IFID_IR, string IFID_NPC, string instruction, string instructionType)
+        {
+            char signextend;
+            this.IDEX_A = A;   // [IF/ID.IR 21..25]
+            this.IDEX_B = B;   // [IF/ID.IR 16..20]
+
+            if (IFID_IR != "")  //  if Instruction Fetched is not null -> pipeline map IF is true
+            {
+                this.IDEX = true;
+            }
+
+            if (IMM != "")
+            {
+                this.IDEX_IMM = IMM.Replace(" ", "");       //  remove white spaces
+                signextend = this.IDEX_IMM[0];              //  get sign extend value
+                String text = this.IDEX_IMM;                // convert to hex
+                String val = Convert.ToInt64(text, 2).ToString("X").ToUpper();
+                text = "";
+                for (int i = val.Length; i < 4; i++)
+                {
+                    text += "0";
+                }
+                text += val;
+                this.IDEX_IMM = text;
+                if (signextend == '1')
+                {
+                    this.IDEX_IMM = "FFFFFFFFFFFF" + this.IDEX_IMM;
+                }
+                else
+                {
+                    this.IDEX_IMM = "000000000000" + this.IDEX_IMM;
+                }
+            }
+
+            this.IDEX_IR = IFID_IR;
+            this.IDEX_NPC = IFID_NPC;
+            this.IDEX_instruction = instruction;
+            this.IDEX_instructionType = instructionType;
+        }
+        */
 
         public void setExecution(string IDEX_A, string IDEX_B, string IDEX_IMM, string IDEX_IR, string IDEX_NPC, string instruction, string instructionType, string instructionLine)
         {
@@ -211,7 +242,7 @@ namespace COMPARC_Project_2
             #region Register-Register ALU Instruction
             if (instructionType == "Register-Register ALU Instruction")
             {
-                //Console.WriteLine("Register-Register ALU Instruction");
+                Console.WriteLine("Register-Register ALU Instruction");
                 if (instruction == "DSUBU")
                 {
                     this.EXMEM_ALUOutput = (Convert.ToInt64(IDEX_A, 16) - Convert.ToInt64(IDEX_B, 16)).ToString("X");
@@ -272,7 +303,7 @@ namespace COMPARC_Project_2
             #region Register-Immediate ALU Instruction
             else if (instructionType == "Register-Immediate ALU Instruction" || instructionType == "Load Instruction" || instructionType == "Store Instruction")
             {
-                //Console.WriteLine("Register-Immediate ALU Instruction || instructionType == Load Instruction || instructionType == Store Instruction");
+                Console.WriteLine("Register-Immediate ALU Instruction || instructionType == Load Instruction || instructionType == Store Instruction");
                 //Console.WriteLine((Convert.ToInt64(IDEX_A, 16).ToString("X")) + " + " + (Convert.ToInt64(IDEX_IMM, 16)).ToString("X"));
                     this.EXMEM_ALUOutput = (Convert.ToInt64(IDEX_A, 16) + Convert.ToInt64(IDEX_IMM, 16)).ToString("X");
                     while (this.EXMEM_ALUOutput.Length < 16)
@@ -287,8 +318,8 @@ namespace COMPARC_Project_2
             {
                 if (instruction == "BC")
                 {
-                    //Console.WriteLine("Branch Instruction");
-                    //Console.WriteLine(IDEX_NPC + " + " + (Convert.ToInt64(IDEX_IMM, 16) * 4).ToString("X"));
+                    Console.WriteLine("Branch Instruction");
+                    Console.WriteLine(IDEX_NPC + " + " + (Convert.ToInt64(IDEX_IMM, 16) * 4).ToString("X"));
                     this.EXMEM_ALUOutput = ((Convert.ToInt64(IDEX_NPC, 16) + Convert.ToInt64(IDEX_IMM, 16) * 4)).ToString("X");
 
                     while (this.EXMEM_ALUOutput.Length < 16)
@@ -299,7 +330,7 @@ namespace COMPARC_Project_2
                 }
                 else if (instruction == "BNEC")
                 {
-                    //Console.WriteLine("BNEC Instruction");
+                    Console.WriteLine("BNEC Instruction");
                     
                     if (IDEX_A != IDEX_B)
                     {
@@ -308,16 +339,16 @@ namespace COMPARC_Project_2
 
                         if (temp[0] == 'F')
                         {
-                            //Console.WriteLine("BNEC Instruction negative offset");
-                            //Console.WriteLine(IDEX_NPC + " - " + (Convert.ToInt64(hextToDecSigned(IDEX_IMM), 2) * 4).ToString("X"));
+                            Console.WriteLine("BNEC Instruction negative offset");
+                            Console.WriteLine(IDEX_NPC + " - " + (Convert.ToInt64(hextToDecSigned(IDEX_IMM), 2) * 4).ToString("X"));
                             this.EXMEM_ALUOutput = ((Convert.ToInt64(IDEX_NPC, 16) - Convert.ToInt64(hextToDecSigned(IDEX_IMM), 2) * 4)).ToString("X");
-                            //Console.WriteLine("OUTPUT= " + this.EXMEM_ALUOutput);
-                            //Console.WriteLine(IDEX_A + "!=" + IDEX_B);
+                            Console.WriteLine("OUTPUT= " + this.EXMEM_ALUOutput);
+                            Console.WriteLine(IDEX_A + "!=" + IDEX_B);
                         }
 
                         else
                         {
-                            //Console.WriteLine(IDEX_NPC + " + " + (Convert.ToInt64(IDEX_IMM, 16) * 4).ToString("X"));
+                            Console.WriteLine(IDEX_NPC + " + " + (Convert.ToInt64(IDEX_IMM, 16) * 4).ToString("X"));
                             this.EXMEM_ALUOutput = ((Convert.ToInt64(IDEX_NPC, 16) + Convert.ToInt64(IDEX_IMM, 16) * 4)).ToString("X");
                         }
                         
@@ -403,46 +434,3 @@ namespace COMPARC_Project_2
 
     }
 }
-
-
-/*
-public void setInstructionDecode(string A, string B, string IMM, string IFID_IR, string IFID_NPC, string instruction, string instructionType)
-{
-    char signextend;
-    this.IDEX_A = A;   // [IF/ID.IR 21..25]
-    this.IDEX_B = B;   // [IF/ID.IR 16..20]
-
-    if (IFID_IR != "")  //  if Instruction Fetched is not null -> pipeline map IF is true
-    {
-        this.IDEX = true;
-    }
-
-    if (IMM != "")
-    {
-        this.IDEX_IMM = IMM.Replace(" ", "");       //  remove white spaces
-        signextend = this.IDEX_IMM[0];              //  get sign extend value
-        String text = this.IDEX_IMM;                // convert to hex
-        String val = Convert.ToInt64(text, 2).ToString("X").ToUpper();
-        text = "";
-        for (int i = val.Length; i < 4; i++)
-        {
-            text += "0";
-        }
-        text += val;
-        this.IDEX_IMM = text;
-        if (signextend == '1')
-        {
-            this.IDEX_IMM = "FFFFFFFFFFFF" + this.IDEX_IMM;
-        }
-        else
-        {
-            this.IDEX_IMM = "000000000000" + this.IDEX_IMM;
-        }
-    }
-
-    this.IDEX_IR = IFID_IR;
-    this.IDEX_NPC = IFID_NPC;
-    this.IDEX_instruction = instruction;
-    this.IDEX_instructionType = instructionType;
-}
-*/

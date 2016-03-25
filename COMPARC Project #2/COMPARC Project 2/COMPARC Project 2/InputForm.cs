@@ -68,9 +68,7 @@ namespace COMPARC_Project_2
 
                 this.refreshRegisters();
                 this.refreshMemory();
-
                 this.displayInternalPipelineRegisters(this.viewCycle);
-
                 gotoCycleTB.Text = (viewCycle + 1).ToString();
                 gotoCycleBtn.Visible = true;
                 gotoCycleTB.Visible = true;
@@ -410,11 +408,10 @@ namespace COMPARC_Project_2
                 Console.WriteLine("");
             }
         }
-        
+        /*
         private void displayPipelineMap()       //displays pipeline map to console
         {
             int row, currRow = 0;
-            bool isFirst;
             pipelineMapGridView.Rows.Clear();
             pipelineMapGridView.Columns.Clear();          
             pipelineMapGridView.Columns.Add("Instruction", "Instruction");
@@ -428,71 +425,43 @@ namespace COMPARC_Project_2
             {
                 pipelineMapGridView.Columns.Add("Cycle " + (i + 1), "Cycle " + (i + 1));
 
-                isFirst = true;
                 row = currRow;
 
                 if (this.program.getWB(i))
                 {
                     pipelineMapGridView.Rows[row].Cells[i + 1].Value = "WB";
-                    isFirst = false;
-
-                    currRow++;
-
-                    if (this.program.isInstructionBranch(row))
-                    {
-                        currRow = Convert.ToInt16(this.program.getIFID_NPC(i - 1).ToString(), 16)/4;
-                        row = currRow;
-                        isFirst = true;
-                    }                 
-                }
-
-                if (!isFirst)
-                {
                     row++;
+                    currRow++;
                 }
 
                 if (this.program.getMEMWB(i))
                 {
                     pipelineMapGridView.Rows[row].Cells[i + 1].Value = "MEM";
-                    isFirst = false;
-                }
-
-                if (!isFirst)
-                {
                     row++;
                 }
 
                 if (this.program.getEXMEM(i))
                 {
                     pipelineMapGridView.Rows[row].Cells[i + 1].Value = "EX";
-                    isFirst = false;
-                }
-
-                if (!isFirst)
-                {
                     row++;
                 }
 
                 if (this.program.getIDEX(i) )
                 {
                     pipelineMapGridView.Rows[row].Cells[i + 1].Value = "ID";
-                    isFirst = false;
-                }
-
-                if (!isFirst)
-                {
                     row++;
                 }
 
                 if (this.program.getIFID(i))
                 {
-                    pipelineMapGridView.Rows[row].Cells[i + 1].Value = "IF";                   
+                    pipelineMapGridView.Rows[row].Cells[i + 1].Value = "IF";
+                    row++;
                 }
 
             }
 
         }
-        
+        */
         private String getCycleVaue(int cycle)
         {
             String value = "";
