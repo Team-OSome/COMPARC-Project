@@ -492,6 +492,8 @@ namespace COMPARC_Project_2
 
         #endregion
 
+        #region Pipeline
+
         private void pipeline()
         {
             int i = 0;
@@ -806,17 +808,25 @@ namespace COMPARC_Project_2
             }
         }
 
+        #endregion
+
         #region Data Hazards
 
         private void setDataHazard(int c, int rs, int rt, int rd, int bse)
         {
             if(this.cycle[c - 1].IFID_instructionType == "Register-Register ALU Instruction")
             {
-                this.registers[rd].busy = true;
+                if (rd != 0)
+                {
+                    this.registers[rd].busy = true;
+                } 
             }
             else if (this.cycle[c - 1].IFID_instructionType == "Register-Immediate ALU Instruction" || this.cycle[c - 1].IFID_instructionType == "Load Instruction")
             {
-                this.registers[rt].busy = true;
+                if (rt != 0)
+                {
+                    this.registers[rt].busy = true;
+                }
             }
         }
 
