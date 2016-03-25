@@ -95,19 +95,14 @@ namespace COMPARC_Project_2
             this.IFID_IR = opcodeString;
             if (programCtr != "")
             {
+                this.IFID_NPC = ((Convert.ToInt32(programCtr) + 1) * 4).ToString("X");
+            } 
                 if (EXMEM_instructionType == "Branch Instruction")
                 {
                     this.IFID_NPC = EXMEM_ALUOutput;
                 }
-                else
-                {
-                    this.IFID_NPC = ((Convert.ToInt32(programCtr) + 1) * 4).ToString("X");
-                } 
-            }
-            else
-            {
-                this.IFID_NPC = "";
-            }
+                
+
             this.IFID_PC = this.IFID_NPC;
             this.IFID_instruction = instruction;
             this.IFID_instructionType = instructionType;

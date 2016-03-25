@@ -611,7 +611,7 @@ namespace COMPARC_Project_2
                         i = this.InstructionFetch(i, c);
                         this.WriteBack(c);
 
-                        i = temp;
+                        //i = temp;
                     }
                     else
                     {
@@ -644,6 +644,8 @@ namespace COMPARC_Project_2
 
         }
 
+     
+
         private int InstructionFetch(int i, int c)      // Returns the instruction array number of the next instruction
         {
             if (i == 0)     //If first instruction there is no previous cycle to get EXMEM_instructionType and EXMEM_ALUOutput
@@ -665,7 +667,7 @@ namespace COMPARC_Project_2
             }
             else if (i >= this.instruction.Count)       //If last instruction there is no more instructions to fetch
             {
-                this.cycle[c].setInstructionFetch("","","","","","","","","","","","");
+                this.cycle[c].setInstructionFetch("", "", this.cycle[c - 1].EXMEM_instructionType, this.cycle[c - 1].EXMEM_ALUOutput, "", "", "", "", "", "", "", "");
             }
             else
             {
