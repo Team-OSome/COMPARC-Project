@@ -387,67 +387,6 @@ namespace COMPARC_Project_2
                 return false;
         }
 
-        private Boolean checkDataHazard(Instruction currInstruction, Instruction prevInstruction)
-        {
-            if (prevInstruction.getInstruction() == "BNEC" || prevInstruction.getInstruction() == "BC")
-            {
-                return false;
-            }
-            // I to I
-            if (prevInstruction.getOpcode().getOpcodeType() == 'I' && currInstruction.getOpcode().getOpcodeType() == 'I')
-            {
-                // I to load/store
-                if (prevInstruction.getOpcode().rtO == currInstruction.getOpcode().bseO)
-                {
-                    return true;
-                }
-
-                //I to not load/store
-                if (prevInstruction.getOpcode().rtO == currInstruction.getOpcode().rsO)
-                {
-                    return true;
-                }
-            }
-
-            // R to R
-            if (prevInstruction.getOpcode().getOpcodeType() == 'R' && currInstruction.getOpcode().getOpcodeType() == 'R')
-            {
-                //  rd = rs || rd = rt
-                if (prevInstruction.getOpcode().rdO == currInstruction.getOpcode().rsO || prevInstruction.getOpcode().rdO == currInstruction.getOpcode().rtO)
-                {
-                    return true;
-                }
-            }
-
-            // I to R
-            if (prevInstruction.getOpcode().getOpcodeType() == 'I' && currInstruction.getOpcode().getOpcodeType() == 'R')
-            {
-                if (prevInstruction.getOpcode().rtO == currInstruction.getOpcode().rsO || prevInstruction.getOpcode().rtO == currInstruction.getOpcode().rtO)
-                {
-                    return true;
-                }
-            }
-
-            // R to I
-            if (prevInstruction.getOpcode().getOpcodeType() == 'I' && currInstruction.getOpcode().getOpcodeType() == 'R')
-            {
-                // R to load/store
-                if (prevInstruction.getOpcode().rdO == currInstruction.getOpcode().bseO)
-                {
-                    return true;
-                }
-
-                // R to not load/store
-                if (prevInstruction.getOpcode().rdO == currInstruction.getOpcode().rsO)
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-
         #endregion
 
         #region showOpcodes
@@ -557,7 +496,7 @@ namespace COMPARC_Project_2
         {
             int i = 0;
             int c = 0;
-            int temp = 0;
+            int stall = 0;
             Boolean addressRange = true ;
             int totalCycles = this.instruction.Count + 3;
             do
@@ -565,6 +504,7 @@ namespace COMPARC_Project_2
                 this.cycle.Add(new Cycle());
                 this.numCycles++;
 
+                stall = i;
                 i = getInstruction(i, c);
 
                 if (i < this.instruction.Count)
@@ -615,31 +555,52 @@ namespace COMPARC_Project_2
                         this.numCycles++;
                         this.InstructionFetch(i, c);
                         this.WriteBack(c);
+
+                        c++;
                     }
                     #endregion
                     else
                     {
                         this.InstructionFetch(i, c);
-                        Console.WriteLine("NPC = " + this.cycle[c].IFID_NPC);
                         this.InstructionDecode(i, c);
                         this.Execution(i, c);
                         addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
                         this.WriteBack(c);
+                        c++;
                     }
                 }
                 else
                 {
                     this.InstructionFetch(i, c);
-                    Console.WriteLine("NPC = " + this.cycle[c].IFID_NPC);
-                    this.InstructionDecode(i, c);
-                    this.Execution(i, c);
-                    addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
-                    this.WriteBack(c);
+                    if(this.InstructionDecode(i, c))
+                    {
+                        i = stall;
+                        do
+                        {
+                            this.InstructionFetch(i, c);
+                            this.InstructionDecode(i, c);
+                            this.Execution(i, c);
+                            addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                            this.WriteBack(c);
+                            c++;
+
+                            this.cycle.Add(new Cycle());
+                            this.numCycles++;
+
+                        } while (this.InstructionDecode(i, c));
+
+                        this.cycle.RemoveAt(this.cycle.Count - 1);
+                        this.numCycles--;
+                    }
+                    else
+                    {
+                        this.Execution(i, c);
+                        addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                        this.WriteBack(c);
+                        c++;
+                    }
                 }
-
                 
-
-                c++;
             } while (i < totalCycles);
 
             if (addressRange == false)                  //break if out of address range
@@ -686,10 +647,10 @@ namespace COMPARC_Project_2
                     this.instruction[i].getInstruction(),
                     this.instruction[i].getInstructionType(),
                     this.instruction[i].getInstructionLine(),
-                    this.registers[Convert.ToInt32(this.instruction[i].getOpcode().rsO, 2)].getValue(),
-                    this.registers[Convert.ToInt32(this.instruction[i].getOpcode().rtO, 2)].getValue(),
-                    this.registers[Convert.ToInt32(this.instruction[i].getOpcode().rdO, 2)].getValue(),
-                    this.registers[Convert.ToInt32(this.instruction[i].getOpcode().bseO, 2)].getValue(),
+                    Convert.ToInt32(this.instruction[i].getOpcode().rsO, 2).ToString(),
+                    Convert.ToInt32(this.instruction[i].getOpcode().rtO, 2).ToString(),
+                    Convert.ToInt32(this.instruction[i].getOpcode().rdO, 2).ToString(),
+                    Convert.ToInt32(this.instruction[i].getOpcode().bseO, 2).ToString(),
                     this.instruction[i].getOpcode().getOpcodeString().Substring(18)
                     );
             }
@@ -707,16 +668,16 @@ namespace COMPARC_Project_2
                     this.instruction[i].getInstruction(),
                     this.instruction[i].getInstructionType(),
                     this.instruction[i].getInstructionLine(),
-                    this.registers[Convert.ToInt32(this.instruction[i].getOpcode().rsO, 2)].getValue(),
-                    this.registers[Convert.ToInt32(this.instruction[i].getOpcode().rtO, 2)].getValue(),
-                    this.registers[Convert.ToInt32(this.instruction[i].getOpcode().rdO, 2)].getValue(),
-                    this.registers[Convert.ToInt32(this.instruction[i].getOpcode().bseO, 2)].getValue(),
+                    Convert.ToInt32(this.instruction[i].getOpcode().rsO, 2).ToString(),
+                    Convert.ToInt32(this.instruction[i].getOpcode().rtO, 2).ToString(),
+                    Convert.ToInt32(this.instruction[i].getOpcode().rdO, 2).ToString(),
+                    Convert.ToInt32(this.instruction[i].getOpcode().bseO, 2).ToString(),
                     this.instruction[i].getOpcode().getOpcodeString().Substring(18)
                     );
             }
         }
 
-        private void InstructionDecode(int i, int c)
+        private Boolean InstructionDecode(int i, int c)
         {
             if (c == 0)
             {
@@ -724,11 +685,30 @@ namespace COMPARC_Project_2
             }
             else
             {
-                this.cycle[c].setInstructionDecode(
-                    this.cycle[c - 1].IFID_rs,
-                    this.cycle[c - 1].IFID_rt,
-                    this.cycle[c - 1].IFID_rd,
-                    this.cycle[c - 1].IFID_bse,
+
+                if (i >= this.instruction.Count + 1)
+                {
+                    this.cycle[c].setInstructionDecode("", "", "", "", "", "", "", "", "", "");
+                }
+                else
+                {
+                    if(this.checkDataHazard(
+                        c,
+                        Convert.ToInt32(this.cycle[c - 1].IFID_rs),
+                        Convert.ToInt32(this.cycle[c - 1].IFID_rt),
+                        Convert.ToInt32(this.cycle[c - 1].IFID_rd),
+                        Convert.ToInt32(this.cycle[c - 1].IFID_bse)
+                        ))
+                    {
+                        this.cycle[c].setInstructionDecode("", "", "", "", "", "", "", "", "", "");
+                        return true;
+                    }
+
+                    this.cycle[c].setInstructionDecode(
+                    this.registers[Convert.ToInt32(this.cycle[c - 1].IFID_rs)].getValue(),
+                    this.registers[Convert.ToInt32(this.cycle[c - 1].IFID_rt)].getValue(),
+                    this.registers[Convert.ToInt32(this.cycle[c - 1].IFID_rd)].getValue(),
+                    this.registers[Convert.ToInt32(this.cycle[c - 1].IFID_bse)].getValue(),
                     this.cycle[c - 1].IFID_imm,
                     this.cycle[c - 1].IFID_IR,
                     this.cycle[c - 1].IFID_NPC,
@@ -736,8 +716,19 @@ namespace COMPARC_Project_2
                     this.cycle[c - 1].IFID_instructionType,
                     this.cycle[c - 1].IFID_instructionLine
                     );
+
+                    this.setDataHazard(
+                        c,
+                        Convert.ToInt32(this.cycle[c - 1].IFID_rs),
+                        Convert.ToInt32(this.cycle[c - 1].IFID_rt),
+                        Convert.ToInt32(this.cycle[c - 1].IFID_rd),
+                        Convert.ToInt32(this.cycle[c - 1].IFID_bse)
+                        );
+
+                }
+                
             }
-            
+            return false;
         }
 
         private void Execution(int i, int c)
@@ -797,93 +788,85 @@ namespace COMPARC_Project_2
                 if (this.cycle[i - 1].MEMWB_instructionType == "Register-Register ALU Instruction")
                 {
                     this.registers[Convert.ToInt32(this.cycle[i - 1].MEMWB_IR.Substring(19, 5), 2)].setRegisterValue(this.cycle[i - 1].MEMWB_ALUOutput);
+                    this.clearDataHazard(Convert.ToInt32(this.cycle[i - 1].MEMWB_IR.Substring(19, 5), 2));
                 }
                 else if (this.cycle[i - 1].MEMWB_instructionType == "Register-Immediate ALU Instruction")
                 {
                     if (this.cycle[i - 1].MEMWB_instruction == "DADDIU")
                     {
                         this.registers[Convert.ToInt32(this.cycle[i - 1].MEMWB_IR.Substring(13, 5), 2)].setRegisterValue(this.cycle[i - 1].MEMWB_ALUOutput);
+                        this.clearDataHazard(Convert.ToInt32(this.cycle[i - 1].MEMWB_IR.Substring(13, 5), 2));
                     }
                 }
                 else if (this.cycle[i - 1].MEMWB_instructionType == "Load Instruction")
                 {
                     this.registers[Convert.ToInt32(this.cycle[i - 1].MEMWB_IR.Substring(13, 5), 2)].setRegisterValue(this.cycle[i - 1].MEMWB_LMD);
-                }
-                else
-                {
-
+                    this.clearDataHazard(Convert.ToInt32(this.cycle[i - 1].MEMWB_IR.Substring(13, 5), 2));
                 }
             }
         }
+
+        #region Data Hazards
+
+        private void setDataHazard(int c, int rs, int rt, int rd, int bse)
+        {
+            if(this.cycle[c - 1].IFID_instructionType == "Register-Register ALU Instruction")
+            {
+                this.registers[rd].busy = true;
+            }
+            else if (this.cycle[c - 1].IFID_instructionType == "Register-Immediate ALU Instruction" || this.cycle[c - 1].IFID_instructionType == "Load Instruction")
+            {
+                this.registers[rt].busy = true;
+            }
+        }
+
+        private void clearDataHazard(int i)
+        {
+            this.registers[i].busy = false;
+        }
+
+        private Boolean checkDataHazard(int c, int rs, int rt, int rd, int bse)
+        {
+            if (this.cycle[c - 1].IFID_instructionType == "Store Instruction")
+            {
+                if (this.registers[rt].busy)
+                {
+                    Console.WriteLine("Stall because register " + rt.ToString() + " is busy.");
+                    return true;   
+                }
+            }
+            else if (this.cycle[c - 1].IFID_instructionType == "Register-Register ALU Instruction")
+            {
+                if (this.registers[rs].busy || this.registers[rt].busy )
+                {
+                    Console.WriteLine("Stall because register " + rs.ToString() + " or register " + rt.ToString() + " is busy.");
+                    return true;   
+                }
+            }
+            else if (this.cycle[c - 1].IFID_instructionType == "Register-Immediate ALU Instruction")
+            {
+                if (this.registers[rs].busy)
+                {
+                    Console.WriteLine("Stall because register " + rs.ToString() + " is busy.");
+                    return true;   
+                }
+            }
+            else if (this.cycle[c - 1].IFID_instructionType == "Branch Instruction")
+            {
+                if (this.cycle[c - 1].IFID_instruction == "BNEC")
+                {
+                    if (this.registers[rs].busy || this.registers[rt].busy)
+                    {
+                        Console.WriteLine("Stall because register " + rs.ToString() + " or register " + rt.ToString() + " is busy.");
+                        return true;
+                    }
+                }
+
+            }
+
+            return false;
+        }
+
+        #endregion
     }
 }
-
-/*                if (i < this.instruction.Count)
-                {
-                    if (this.instruction[i].getInstructionType() == "Branch Instruction")
-                    {
-                        temp = i;
-
-                        i = this.InstructionFetch(i, c);
-                        this.InstructionDecode(i, c);
-                        this.Execution(i, c);
-                        addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
-                        this.WriteBack(c);
-          
-                        i++;
-                        c++;
-                        this.cycle.Add(new Cycle());
-                        this.numCycles++;
-                        i = this.InstructionFetch(i, c);
-                        this.InstructionDecode(i, c);
-                        this.Execution(i, c);
-                        addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
-                        this.WriteBack(c);
-
-                        i++;
-                        c++;
-                        this.cycle.Add(new Cycle());
-                        this.numCycles++;
-                        i = this.InstructionFetch(i, c);
-                        this.Execution(i, c);
-                        addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
-                        this.WriteBack(c);
-                        
-                        i++;
-                        c++;
-                        this.cycle.Add(new Cycle());
-                        this.numCycles++;
-                        i = this.InstructionFetch(i, c);
-                        addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
-                        this.WriteBack(c);
-                        
-                        i++;
-                        c++;
-                        this.cycle.Add(new Cycle());
-                        this.numCycles++;
-                        i = this.InstructionFetch(i, c);
-                        this.WriteBack(c);
-
-                        //i = temp;
-                    }
-                    else
-                    {
-                        i = this.InstructionFetch(i, c);                                 //i gets the instrucion array of the next instruction
-                        this.InstructionDecode(i, c);
-                        this.Execution(i, c);
-                        addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;                //break if out of address range
-                        this.WriteBack(c);
-                    }
-                }
-                else
-                {
-                    i = this.InstructionFetch(i, c);                                 //i gets the instrucion array of the next instruction
-                    this.InstructionDecode(i, c);
-                    this.Execution(i, c);
-                    addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;                //break if out of address range
-                    this.WriteBack(c);
-                }
-                i++;
-                c++;
-            } while (i < totalCycles);
-*/

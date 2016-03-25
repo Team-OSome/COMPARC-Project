@@ -10,11 +10,13 @@ namespace COMPARC_Project_2
     {
         private String registerName;
         private String value;
+        public Boolean busy { get; set; }
 
         public Register(String registerName, String value)
         {
             this.registerName = registerName;
             this.value = value;
+            this.busy = false;
         }
 
         public void setRegisterValue(String value)
