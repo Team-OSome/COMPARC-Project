@@ -64,7 +64,7 @@ namespace COMPARC_Project_2
                 this.viewCycle = 0;
 
                 this.displayPipelineMapToConsole();
-                //this.displayPipelineMap();
+                this.displayPipelineMap();
 
                 this.refreshRegisters();
                 this.refreshMemory();
@@ -413,13 +413,16 @@ namespace COMPARC_Project_2
         
         private void displayPipelineMap()       //displays pipeline map to console
         {
-            int row, currRow = 0;
+            int row, 
+                currRow = 0, 
+                instructionLength = this.program.getInstructionLength();
             bool isFirst;
+
             pipelineMapGridView.Rows.Clear();
-            pipelineMapGridView.Columns.Clear();          
+            pipelineMapGridView.Columns.Clear();         
             pipelineMapGridView.Columns.Add("Instruction", "Instruction");
 
-            for (int i = 0; i < this.program.getInstructionLength(); i++)
+            for (int i = 0; i < instructionLength; i++)
             {
                 pipelineMapGridView.Rows.Add(this.program.getInstructionLine(i));
             }
@@ -446,7 +449,7 @@ namespace COMPARC_Project_2
                     }                 
                 }
 
-                if (!isFirst)
+                if (!isFirst && row < instructionLength - 1)
                 {
                     row++;
                 }
@@ -457,7 +460,7 @@ namespace COMPARC_Project_2
                     isFirst = false;
                 }
 
-                if (!isFirst)
+                if (!isFirst && row < instructionLength - 1)
                 {
                     row++;
                 }
@@ -468,7 +471,7 @@ namespace COMPARC_Project_2
                     isFirst = false;
                 }
 
-                if (!isFirst)
+                if (!isFirst && row < instructionLength - 1)
                 {
                     row++;
                 }
@@ -479,7 +482,7 @@ namespace COMPARC_Project_2
                     isFirst = false;
                 }
 
-                if (!isFirst)
+                if (!isFirst && row < instructionLength - 1)
                 {
                     row++;
                 }
