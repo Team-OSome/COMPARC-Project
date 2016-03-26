@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace COMPARC_Project_2
 {
@@ -202,7 +203,7 @@ namespace COMPARC_Project_2
             this.IDEX_instructionLine = instructionLine;
         }
 
-        public void setExecution(string IDEX_A, string IDEX_B, string IDEX_IMM, string IDEX_IR, string IDEX_NPC, string instruction, string instructionType, string instructionLine)
+        public Boolean setExecution(string IDEX_A, string IDEX_B, string IDEX_IMM, string IDEX_IR, string IDEX_NPC, string instruction, string instructionType, string instructionLine)
         {
             string temp;
 
@@ -226,6 +227,11 @@ namespace COMPARC_Project_2
                 }
                 else if (instruction == "DDIVU")
                 {
+                    if (Convert.ToInt64(IDEX_B, 16) == 0)
+                    {
+                        MessageBox.Show("Divide by zero error.");
+                        return true;
+                    }
                     this.EXMEM_ALUOutput = (Convert.ToInt64(IDEX_A, 16) / Convert.ToInt64(IDEX_B, 16)).ToString("X");
                     while (this.EXMEM_ALUOutput.Length < 16)
                     {
@@ -235,6 +241,11 @@ namespace COMPARC_Project_2
                 }
                 else if (instruction == "DMODU")
                 {
+                    if (Convert.ToInt64(IDEX_B, 16) == 0)
+                    {
+                        MessageBox.Show("Divide by zero error.");
+                        return true;
+                    }
                     this.EXMEM_ALUOutput = (Convert.ToInt64(IDEX_A, 16) % Convert.ToInt64(IDEX_B, 16)).ToString("X");
                     while (this.EXMEM_ALUOutput.Length < 16)
                     {
@@ -270,6 +281,7 @@ namespace COMPARC_Project_2
                     }
                     this.EXMEM_Cond = "0";
 	            }
+                
             }
             #endregion
             #region Register-Immediate ALU Instruction
@@ -347,6 +359,7 @@ namespace COMPARC_Project_2
             this.EXMEM_IR = IDEX_IR;
             this.EXMEM_instruction = instruction;
             this.EXMEM_instructionType = instructionType;
+            return false;
         }
 
         public void setMemoryAccess(string EXMEM_IR, string EXMEM_ALUOutput, string LMD, string instruction, string instructionType)

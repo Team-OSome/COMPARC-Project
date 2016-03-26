@@ -511,6 +511,7 @@ namespace COMPARC_Project_2
             int c = 0;
             int stall = 0;
             Boolean addressRange = true ;
+            Boolean executionError = false;
             int totalCycles = this.instruction.Count + 3;
             do
             {
@@ -527,7 +528,7 @@ namespace COMPARC_Project_2
                     {
                         this.InstructionFetch(i, c);
                         this.InstructionDecode(i, c);
-                        this.Execution(i, c);
+                        executionError = this.Execution(i, c); if (executionError == true) break;
                         addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
                         this.WriteBack(c);
 
@@ -538,7 +539,7 @@ namespace COMPARC_Project_2
                         this.numCycles++;
                         this.InstructionFetch(i, c);
                         this.InstructionDecode(i, c);
-                        this.Execution(i, c);
+                        executionError = this.Execution(i, c); if (executionError == true) break;
                         addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
                         this.WriteBack(c);
 
@@ -548,7 +549,7 @@ namespace COMPARC_Project_2
                         this.cycle.Add(new Cycle());
                         this.numCycles++;
                         this.InstructionFetch(i, c);
-                        this.Execution(i, c);
+                        executionError = this.Execution(i, c); if (executionError == true) break;
                         addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
                         this.WriteBack(c);
 
@@ -576,7 +577,7 @@ namespace COMPARC_Project_2
                     {
                         this.InstructionFetch(i, c);
                         this.InstructionDecode(i, c);
-                        this.Execution(i, c);
+                        executionError = this.Execution(i, c); if (executionError == true) break;
                         addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
                         this.WriteBack(c);
                         c++;
@@ -592,7 +593,7 @@ namespace COMPARC_Project_2
                         {
                             this.InstructionFetch(i, c);
                             this.InstructionDecode(i, c);
-                            this.Execution(i, c);
+                            executionError = this.Execution(i, c); if (executionError == true) break;
                             addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
                             this.WriteBack(c);
                             c++;
@@ -607,7 +608,7 @@ namespace COMPARC_Project_2
                     }
                     else
                     {
-                        this.Execution(i, c);
+                        executionError = this.Execution(i, c); if (executionError == true) break;
                         addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
                         this.WriteBack(c);
                         c++;
@@ -616,7 +617,7 @@ namespace COMPARC_Project_2
                 
             } while (i < totalCycles);
 
-            if (addressRange == false)                  //break if out of address range
+            if (addressRange == false || executionError == true)                  //break if out of address range
             {
                 this.cycle = null;
                 this.cycle = new List<Cycle>();
@@ -744,7 +745,7 @@ namespace COMPARC_Project_2
             return false;
         }
 
-        private void Execution(int i, int c)
+        private Boolean Execution(int i, int c)
         {
             if (c == 0)
             {
@@ -752,7 +753,7 @@ namespace COMPARC_Project_2
             }
             else
             {
-                this.cycle[c].setExecution(
+                return this.cycle[c].setExecution(
                     this.cycle[c - 1].IDEX_A,
                     this.cycle[c - 1].IDEX_B,
                     this.cycle[c - 1].IDEX_IMM,
@@ -763,6 +764,7 @@ namespace COMPARC_Project_2
                     this.cycle[c - 1].IDEX_instructionLine
                     );
             }
+            return false;
         }
 
         private Boolean MemoryAccess(int i, int c)
