@@ -234,10 +234,10 @@ namespace COMPARC_Project_2
                         this.rtO = rtO.PadLeft(5, '0');
 
                         this.offsetDec = Int32.Parse(offset, System.Globalization.NumberStyles.HexNumber);
-
+                        Console.WriteLine("About to check if immediate is in range.");
                         if (offsetDec >= 8192 && offsetDec <= 16376) //The value= base + immediate should not surpass memory locations: 2000h-3FFF
                         {                                            //16376 because max offset should be 3FF8-3FFF. if offset is >3FF8, this.valid=false
-
+                            Console.WriteLine("Immediate is in range.");
                             this.offsetO = Convert.ToString(offsetDec, 2);
                             this.offsetO = offsetO.PadLeft(16, '0');
 
@@ -255,6 +255,7 @@ namespace COMPARC_Project_2
 
                         else
                         {
+                            Console.WriteLine("Immediate is out range.");
                             this.valid = false;
                         }
                             

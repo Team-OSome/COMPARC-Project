@@ -114,20 +114,24 @@ namespace COMPARC_Project_2
                // Console.WriteLine("words now start with: " + words[0]);
                 //Console.WriteLine("This instruction has offset: " + this.offset);
             }
-
-            switch (this.instruction)
+            try
             {
-                case "DSUBU" : 
-                case "DDIVU" :
-                case "DMODU" :
-                case "SLT" :
-                case "SELNEZ":  this.rd = words[1]; this.rs = words[2]; this.rt = words[3]; this.offset = null;     this.immediate = null;     this.bse = null;     instructionType = "Register-Register ALU Instruction";    break;
-                case "BNEC":    this.rd = null;     this.rs = words[1]; this.rt = words[2]; this.offset = words[3]; this.immediate = null;     this.bse = null;     instructionType = "Branch Instruction";                   break;
-                case "LD" :     this.rd = null;     this.rs = null;     this.rt = words[1]; this.offset = words[2]; this.immediate = null;     this.bse = words[3]; instructionType = "Load Instruction";                    break;
-                case "SD":      this.rd = null;     this.rs = null;     this.rt = words[1]; this.offset = words[2]; this.immediate = null;     this.bse = words[3]; instructionType = "Store Instruction";                    break;
-                case "DADDIU":  this.rd = null;     this.rs = words[2]; this.rt = words[1]; this.offset = null;     this.immediate = words[3]; this.bse = null;     instructionType = "Register-Immediate ALU Instruction";   break;
-                case "BC":      this.rd = null;     this.rs = null;     this.rt = null;     this.offset = words[1]; this.immediate = null;     this.bse = null;     instructionType = "Branch Instruction";                   break;
-            }
+                switch (this.instruction)
+                {
+                    case "DSUBU":
+                    case "DDIVU":
+                    case "DMODU":
+                    case "SLT":
+                    case "SELNEZ": this.rd = words[1]; this.rs = words[2]; this.rt = words[3]; this.offset = null; this.immediate = null; this.bse = null; instructionType = "Register-Register ALU Instruction"; break;
+                    case "BNEC": this.rd = null; this.rs = words[1]; this.rt = words[2]; this.offset = words[3]; this.immediate = null; this.bse = null; instructionType = "Branch Instruction"; break;
+                    case "LD": this.rd = null; this.rs = null; this.rt = words[1]; this.offset = words[2]; this.immediate = null; this.bse = words[3]; instructionType = "Load Instruction"; break;
+                    case "SD": this.rd = null; this.rs = null; this.rt = words[1]; this.offset = words[2]; this.immediate = null; this.bse = words[3]; instructionType = "Store Instruction"; break;
+                    case "DADDIU": this.rd = null; this.rs = words[2]; this.rt = words[1]; this.offset = null; this.immediate = words[3]; this.bse = null; instructionType = "Register-Immediate ALU Instruction"; break;
+                    case "BC": this.rd = null; this.rs = null; this.rt = null; this.offset = words[1]; this.immediate = null; this.bse = null; instructionType = "Branch Instruction"; break;
+                }
+            }catch(Exception e){
+                Console.WriteLine("Error in Instruction setParameters()");
+            };
 
             
         }
