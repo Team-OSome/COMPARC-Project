@@ -950,7 +950,6 @@
             this.memoryGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             this.memoryGridView.Size = new System.Drawing.Size(193, 239);
             this.memoryGridView.TabIndex = 0;
-            //this.memoryGridView.ColumnHeadersVisible = false;
             // 
             // pipelineMapGridView
             // 

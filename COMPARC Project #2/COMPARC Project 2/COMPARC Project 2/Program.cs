@@ -55,20 +55,23 @@ namespace COMPARC_Project_2
             this.instructionsValid = this.isValid();
             this.registersValid = isRegistersValid();
             this.memoryValid = isMemoryValid();
-            
-            if (this.instructionsValid && hasBranch)
-            {
-                this.setBranchOffsets();
-            }
 
-            for (int i = 0; i < instruction.Count(); i++)
+            if (isProgramValid())
             {
-                this.instruction[i].getOpcode().setHexOpcodeString();
-            }
+                if (this.instructionsValid && hasBranch)
+                {
+                    this.setBranchOffsets();
+                }
+
+                for (int i = 0; i < instruction.Count(); i++)
+                {
+                    this.instruction[i].getOpcode().setHexOpcodeString();
+                }
                 //showAllOpcodes();
                 showAllHexOpcodes();
-            if(this.instructionsValid)
-                this.pipeline();
+                if (this.instructionsValid)
+                    this.pipeline();
+            }              
         }
 
         #region setters/intializers 
@@ -382,6 +385,14 @@ namespace COMPARC_Project_2
         private Boolean isHexValid(String value)
         {
             if (value.All(c => "0123456789ABCDEF".Contains(c)))
+                return true;
+            else
+                return false;
+        }
+
+        private Boolean isProgramValid()
+        {
+            if (this.registersValid && this.memoryValid && this.instructionsValid)
                 return true;
             else
                 return false;
