@@ -576,21 +576,45 @@ namespace COMPARC_Project_2
                     else
                     {
                         this.InstructionFetch(i, c);
-                        this.InstructionDecode(i, c);
-                        executionError = this.Execution(i, c); if (executionError == true) break;
-                        addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
-                        this.WriteBack(c);
-                        c++;
-                    }
+                        if (this.InstructionDecode(i, c))
+                        {
+                            i = stall;
+                            do
+                            {
+                                Console.WriteLine("STALLLLL");
+                                this.InstructionFetch(i, c);
+                                this.InstructionDecode(i, c);
+                                executionError = this.Execution(i, c); if (executionError == true) break;
+                                addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                                this.WriteBack(c);
+                                c++;
+
+                                this.cycle.Add(new Cycle());
+                                this.numCycles++;
+
+                            } while (this.InstructionDecode(i, c));
+
+                            this.cycle.RemoveAt(this.cycle.Count - 1);
+                            this.numCycles--;
+                        }
+                        else
+                        {
+                            executionError = this.Execution(i, c); if (executionError == true) break;
+                            addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                            this.WriteBack(c);
+                            c++;
+                        }
+                    }   
                 }
                 else
                 {
                     this.InstructionFetch(i, c);
                     if(this.InstructionDecode(i, c))
                     {
-                        i = stall;
+                        i = stall; 
                         do
                         {
+                            Console.WriteLine("STALLLLL");
                             this.InstructionFetch(i, c);
                             this.InstructionDecode(i, c);
                             executionError = this.Execution(i, c); if (executionError == true) break;
