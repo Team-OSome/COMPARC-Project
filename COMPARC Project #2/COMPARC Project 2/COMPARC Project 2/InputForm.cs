@@ -64,7 +64,7 @@ namespace COMPARC_Project_2
                 this.viewCycle = 0;
 
                 this.displayPipelineMapToConsole();
-                //this.displayPipelineMap();
+                this.displayPipelineMap();
 
                 this.refreshRegisters();
                 this.refreshMemory();

@@ -560,43 +560,106 @@ namespace COMPARC_Project_2
 
                                 c++;
 
+                                stall = i;
                                 i = getInstruction(i, c);
                                 this.cycle.Add(new Cycle());
                                 this.numCycles++;
                                 this.InstructionFetch(i, c);
-                                this.InstructionDecode(i, c);
-                                executionError = this.Execution(i, c); if (executionError == true) break;
-                                addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
-                                this.WriteBack(c);
+                                if (this.InstructionDecode(i, c))
+                                {
+                                    i = stall;
+                                    do
+                                    {
+                                        Console.WriteLine("STALLLLL");
+                                        this.InstructionFetch(i, c);
+                                        this.InstructionDecode(i, c);
+                                        executionError = this.Execution(i, c); if (executionError == true) break;
+                                        addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                                        this.WriteBack(c);
+                                        c++;
 
-                                c++;
+                                        this.cycle.Add(new Cycle());
+                                        this.numCycles++;
 
-                                i = getInstruction(i, c);
-                                this.cycle.Add(new Cycle());
-                                this.numCycles++;
-                                this.InstructionFetch(i, c);
-                                executionError = this.Execution(i, c); if (executionError == true) break;
-                                addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
-                                this.WriteBack(c);
+                                    } while (this.InstructionDecode(i, c));
 
-                                c++;
+                                    this.cycle.RemoveAt(this.cycle.Count - 1);
+                                    this.numCycles--;
 
-                                i = getInstruction(i, c);
-                                this.cycle.Add(new Cycle());
-                                this.numCycles++;
-                                this.InstructionFetch(i, c);
-                                addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
-                                this.WriteBack(c);
+                                    i = getInstruction(i, c);
+                                    this.cycle.Add(new Cycle());
+                                    this.numCycles++;
+                                    this.InstructionFetch(i, c);
+                                    this.InstructionDecode(i, c);
+                                    executionError = this.Execution(i, c); if (executionError == true) break;
+                                    addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                                    this.WriteBack(c);
 
-                                c++;
+                                    c++;
 
-                                i = getInstruction(i, c);
-                                this.cycle.Add(new Cycle());
-                                this.numCycles++;
-                                this.InstructionFetch(i, c);
-                                this.WriteBack(c);
+                                    i = getInstruction(i, c);
+                                    this.cycle.Add(new Cycle());
+                                    this.numCycles++;
+                                    this.InstructionFetch(i, c);
+                                    executionError = this.Execution(i, c); if (executionError == true) break;
+                                    addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                                    this.WriteBack(c);
 
-                                c++;
+                                    c++;
+
+                                    i = getInstruction(i, c);
+                                    this.cycle.Add(new Cycle());
+                                    this.numCycles++;
+                                    this.InstructionFetch(i, c);
+                                    addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                                    this.WriteBack(c);
+
+                                    c++;
+
+                                    i = getInstruction(i, c);
+                                    this.cycle.Add(new Cycle());
+                                    this.numCycles++;
+                                    this.InstructionFetch(i, c);
+                                    this.WriteBack(c);
+
+                                    c++;
+                                }
+                                else
+                                {
+                                    executionError = this.Execution(i, c); if (executionError == true) break;
+                                    addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                                    this.WriteBack(c);
+                                    c++;
+
+                                    i = getInstruction(i, c);
+                                    this.cycle.Add(new Cycle());
+                                    this.numCycles++;
+                                    this.InstructionFetch(i, c);
+                                    executionError = this.Execution(i, c); if (executionError == true) break;
+                                    addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                                    this.WriteBack(c);
+
+                                    c++;
+
+                                    i = getInstruction(i, c);
+                                    this.cycle.Add(new Cycle());
+                                    this.numCycles++;
+                                    this.InstructionFetch(i, c);
+                                    addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                                    this.WriteBack(c);
+
+                                    c++;
+
+                                    i = getInstruction(i, c);
+                                    this.cycle.Add(new Cycle());
+                                    this.numCycles++;
+                                    this.InstructionFetch(i, c);
+                                    this.WriteBack(c);
+
+                                    c++;
+                                }
+
+                                
                             }
                             #endregion
                             else
