@@ -523,65 +523,14 @@ namespace COMPARC_Project_2
 
                 if (i < this.instruction.Count)
                 {
-                    #region FLUSH
-                    if (this.instruction[i].getInstructionType() == "Branch Instruction")
-                    {
-                        this.InstructionFetch(i, c);
-                        this.InstructionDecode(i, c);
-                        executionError = this.Execution(i, c); if (executionError == true) break;
-                        addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
-                        this.WriteBack(c);
-
-                        c++;
-
-                        i = getInstruction(i, c);
-                        this.cycle.Add(new Cycle());
-                        this.numCycles++;
-                        this.InstructionFetch(i, c);
-                        this.InstructionDecode(i, c);
-                        executionError = this.Execution(i, c); if (executionError == true) break;
-                        addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
-                        this.WriteBack(c);
-
-                        c++;
-
-                        i = getInstruction(i, c);
-                        this.cycle.Add(new Cycle());
-                        this.numCycles++;
-                        this.InstructionFetch(i, c);
-                        executionError = this.Execution(i, c); if (executionError == true) break;
-                        addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
-                        this.WriteBack(c);
-
-                        c++;
-
-                        i = getInstruction(i, c);
-                        this.cycle.Add(new Cycle());
-                        this.numCycles++;
-                        this.InstructionFetch(i, c);
-                        addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
-                        this.WriteBack(c);
-
-                        c++;
-
-                        i = getInstruction(i, c);
-                        this.cycle.Add(new Cycle());
-                        this.numCycles++;
-                        this.InstructionFetch(i, c);
-                        this.WriteBack(c);
-
-                        c++;
-                    }
-                    #endregion
-                    else
-                    {
                         this.InstructionFetch(i, c);
                         if (this.InstructionDecode(i, c))
                         {
+                            Console.WriteLine("Data Hazard 1 Stall @ cycle" + c);
                             i = stall;
                             do
                             {
-                                Console.WriteLine("STALLLLL");
+                                
                                 this.InstructionFetch(i, c);
                                 this.InstructionDecode(i, c);
                                 executionError = this.Execution(i, c); if (executionError == true) break;
@@ -599,12 +548,65 @@ namespace COMPARC_Project_2
                         }
                         else
                         {
-                            executionError = this.Execution(i, c); if (executionError == true) break;
-                            addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
-                            this.WriteBack(c);
-                            c++;
-                        }
-                    }   
+                            #region FLUSH
+                            if (this.instruction[i].getInstructionType() == "Branch Instruction")
+                            {
+                                Console.WriteLine("branch at cycle: " + c);
+                                this.InstructionFetch(i, c);
+                                this.InstructionDecode(i, c);
+                                executionError = this.Execution(i, c); if (executionError == true) break;
+                                addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                                this.WriteBack(c);
+
+                                c++;
+
+                                i = getInstruction(i, c);
+                                this.cycle.Add(new Cycle());
+                                this.numCycles++;
+                                this.InstructionFetch(i, c);
+                                this.InstructionDecode(i, c);
+                                executionError = this.Execution(i, c); if (executionError == true) break;
+                                addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                                this.WriteBack(c);
+
+                                c++;
+
+                                i = getInstruction(i, c);
+                                this.cycle.Add(new Cycle());
+                                this.numCycles++;
+                                this.InstructionFetch(i, c);
+                                executionError = this.Execution(i, c); if (executionError == true) break;
+                                addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                                this.WriteBack(c);
+
+                                c++;
+
+                                i = getInstruction(i, c);
+                                this.cycle.Add(new Cycle());
+                                this.numCycles++;
+                                this.InstructionFetch(i, c);
+                                addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                                this.WriteBack(c);
+
+                                c++;
+
+                                i = getInstruction(i, c);
+                                this.cycle.Add(new Cycle());
+                                this.numCycles++;
+                                this.InstructionFetch(i, c);
+                                this.WriteBack(c);
+
+                                c++;
+                            }
+                            #endregion
+                            else
+                            {
+                                executionError = this.Execution(i, c); if (executionError == true) break;
+                                addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                                this.WriteBack(c);
+                                c++;
+                            }
+                        }   
                 }
                 else
                 {
@@ -738,6 +740,7 @@ namespace COMPARC_Project_2
                         Convert.ToInt32(this.cycle[c - 1].IFID_bse)
                         ))
                     {
+                        Console.WriteLine("id returns true");
                         this.cycle[c].setInstructionDecode("", "", "", "", "", "", "", "", "", "");
                         return true;
                     }
@@ -904,7 +907,7 @@ namespace COMPARC_Project_2
                 {
                     if (this.registers[rs].busy || this.registers[rt].busy)
                     {
-                        Console.WriteLine("Stall because register " + rs.ToString() + " or register " + rt.ToString() + " is busy.");
+                        Console.WriteLine("Branch stall because register " + rs.ToString() + " or register " + rt.ToString() + " is busy.");
                         return true;
                     }
                 }
