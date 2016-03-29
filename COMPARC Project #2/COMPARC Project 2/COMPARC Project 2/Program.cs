@@ -305,6 +305,16 @@ namespace COMPARC_Project_2
             return this.cycle[i].WB;
         }
 
+        public Boolean isDataHazard(int i)
+        {
+            return this.cycle[i].dataHazard;
+        }
+
+        public void getIFID_InstructionLine(int i)
+        {
+            MessageBox.Show(this.cycle[i].IFID_instructionLine);
+        }
+
         public String getWriteBackRegister(int i)
         {
             if (i > 0)
@@ -938,13 +948,14 @@ namespace COMPARC_Project_2
             this.registers[i].busy = false;
         }
 
-        private Boolean checkDataHazard(int c, int rs, int rt, int rd, int bse)
+        public Boolean checkDataHazard(int c, int rs, int rt, int rd, int bse)
         {
             if (this.cycle[c - 1].IFID_instructionType == "Store Instruction")
             {
                 if (this.registers[rt].busy)
                 {
                     Console.WriteLine("Stall because register " + rt.ToString() + " is busy.");
+                    this.cycle[c].dataHazard = true;
                     return true;   
                 }
             }
@@ -953,6 +964,7 @@ namespace COMPARC_Project_2
                 if (this.registers[rs].busy || this.registers[rt].busy )
                 {
                     Console.WriteLine("Stall because register " + rs.ToString() + " or register " + rt.ToString() + " is busy.");
+                    this.cycle[c].dataHazard = true;
                     return true;   
                 }
             }
@@ -961,6 +973,7 @@ namespace COMPARC_Project_2
                 if (this.registers[rs].busy)
                 {
                     Console.WriteLine("Stall because register " + rs.ToString() + " is busy.");
+                    this.cycle[c].dataHazard = true;
                     return true;   
                 }
             }
@@ -971,12 +984,13 @@ namespace COMPARC_Project_2
                     if (this.registers[rs].busy || this.registers[rt].busy)
                     {
                         Console.WriteLine("Branch stall because register " + rs.ToString() + " or register " + rt.ToString() + " is busy.");
+                        this.cycle[c].dataHazard = true;
                         return true;
                     }
                 }
 
             }
-
+            this.cycle[c].dataHazard = false;
             return false;
         }
 

@@ -55,6 +55,9 @@ namespace COMPARC_Project_2
         public Boolean WB { get; set; }
         public String WB_Rn { get; private set; }
 
+        public Boolean dataHazard { get; set; }
+        public String hazardLine { get; set; }
+
         #endregion
 
         public Cycle()

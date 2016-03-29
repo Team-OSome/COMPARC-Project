@@ -413,9 +413,10 @@ namespace COMPARC_Project_2
         
         private void displayPipelineMap()       //displays pipeline map to console
         {
-            int row, 
+            int row,
                 currRow = 0, 
                 instructionLength = this.program.getInstructionLength();
+                
             bool isFirst;
 
             pipelineMapGridView.Rows.Clear();
@@ -439,6 +440,7 @@ namespace COMPARC_Project_2
                     pipelineMapGridView.Rows[row].Cells[i + 1].Value = "WB";
                     isFirst = false;
 
+             
                     currRow++;
 
                     if (this.program.isInstructionBranch(row))
@@ -449,18 +451,18 @@ namespace COMPARC_Project_2
                     }                 
                 }
 
-                if (!isFirst && row < instructionLength - 1)
+                if (!isFirst && row < instructionLength - 1  && (!this.program.isDataHazard(i) || (this.program.getIFID_NPC(i) != "" && (Convert.ToInt16(this.program.getIFID_NPC(i).ToString(), 16) / 4) - 2 != row)))
                 {
                     row++;
                 }
 
                 if (this.program.getMEMWB(i))
                 {
-                    pipelineMapGridView.Rows[row].Cells[i + 1].Value = "MEM";
+                    pipelineMapGridView.Rows[row].Cells[i + 1].Value = "MEM";           
                     isFirst = false;
                 }
 
-                if (!isFirst && row < instructionLength - 1)
+                if (!isFirst && row < instructionLength - 1 && (!this.program.isDataHazard(i) || (this.program.getIFID_NPC(i) != "" && (Convert.ToInt16(this.program.getIFID_NPC(i).ToString(), 16) / 4) - 2 != row)))
                 {
                     row++;
                 }
@@ -468,15 +470,15 @@ namespace COMPARC_Project_2
                 if (this.program.getEXMEM(i))
                 {
                     pipelineMapGridView.Rows[row].Cells[i + 1].Value = "EX";
-                    isFirst = false;
+                        isFirst = false;
                 }
 
-                if (!isFirst && row < instructionLength - 1)
+                if (!isFirst && row < instructionLength - 1 && (!this.program.isDataHazard(i) || (this.program.getIFID_NPC(i) != "" && (Convert.ToInt16(this.program.getIFID_NPC(i).ToString(), 16) / 4) - 2 != row)))
                 {
                     row++;
                 }
 
-                if (this.program.getIDEX(i) )
+                if (this.program.getIDEX(i))
                 {
                     pipelineMapGridView.Rows[row].Cells[i + 1].Value = "ID";
                     isFirst = false;
