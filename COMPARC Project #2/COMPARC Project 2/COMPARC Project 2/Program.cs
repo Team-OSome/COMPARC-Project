@@ -21,7 +21,7 @@ namespace COMPARC_Project_2
         private List<Memory> memory;
         private String[] program;
 
-        public Program(String[] program, String[] registers, String[] memory)
+        public Program(String[] program, String[] registers, String[] memory, Boolean isSingle, int cycleLimit)
         {
             this.instruction = new List<Instruction>();
             this.cycle = new List<Cycle>();
@@ -70,7 +70,18 @@ namespace COMPARC_Project_2
                 //showAllOpcodes();
                 showAllHexOpcodes();
                 if (this.instructionsValid)
-                    this.pipeline();
+                {
+                    if (isSingle)
+                    {
+                        this.singleExecPipeline(cycleLimit);
+                    }
+                    else
+                    {
+                        this.pipeline();
+                    }
+                }
+                    
+                    
             }              
         }
 
@@ -133,7 +144,8 @@ namespace COMPARC_Project_2
                            // Console.WriteLine("i= " + i);
                            // Console.WriteLine("j= " + j);
                             tempOffset = j - i - 1;
-                            //Console.WriteLine("tempOffset= " + tempOffset);
+                            Console.WriteLine("tempOffset= " + tempOffset);
+                            Console.WriteLine("tempOffset.toString()= " + tempOffset.ToString());
                             this.instruction[i].setOffset(tempOffset.ToString());
                             this.instruction[i].getOpcode().setOffset(tempOffset.ToString());
                             this.instruction[i].getOpcode().addOpcodeString(this.instruction[i].getOpcode().getOffsetO());
@@ -353,6 +365,11 @@ namespace COMPARC_Project_2
             return this.numCycles;
         }
 
+        public String getMemoryLocations(int i)
+        {
+            return this.cycle[i].WB_Memory;
+        }
+
         #endregion
 
         #region checking functions
@@ -493,6 +510,7 @@ namespace COMPARC_Project_2
         private void storeDouble(string startAddress, int i)
         {
             int j = 0;
+            int temp;
            
             if (this.cycle[i - 1].EXMEM_instructionType == "Store Instruction")
             {
@@ -503,6 +521,8 @@ namespace COMPARC_Project_2
                     {
                         for (int k = address + 7; k >= address; k--)
                         {
+                            temp = k + 8192;
+                            this.cycle[i].MEMWB_Memory += temp.ToString("X") + " ";
                             this.memory[k].setValue(this.cycle[i - 1].EXMEM_B.Substring(j, 2));
                             j += 2;
                         }
@@ -725,6 +745,224 @@ namespace COMPARC_Project_2
             }    
         }
 
+
+        private void singleExecPipeline(int cycleLimit)
+        {
+            int i = 0;
+            int c = 0;
+            int stall = 0;
+            Boolean addressRange = true;
+            Boolean executionError = false;
+            int totalCycles = this.instruction.Count + 3;
+
+            Boolean flushCycleLimit = false;
+
+            do
+            {
+                this.cycle.Add(new Cycle());
+                this.numCycles++;
+
+                stall = i;
+                i = getInstruction(i, c);
+
+                if (i < this.instruction.Count)
+                {
+                    this.InstructionFetch(i, c);
+                    if (this.InstructionDecode(i, c))
+                    {
+                        Console.WriteLine("Data Hazard 1 Stall @ cycle" + c);
+                        i = stall;
+                        do
+                        {
+
+                            this.InstructionFetch(i, c);
+                            this.InstructionDecode(i, c);
+                            executionError = this.Execution(i, c); if (executionError == true) break;
+                            addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                            this.WriteBack(c);
+                            c++; if (c >= cycleLimit) { flushCycleLimit = true; break; }
+
+                            this.cycle.Add(new Cycle());
+                            this.numCycles++;
+
+                        } while (this.InstructionDecode(i, c));
+                        if (flushCycleLimit) break;
+
+                        this.cycle.RemoveAt(this.cycle.Count - 1);
+                        this.numCycles--;
+                    }
+                    else
+                    {
+                        #region FLUSH
+                        if (this.instruction[i].getInstructionType() == "Branch Instruction")
+                        {
+                            Console.WriteLine("branch at cycle: " + c);
+                            this.InstructionFetch(i, c);
+                            this.InstructionDecode(i, c);
+                            executionError = this.Execution(i, c); if (executionError == true) break;
+                            addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                            this.WriteBack(c);
+
+                            c++; if (c >= cycleLimit) break;
+
+                            stall = i;
+                            i = getInstruction(i, c);
+                            this.cycle.Add(new Cycle());
+                            this.numCycles++;
+                            this.InstructionFetch(i, c);
+                            if (this.InstructionDecode(i, c))
+                            {
+                                i = stall;
+                                do
+                                {
+                                    Console.WriteLine("STALLLLL");
+                                    this.InstructionFetch(i, c);
+                                    this.InstructionDecode(i, c);
+                                    executionError = this.Execution(i, c); if (executionError == true) break;
+                                    addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                                    this.WriteBack(c);
+                                    c++; if (c >= cycleLimit) { flushCycleLimit = true; break; }
+
+                                    this.cycle.Add(new Cycle());
+                                    this.numCycles++;
+
+                                } while (this.InstructionDecode(i, c));
+                                if (flushCycleLimit) break;
+
+                                this.cycle.RemoveAt(this.cycle.Count - 1);
+                                this.numCycles--;
+
+                                i = getInstruction(i, c);
+                                this.cycle.Add(new Cycle());
+                                this.numCycles++;
+                                this.InstructionFetch(i, c);
+                                this.InstructionDecode(i, c);
+                                executionError = this.Execution(i, c); if (executionError == true) break;
+                                addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                                this.WriteBack(c);
+
+                                c++; if (c >= cycleLimit) break;
+
+                                i = getInstruction(i, c);
+                                this.cycle.Add(new Cycle());
+                                this.numCycles++;
+                                this.InstructionFetch(i, c);
+                                executionError = this.Execution(i, c); if (executionError == true) break;
+                                addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                                this.WriteBack(c);
+
+                                c++; if (c >= cycleLimit) break;
+
+                                i = getInstruction(i, c);
+                                this.cycle.Add(new Cycle());
+                                this.numCycles++;
+                                this.InstructionFetch(i, c);
+                                addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                                this.WriteBack(c);
+
+                                c++; if (c >= cycleLimit) break;
+
+                                i = getInstruction(i, c);
+                                this.cycle.Add(new Cycle());
+                                this.numCycles++;
+                                this.InstructionFetch(i, c);
+                                this.WriteBack(c);
+
+                                c++; if (c >= cycleLimit) break;
+                            }
+                            else
+                            {
+                                executionError = this.Execution(i, c); if (executionError == true) break;
+                                addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                                this.WriteBack(c);
+                                c++; if (c >= cycleLimit) break;
+
+                                i = getInstruction(i, c);
+                                this.cycle.Add(new Cycle());
+                                this.numCycles++;
+                                this.InstructionFetch(i, c);
+                                executionError = this.Execution(i, c); if (executionError == true) break;
+                                addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                                this.WriteBack(c);
+
+                                c++; if (c >= cycleLimit) break;
+
+                                i = getInstruction(i, c);
+                                this.cycle.Add(new Cycle());
+                                this.numCycles++;
+                                this.InstructionFetch(i, c);
+                                addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                                this.WriteBack(c);
+
+                                c++; if (c >= cycleLimit) break;
+
+                                i = getInstruction(i, c);
+                                this.cycle.Add(new Cycle());
+                                this.numCycles++;
+                                this.InstructionFetch(i, c);
+                                this.WriteBack(c);
+
+                                c++; if (c >= cycleLimit) break;
+                            }
+
+
+                        }
+                        #endregion
+                        else
+                        {
+                            executionError = this.Execution(i, c); if (executionError == true) break;
+                            addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                            this.WriteBack(c);
+                            c++; if (c >= cycleLimit) break;
+                        }
+                    }
+                }
+                else
+                {
+                    this.InstructionFetch(i, c);
+                    if (this.InstructionDecode(i, c))
+                    {
+                        i = stall;
+                        do
+                        {
+                            Console.WriteLine("STALLLLL");
+                            this.InstructionFetch(i, c);
+                            this.InstructionDecode(i, c);
+                            executionError = this.Execution(i, c); if (executionError == true) break;
+                            addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                            this.WriteBack(c);
+                            c++; if (c >= cycleLimit) { flushCycleLimit = true; break; }
+
+                            this.cycle.Add(new Cycle());
+                            this.numCycles++;
+
+                        } while (this.InstructionDecode(i, c));
+                        if (flushCycleLimit) break;
+
+                        this.cycle.RemoveAt(this.cycle.Count - 1);
+                        this.numCycles--;
+                    }
+                    else
+                    {
+                        executionError = this.Execution(i, c); if (executionError == true) break;
+                        addressRange = this.MemoryAccess(i, c); if (addressRange == false) break;
+                        this.WriteBack(c);
+                        c++; if (c >= cycleLimit) break;
+                    }
+                }
+
+            } while (i < cycleLimit);
+
+            if (addressRange == false || executionError == true)                  //break if out of address range
+            {
+                this.cycle = null;
+                this.cycle = new List<Cycle>();
+                this.cycle.Add(new Cycle());
+                this.numCycles = 0;
+            }
+        }
+
+
         private int getInstruction(int i, int c)
         {
             int temp = i;
@@ -918,7 +1156,8 @@ namespace COMPARC_Project_2
                     this.registers[Convert.ToInt32(this.cycle[i - 1].MEMWB_IR.Substring(13, 5), 2)].setRegisterValue(this.cycle[i - 1].MEMWB_LMD);
                     this.clearDataHazard(Convert.ToInt32(this.cycle[i - 1].MEMWB_IR.Substring(13, 5), 2));
                 }
-            }
+                this.cycle[i].WB_Memory = this.cycle[i - 1].MEMWB_Memory;
+            }  
         }
 
         #endregion

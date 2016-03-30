@@ -315,29 +315,49 @@ namespace COMPARC_Project_2
         public void setOffset(String offset) 
         {   
             this.offset = offset;
-            //Console.WriteLine("offset=" + offset);
+            Console.WriteLine("offset=" + offset);
 
             this.offsetDec = Int32.Parse(this.offset);
-            //Console.WriteLine("offsetDec=" + offsetDec);
+            Console.WriteLine("offsetDec=" + offsetDec);
 
            
             this.offsetO = Convert.ToString(offsetDec, 2);
-            //Console.WriteLine("offsetO=" + offsetO);
+            Console.WriteLine("offsetO=" + offsetO);
 
-            //Console.WriteLine("OffsetO is: " + offsetO);
+            Console.WriteLine("OffsetO is: " + offsetO);
             
             //SIGN EXTEND DAPAT TO!!!
             
             if (this.opcodeType.Equals('J'))                //BC
-                this.offsetO = offsetO.PadLeft(26, '0'); 
-            if (this.opcodeType.Equals('I'))                //BNEC
-                this.offsetO = offsetO.PadLeft(16, '0');
-
+                this.offsetO = offsetO.PadLeft(26, '0');
+            if (this.opcodeType.Equals('I'))
+            {                //BNEC
+                if(this.offsetDec>=0)
+                {
+                    Console.WriteLine("it's positive offset!");
+                    this.offsetO = offsetO.PadLeft(16, '0'); 
+                }
+                    
+                else
+                {
+                    Console.WriteLine("it's negative offset!");
+                    this.offsetDec =this.offsetDec* -1;
+                    Console.WriteLine("inside: offsetDec=" + offsetDec);
+                    
+                    this.offsetO = Convert.ToString(offsetDec, 2);
+                  
+                    this.offsetO = offsetO.PadLeft(16, '1');
+                    this.offsetDec *= -1;
+                }
+                    
+                Console.WriteLine("offsetO:"+this.offsetO);
+            }
             //Console.WriteLine("offsetO="+this.offsetO);
         }
 
         public void addOpcodeString(String addition)
         {
+            //Console.WriteLine("addition:" + addition);
             this.opcodeString += " " + addition;
         }
 

@@ -14,6 +14,7 @@ namespace COMPARC_Project_2
     {
         private Program program;
         private int viewCycle;
+        private int cycleLimit;
 
         public InputForm()
         {
@@ -36,6 +37,7 @@ namespace COMPARC_Project_2
             initializeMemory();
 
             this.viewCycle = 0;
+            this.cycleLimit = 0;
 
         }
 
@@ -55,7 +57,7 @@ namespace COMPARC_Project_2
 
         private void simulateBtn_Click(object sender, EventArgs e)
         {
-            this.program = new Program(programTB.Lines, getRegisterTextBox(), getMemoryTextBox());
+            this.program = new Program(programTB.Lines, getRegisterTextBox(), getMemoryTextBox(),false,0);
 
             if (this.program.getInstructionsValid() && this.program.getRegisterValid() && this.program.getMemoryValid())
             {
@@ -353,6 +355,7 @@ namespace COMPARC_Project_2
             MEMWB_IR_Lbl.Text = this.program.getMEMWB_IR(i);
 
             Rn_Lbl.Text = this.program.getWriteBackRegister(i);
+            MemoryLocationsLbl.Text = this.program.getMemoryLocations(i);
 
         }
 
@@ -531,6 +534,86 @@ namespace COMPARC_Project_2
         }
 
         #endregion
+
+        private void singleExecutionForwardBtn_Click(object sender, EventArgs e)
+        {
+            this.cycleLimit++;
+            this.program = new Program(programTB.Lines, getRegisterTextBox(), getMemoryTextBox(),true,this.cycleLimit);
+            if (this.cycleLimit > 0)
+            {
+                singleExecutionBackBtn.Visible = true;
+            }
+
+            if (this.program.getInstructionsValid() && this.program.getRegisterValid() && this.program.getMemoryValid())
+            {
+                setOpCodeGridView();
+
+                this.viewCycle = 0;
+
+                this.displayPipelineMapToConsole();
+                this.displayPipelineMap();
+
+                this.refreshRegisters();
+                this.refreshMemory();
+
+                this.displayInternalPipelineRegisters(this.viewCycle);
+
+                gotoCycleTB.Text = (viewCycle + 1).ToString();
+                gotoCycleBtn.Visible = true;
+                gotoCycleTB.Visible = true;
+                nextCycleBtn.Visible = true;
+                lastCycleBtn.Visible = true;
+                prevCycleBtn.Visible = false;
+                firstCycleBtn.Visible = false;
+                if (this.program.getNumCycles() == 0)
+                {
+                    nextCycleBtn.Visible = false;
+                    lastCycleBtn.Visible = false;
+                }
+            }
+            else
+                MessageBox.Show("ERROR: Something is not valid"); 
+        }
+
+        private void singleExecutionBackBtn_Click(object sender, EventArgs e)
+        {
+            this.cycleLimit--;
+            this.program = new Program(programTB.Lines, getRegisterTextBox(), getMemoryTextBox(), true, this.cycleLimit);
+            if (this.cycleLimit == 0)
+            {
+                singleExecutionBackBtn.Visible = false;
+            }
+
+            if (this.program.getInstructionsValid() && this.program.getRegisterValid() && this.program.getMemoryValid())
+            {
+                setOpCodeGridView();
+
+                this.viewCycle = 0;
+
+                this.displayPipelineMapToConsole();
+                this.displayPipelineMap();
+
+                this.refreshRegisters();
+                this.refreshMemory();
+
+                this.displayInternalPipelineRegisters(this.viewCycle);
+
+                gotoCycleTB.Text = (viewCycle + 1).ToString();
+                gotoCycleBtn.Visible = true;
+                gotoCycleTB.Visible = true;
+                nextCycleBtn.Visible = true;
+                lastCycleBtn.Visible = true;
+                prevCycleBtn.Visible = false;
+                firstCycleBtn.Visible = false;
+                if (this.program.getNumCycles() == 0)
+                {
+                    nextCycleBtn.Visible = false;
+                    lastCycleBtn.Visible = false;
+                }
+            }
+            else
+                MessageBox.Show("ERROR: Something is not valid");
+        }
 
     }
 }

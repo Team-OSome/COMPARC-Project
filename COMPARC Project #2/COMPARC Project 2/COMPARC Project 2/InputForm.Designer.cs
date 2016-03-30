@@ -158,6 +158,11 @@
             this.gotoCycleBtn = new System.Windows.Forms.Button();
             this.goToTextBox = new System.Windows.Forms.TextBox();
             this.goToBtn = new System.Windows.Forms.Button();
+            this.singleExecutionBtn = new System.Windows.Forms.Button();
+            this.singleExecutionBackBtn = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.MemoryLbl = new System.Windows.Forms.Label();
+            this.MemoryLocationsLbl = new System.Windows.Forms.Label();
             this.opcodePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.opCodeGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fileSystemWatcher1)).BeginInit();
@@ -194,11 +199,11 @@
             // 
             // simulateBtn
             // 
-            this.simulateBtn.Location = new System.Drawing.Point(133, 512);
+            this.simulateBtn.Location = new System.Drawing.Point(149, 512);
             this.simulateBtn.Name = "simulateBtn";
-            this.simulateBtn.Size = new System.Drawing.Size(110, 41);
+            this.simulateBtn.Size = new System.Drawing.Size(94, 41);
             this.simulateBtn.TabIndex = 3;
-            this.simulateBtn.Text = "Simulate";
+            this.simulateBtn.Text = "Full Execution";
             this.simulateBtn.UseVisualStyleBackColor = true;
             this.simulateBtn.Click += new System.EventHandler(this.simulateBtn_Click);
             // 
@@ -965,6 +970,8 @@
             // 
             // internalPipelineRegistersPanel
             // 
+            this.internalPipelineRegistersPanel.Controls.Add(this.MemoryLocationsLbl);
+            this.internalPipelineRegistersPanel.Controls.Add(this.MemoryLbl);
             this.internalPipelineRegistersPanel.Controls.Add(this.Rn_Lbl);
             this.internalPipelineRegistersPanel.Controls.Add(this.MEMWB_ALUOutput_Lbl);
             this.internalPipelineRegistersPanel.Controls.Add(this.MEMWB_IR_Lbl);
@@ -1005,7 +1012,7 @@
             this.internalPipelineRegistersPanel.Controls.Add(this.instructionFetchLbl);
             this.internalPipelineRegistersPanel.Location = new System.Drawing.Point(835, 26);
             this.internalPipelineRegistersPanel.Name = "internalPipelineRegistersPanel";
-            this.internalPipelineRegistersPanel.Size = new System.Drawing.Size(352, 463);
+            this.internalPipelineRegistersPanel.Size = new System.Drawing.Size(407, 463);
             this.internalPipelineRegistersPanel.TabIndex = 16;
             // 
             // Rn_Lbl
@@ -1342,7 +1349,7 @@
             // 
             // nextCycleBtn
             // 
-            this.nextCycleBtn.Location = new System.Drawing.Point(1070, 500);
+            this.nextCycleBtn.Location = new System.Drawing.Point(1122, 500);
             this.nextCycleBtn.Name = "nextCycleBtn";
             this.nextCycleBtn.Size = new System.Drawing.Size(54, 44);
             this.nextCycleBtn.TabIndex = 17;
@@ -1364,7 +1371,7 @@
             // 
             // lastCycleBtn
             // 
-            this.lastCycleBtn.Location = new System.Drawing.Point(1130, 500);
+            this.lastCycleBtn.Location = new System.Drawing.Point(1182, 500);
             this.lastCycleBtn.Name = "lastCycleBtn";
             this.lastCycleBtn.Size = new System.Drawing.Size(57, 44);
             this.lastCycleBtn.TabIndex = 19;
@@ -1375,7 +1382,7 @@
             // 
             // gotoCycleTB
             // 
-            this.gotoCycleTB.Location = new System.Drawing.Point(985, 500);
+            this.gotoCycleTB.Location = new System.Drawing.Point(1025, 500);
             this.gotoCycleTB.Name = "gotoCycleTB";
             this.gotoCycleTB.Size = new System.Drawing.Size(58, 20);
             this.gotoCycleTB.TabIndex = 20;
@@ -1396,7 +1403,7 @@
             // 
             // gotoCycleBtn
             // 
-            this.gotoCycleBtn.Location = new System.Drawing.Point(985, 521);
+            this.gotoCycleBtn.Location = new System.Drawing.Point(1025, 524);
             this.gotoCycleBtn.Name = "gotoCycleBtn";
             this.gotoCycleBtn.Size = new System.Drawing.Size(58, 23);
             this.gotoCycleBtn.TabIndex = 22;
@@ -1422,11 +1429,60 @@
             this.goToBtn.UseVisualStyleBackColor = true;
             this.goToBtn.Click += new System.EventHandler(this.goToBtn_Click);
             // 
+            // singleExecutionBtn
+            // 
+            this.singleExecutionBtn.Location = new System.Drawing.Point(79, 528);
+            this.singleExecutionBtn.Name = "singleExecutionBtn";
+            this.singleExecutionBtn.Size = new System.Drawing.Size(55, 25);
+            this.singleExecutionBtn.TabIndex = 25;
+            this.singleExecutionBtn.Text = ">";
+            this.singleExecutionBtn.UseVisualStyleBackColor = true;
+            this.singleExecutionBtn.Click += new System.EventHandler(this.singleExecutionForwardBtn_Click);
+            // 
+            // singleExecutionBackBtn
+            // 
+            this.singleExecutionBackBtn.Location = new System.Drawing.Point(15, 528);
+            this.singleExecutionBackBtn.Name = "singleExecutionBackBtn";
+            this.singleExecutionBackBtn.Size = new System.Drawing.Size(58, 25);
+            this.singleExecutionBackBtn.TabIndex = 26;
+            this.singleExecutionBackBtn.Text = "<";
+            this.singleExecutionBackBtn.UseVisualStyleBackColor = true;
+            this.singleExecutionBackBtn.Click += new System.EventHandler(this.singleExecutionBackBtn_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(34, 512);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(86, 13);
+            this.label1.TabIndex = 27;
+            this.label1.Text = "Single Execution";
+            // 
+            // MemoryLbl
+            // 
+            this.MemoryLbl.AutoSize = true;
+            this.MemoryLbl.Location = new System.Drawing.Point(36, 427);
+            this.MemoryLbl.Name = "MemoryLbl";
+            this.MemoryLbl.Size = new System.Drawing.Size(93, 13);
+            this.MemoryLbl.TabIndex = 38;
+            this.MemoryLbl.Text = "Memory Locations";
+            // 
+            // MemoryLocationsLbl
+            // 
+            this.MemoryLocationsLbl.AutoSize = true;
+            this.MemoryLocationsLbl.Location = new System.Drawing.Point(169, 427);
+            this.MemoryLocationsLbl.Name = "MemoryLocationsLbl";
+            this.MemoryLocationsLbl.Size = new System.Drawing.Size(0, 13);
+            this.MemoryLocationsLbl.TabIndex = 39;
+            // 
             // InputForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1201, 562);
+            this.ClientSize = new System.Drawing.Size(1251, 562);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.singleExecutionBackBtn);
+            this.Controls.Add(this.singleExecutionBtn);
             this.Controls.Add(this.goToBtn);
             this.Controls.Add(this.goToTextBox);
             this.Controls.Add(this.gotoCycleBtn);
@@ -1597,6 +1653,11 @@
         private System.Windows.Forms.TextBox goToTextBox;
         private System.Windows.Forms.DataGridView memoryGridView;
         private System.Windows.Forms.Button goToBtn;
+        private System.Windows.Forms.Button singleExecutionBtn;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button singleExecutionBackBtn;
+        private System.Windows.Forms.Label MemoryLocationsLbl;
+        private System.Windows.Forms.Label MemoryLbl;
         
     }
 }

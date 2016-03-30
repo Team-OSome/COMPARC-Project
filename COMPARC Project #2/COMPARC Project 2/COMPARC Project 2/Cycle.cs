@@ -51,9 +51,11 @@ namespace COMPARC_Project_2
         public String MEMWB_ALUOutput { get; private set; }
         public String MEMWB_instruction { get; private set; }
         public String MEMWB_instructionType { get; private set; }
+        public String MEMWB_Memory { get; set; }
 
         public Boolean WB { get; set; }
         public String WB_Rn { get; private set; }
+        public String WB_Memory { get; set; }
 
         public Boolean dataHazard { get; set; }
         public String hazardLine { get; set; }
@@ -85,9 +87,11 @@ namespace COMPARC_Project_2
             this.MEMWB_Range = null;
             this.MEMWB_IR = "";
             this.MEMWB_ALUOutput = null;
+            this.MEMWB_Memory = null;
 
             this.WB = false;
-            this.WB_Rn = null;        
+            this.WB_Rn = null;
+            this.WB_Memory = null;
         }
 
         public void setInstructionFetch(string opcodeString, string programCtr, string EXMEM_instructionType, string EXMEM_ALUOutput, string instruction, string instructionType, string instructionLine, string rs, string rt, string rd, string bse, string imm)
@@ -235,7 +239,7 @@ namespace COMPARC_Project_2
                         MessageBox.Show("Divide by zero error.");
                         return true;
                     }
-                    this.EXMEM_ALUOutput = (Convert.ToInt64(IDEX_A, 16) / Convert.ToInt64(IDEX_B, 16)).ToString("X");
+                    this.EXMEM_ALUOutput = (Convert.ToUInt64(IDEX_A, 16) / Convert.ToUInt64(IDEX_B, 16)).ToString("X");
                     while (this.EXMEM_ALUOutput.Length < 16)
                     {
                         this.EXMEM_ALUOutput = "0" + this.EXMEM_ALUOutput;
@@ -249,7 +253,7 @@ namespace COMPARC_Project_2
                         MessageBox.Show("Divide by zero error.");
                         return true;
                     }
-                    this.EXMEM_ALUOutput = (Convert.ToInt64(IDEX_A, 16) % Convert.ToInt64(IDEX_B, 16)).ToString("X");
+                    this.EXMEM_ALUOutput = (Convert.ToUInt64(IDEX_A, 16) % Convert.ToUInt64(IDEX_B, 16)).ToString("X");
                     while (this.EXMEM_ALUOutput.Length < 16)
                     {
                         this.EXMEM_ALUOutput = "0" + this.EXMEM_ALUOutput;
