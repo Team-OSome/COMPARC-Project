@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
+  <asmv1:assemblyIdentity name="COMPARC Project 2.exe" version="1.0.0.0" publicKeyToken="c3b6bb008fb127cb" language="neutral" processorArchitecture="msil" type="win32" />
+  <application />
+  <entryPoint>
+    <assemblyIdentity name="COMPARC Project 2" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+    <commandLine file="COMPARC Project 2.exe" parameters="" />
+  </entryPoint>
+  <trustInfo>
+    <security>
+      <applicationRequestMinimum>
+        <PermissionSet Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!--
+          UAC Manifest Options
+          If you want to change the Windows User Account Control level replace the 
+          requestedExecutionLevel node with one of the following.
+
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
+        <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
+        <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
+
+         If you want to utilize File and Registry Virtualization for backward 
+         compatibility then delete the requestedExecutionLevel node.
+    -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentOS>
+      <osVersionInfo>
+        <os majorVersion="5" minorVersion="1" buildNumber="2600" servicePackMajor="0" />
+      </osVersionInfo>
+    </dependentOS>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Windows.CommonLanguageRuntime" version="4.0.30319.0" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="COMPARC Project 2.exe" size="83344">
+      <assemblyIdentity name="COMPARC Project 2" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>hEBFX8W/ne9vxKPG4ZXiuh0QrwGWxgnSWg61pYm1xMI=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <file name="COMPARC Project 2.exe.config" size="187">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>xm4bo26HQ0LNVwz1vdPYtzhkpMnp2AI5i+f0b+OahTI=</dsig:DigestValue>
+    </hash>
+  </file>
+<publisherIdentity name="CN=MSI\User" issuerKeyHash="b69ce1f472a89d0158cd32a5c614793afd7a9e72" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>XlAob7LyKEaWMLqp0hSgNDxZYKswJL72yzf9KcsvY9Q=</DigestValue></Reference></SignedInfo><SignatureValue>uqVvhu4g+eStpatCD/TN4hWeaO5NFfmUTaKZjHvOXQwjmlvmTYnRnuDpWjzJrApbOi6AuOYEsSgPWBaa+YbDo0ROLNvOOZYzfUf0912/ctmx5ORi3XNtfAgckeU6Az4HyLMrvYJSYcx/ZvyR/H7bxcYPIY/X6phV881yVvz5FqQ=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>yY4E1kLyPGa336ScZyhhN3C5xpQc8tPYmMpsu0kiaOvaLOV/y1Sn3aF2OY2dm9sKiMugvlWr1Wka5vZqbjZ1gB67ts61SVh2bY3piN7szZXxVD/Oc6O9JNj2KZ7B5/1dPOOLy38LV2zzwEdzWXq/S0OayC3bzwDSvpoVVJYBTbc=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="d4632fcb29fd37cbf6be2430ab60593c34a014d2a9ba30964628f2b26f28505e" Description="" Url=""><as:assemblyIdentity name="COMPARC Project 2.exe" version="1.0.0.0" publicKeyToken="c3b6bb008fb127cb" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=MSI\User</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>KKlIWpdFfTVpYSX4NqO3aZj2X5Qv+JeUPQoZ+XaoO88=</DigestValue></Reference></SignedInfo><SignatureValue>LGbmniLLNxmV/x2NcIw+Ol3S8ph4MUgNkqngIc1eY/PSdoq6WF/phhzrUXdm3HuHLJyGdVacKQHougp69Rb6GAARdCTFxQYrH1OHwi2XjERf2Cp1OLWTKWd4KKb1GEHfN1hiBAgjN1sw7zWVC0cX8rJ5biM0uN8l3v/vzouwChM=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>yY4E1kLyPGa336ScZyhhN3C5xpQc8tPYmMpsu0kiaOvaLOV/y1Sn3aF2OY2dm9sKiMugvlWr1Wka5vZqbjZ1gB67ts61SVh2bY3piN7szZXxVD/Oc6O9JNj2KZ7B5/1dPOOLy38LV2zzwEdzWXq/S0OayC3bzwDSvpoVVJYBTbc=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIBuTCCASKgAwIBAgIQYJM1UNhHl7JOGdAsM6uZ4DANBgkqhkiG9w0BAQsFADAbMRkwFwYDVQQDHhAATQBTAEkAXABVAHMAZQByMB4XDTE2MDMzMTAxMzU1MFoXDTE3MDMzMTA3MzU1MFowGzEZMBcGA1UEAx4QAE0AUwBJAFwAVQBzAGUAcjCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAyY4E1kLyPGa336ScZyhhN3C5xpQc8tPYmMpsu0kiaOvaLOV/y1Sn3aF2OY2dm9sKiMugvlWr1Wka5vZqbjZ1gB67ts61SVh2bY3piN7szZXxVD/Oc6O9JNj2KZ7B5/1dPOOLy38LV2zzwEdzWXq/S0OayC3bzwDSvpoVVJYBTbcCAwEAATANBgkqhkiG9w0BAQsFAAOBgQCIZlg8iQAySObRYlajbBjIhRm/XUue2rMFU3LDFKX65x48IDM3Yv6zWRaOR8ZYLajRtm+JZgZlt6tdhpsm2qXb2LEKGc/qsTXzxp3m31a7aEiVSReH7FaxJDfrhN0/sMRgh9zs7BIujWKcFyL0xUoMvWL80AL4BY9S8a521fgcUg==</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
